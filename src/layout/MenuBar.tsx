@@ -11,8 +11,12 @@ const MenuBar = () => {
               <Link to="/registration" style={{ textDecoration: "none" }}>
                 <Button
                   color="inherit"
-                  sx={{ backgroundColor: "#c1ff04", color: "#242424" }}
-                  //endIcon={<FaceRetouchingNaturalIcon />}
+                  sx={{
+                    backgroundColor: "#01FF72",
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
                 >
                   Registrarse
                 </Button>

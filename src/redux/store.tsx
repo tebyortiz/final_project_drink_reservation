@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import providersReducer from "./providersSlice";
 
 export const store = configureStore({
   reducer: {
-
+    providers: providersReducer,
   },
 });
 
