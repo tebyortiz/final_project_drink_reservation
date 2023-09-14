@@ -109,7 +109,7 @@ function Registration() {
   };
 
   const Title1 = styled(Typography)(() => ({
-    color: "eee",
+    color: "white",
     fontFamily: "Nunito, sans-serif!important",
     marginTop: "50px",
     "&:hover": {
@@ -119,7 +119,7 @@ function Registration() {
   }));
 
   const Title2 = styled(Typography)(() => ({
-    color: "eee",
+    color: "white",
     fontFamily: "Nunito, sans-serif!important",
     marginTop: "50px",
     "&:hover": {
@@ -237,29 +237,29 @@ function Registration() {
           }}
         >
           <Card sx={cardStyleProvider}>
-            <CardContent
-              style={{
-                textAlign: "center",
-                flex: "1",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-end",
-              }}
-            >
-              <img
-                src="/images/proveedor1.png"
-                alt="Proveedor"
+            <Button onClick={handleProviderDialogOpen}>
+              <CardContent
                 style={{
-                  width: "auto",
-                  height: "auto",
-                  maxHeight: "350px",
+                  textAlign: "center",
+                  flex: "1",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
                 }}
-              />
+              >
+                <img
+                  src="/images/proveedor1.png"
+                  alt="Proveedor"
+                  style={{
+                    width: "auto",
+                    height: "auto",
+                    maxHeight: "350px",
+                  }}
+                />
 
-              <Title1 variant="h4" onClick={handleProviderDialogOpen}>
-                PROVEEDOR
-              </Title1>
-            </CardContent>
+                <Title1 variant="h4">PROVEEDOR</Title1>
+              </CardContent>
+            </Button>
           </Card>
           <Card sx={cardStyleClient}>
             <CardContent
@@ -300,7 +300,17 @@ function Registration() {
       </div>
 
       <FormControl fullWidth style={{ marginBottom: "10px" }}>
-        <Dialog open={isProviderDialogOpen} onClose={handleProviderDialogClose}>
+        <Dialog
+          open={isProviderDialogOpen}
+          onClose={handleProviderDialogClose}
+          sx={{
+            "& .MuiDialog-paper": {
+              width: "80%",
+              maxWidth: "700px",
+              borderRadius: "15px",
+            },
+          }}
+        >
           <DialogTitle
             sx={{
               backgroundColor: "#01FF72",
@@ -317,11 +327,22 @@ function Registration() {
               style={{ marginBottom: "10px" }}
               sx={{
                 "& input": {
-                  height: "10px",
+                  height: "15px",
                   color: "#242424",
                   backgroundColor: "white",
                 },
+                "& label": {
+                  color: "black",
+                },
+                "& label.Mui-focused": {
+                  color: "#242424",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#01FF72",
+                },
               }}
+              InputLabelProps={{ shrink: true }}
+              variant="standard"
               value={formValues.company.name}
               onChange={(e) =>
                 setFormValues((prevFormValues) => ({
@@ -339,11 +360,22 @@ function Registration() {
               style={{ marginBottom: "10px" }}
               sx={{
                 "& input": {
-                  height: "10px",
+                  height: "15px",
                   color: "#242424",
                   backgroundColor: "white",
                 },
+                "& label": {
+                  color: "black",
+                },
+                "& label.Mui-focused": {
+                  color: "#242424",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#01FF72",
+                },
               }}
+              InputLabelProps={{ shrink: true }}
+              variant="standard"
               value={formValues.company.logo}
               onChange={(e) =>
                 setFormValues((prevFormValues) => ({
@@ -361,11 +393,22 @@ function Registration() {
               style={{ marginBottom: "10px" }}
               sx={{
                 "& input": {
-                  height: "10px",
+                  height: "15px",
                   color: "#242424",
                   backgroundColor: "white",
                 },
+                "& label": {
+                  color: "black",
+                },
+                "& label.Mui-focused": {
+                  color: "#242424",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#01FF72",
+                },
               }}
+              InputLabelProps={{ shrink: true }}
+              variant="standard"
               type="number"
               inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
               value={formValues.company.phone}
@@ -385,11 +428,22 @@ function Registration() {
               style={{ marginBottom: "10px" }}
               sx={{
                 "& input": {
-                  height: "10px",
+                  height: "15px",
                   color: "#242424",
                   backgroundColor: "white",
                 },
+                "& label": {
+                  color: "black",
+                },
+                "& label.Mui-focused": {
+                  color: "#242424",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#01FF72",
+                },
               }}
+              InputLabelProps={{ shrink: true }}
+              variant="standard"
               value={formValues.company.email}
               onChange={(e) =>
                 setFormValues((prevFormValues) => ({
@@ -401,16 +455,35 @@ function Registration() {
                 }))
               }
             />
-            <FormControl fullWidth style={{ marginBottom: "10px" }}>
-              <InputLabel>Servicio de</InputLabel>
+            <FormControl
+              fullWidth
+              style={{ marginBottom: "10px", marginTop: "10px" }}
+            >
+              <InputLabel
+                sx={{
+                  color: "#242424",
+                  "&.Mui-focused": {
+                    color: "#242424",
+                  },
+                }}
+              >
+                Servicio de
+              </InputLabel>
               <Select
                 label="Servicio de"
                 sx={{
                   "& select": {
-                    height: "10px",
+                    height: "15px",
+                    color: "#242424",
+                    backgroundColor: "white",
                   },
                   "& label": {
                     color: "#242424",
+                  },
+                  "&.Mui-focused": {
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#01FF72",
+                    },
                   },
                 }}
                 value={formValues.service.type}
@@ -435,11 +508,22 @@ function Registration() {
               style={{ marginBottom: "10px" }}
               sx={{
                 "& input": {
-                  height: "10px",
+                  height: "15px",
                   color: "#242424",
                   backgroundColor: "white",
                 },
+                "& label": {
+                  color: "black",
+                },
+                "& label.Mui-focused": {
+                  color: "#242424",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#01FF72",
+                },
               }}
+              InputLabelProps={{ shrink: true }}
+              variant="standard"
               value={formValues.responsibleCompany.name}
               onChange={(e) =>
                 setFormValues((prevFormValues) => ({
@@ -457,11 +541,22 @@ function Registration() {
               style={{ marginBottom: "10px" }}
               sx={{
                 "& input": {
-                  height: "10px",
+                  height: "15px",
                   color: "#242424",
                   backgroundColor: "white",
                 },
+                "& label": {
+                  color: "black",
+                },
+                "& label.Mui-focused": {
+                  color: "#242424",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#01FF72",
+                },
               }}
+              InputLabelProps={{ shrink: true }}
+              variant="standard"
               type="number"
               inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
               value={formValues.responsibleCompany.phone}
@@ -481,11 +576,22 @@ function Registration() {
               style={{ marginBottom: "10px" }}
               sx={{
                 "& input": {
-                  height: "10px",
+                  height: "15px",
                   color: "#242424",
                   backgroundColor: "white",
                 },
+                "& label": {
+                  color: "black",
+                },
+                "& label.Mui-focused": {
+                  color: "#242424",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#01FF72",
+                },
               }}
+              InputLabelProps={{ shrink: true }}
+              variant="standard"
               value={formValues.responsibleCompany.email}
               onChange={(e) =>
                 setFormValues((prevFormValues) => ({
@@ -503,11 +609,22 @@ function Registration() {
               style={{ marginBottom: "25px" }}
               sx={{
                 "& input": {
-                  height: "10px",
+                  height: "15px",
                   color: "#242424",
                   backgroundColor: "white",
                 },
+                "& label": {
+                  color: "black",
+                },
+                "& label.Mui-focused": {
+                  color: "#242424",
+                },
+                "& .MuiInput-underline:after": {
+                  borderBottomColor: "#01FF72",
+                },
               }}
+              InputLabelProps={{ shrink: true }}
+              variant="standard"
               value={formValues.responsibleCompany.photo}
               onChange={(e) =>
                 setFormValues((prevFormValues) => ({
@@ -523,6 +640,8 @@ function Registration() {
             <Card
               sx={{
                 backgroundColor: "#242424",
+                marginTop: "10px",
+                borderRadius: "15px",
               }}
             >
               <CardContent>
@@ -532,6 +651,7 @@ function Registration() {
                   sx={{
                     color: "white",
                     textAlign: "center",
+                    marginBottom: "20px",
                   }}
                 >
                   Ahora defina su Username y Contraseña para ingresar
@@ -542,18 +662,25 @@ function Registration() {
                   style={{ marginBottom: "10px" }}
                   sx={{
                     "& input": {
-                      height: "20px",
+                      height: "30px",
+                      color: "#242424",
                       backgroundColor: "white",
+                      borderRadius: "7px",
+                      border: "2px solid #01FF72",
                     },
                     "& label": {
                       color: "#01FF72",
                     },
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "#01FF72",
-                      },
+                    "& label.Mui-focused": {
+                      color: "white",
                     },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "#01FF72",
+                    },
+                    borderRadius: "7px",
                   }}
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
                   value={formValues.login.username}
                   onChange={(e) =>
                     setFormValues((prevFormValues) => ({
@@ -572,18 +699,25 @@ function Registration() {
                   style={{ marginBottom: "10px" }}
                   sx={{
                     "& input": {
-                      height: "20px",
+                      height: "30px",
+                      color: "#242424",
                       backgroundColor: "white",
+                      borderRadius: "7px",
+                      border: "2px solid #01FF72",
                     },
                     "& label": {
                       color: "#01FF72",
                     },
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "#01FF72",
-                      },
+                    "& label.Mui-focused": {
+                      color: "white",
                     },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "#01FF72",
+                    },
+                    borderRadius: "7px",
                   }}
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
                   value={formValues.login.password}
                   onChange={(e) =>
                     setFormValues((prevFormValues) => ({
@@ -603,6 +737,11 @@ function Registration() {
                       backgroundColor: "#01FF72",
                       fontFamily: "Nunito, sans-serif",
                       fontWeight: "bold",
+                      marginTop: "15px",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#01FF72",
+                      },
                     }}
                     onClick={handleProviderRegistration}
                   >
@@ -671,6 +810,12 @@ function Registration() {
                   backgroundColor: "#01FF72",
                   fontFamily: "Nunito, sans-serif",
                   fontWeight: "bold",
+                  marginTop: "10px",
+                  marginBottom: "10px",
+                  "&:hover": {
+                    backgroundColor: "#242424",
+                    color: "#01FF72",
+                  },
                 }}
                 onClick={handleWelcomeDialogClose}
               >
