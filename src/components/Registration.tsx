@@ -299,385 +299,387 @@ function Registration() {
         </Typography>
       </div>
 
-      <Dialog open={isProviderDialogOpen} onClose={handleProviderDialogClose}>
-        <DialogTitle
-          sx={{
-            backgroundColor: "#01FF72",
-            textAlign: "center",
-          }}
-          style={{ marginBottom: "8px" }}
-        >
-          Para ofrecer sus servicios, complete los siguientes campos:
-        </DialogTitle>
-        <div style={{ padding: "20px" }}>
-          <TextField
-            fullWidth
-            label="Nombre de la Empresa"
-            style={{ marginBottom: "10px" }}
+      <FormControl fullWidth style={{ marginBottom: "10px" }}>
+        <Dialog open={isProviderDialogOpen} onClose={handleProviderDialogClose}>
+          <DialogTitle
             sx={{
-              "& input": {
-                height: "10px",
-                color: "#242424",
-                backgroundColor: "white",
-              },
+              backgroundColor: "#01FF72",
+              textAlign: "center",
             }}
-            value={formValues.company.name}
-            onChange={(e) =>
-              setFormValues((prevFormValues) => ({
-                ...prevFormValues,
-                company: {
-                  ...prevFormValues.company,
-                  name: e.target.value,
-                },
-              }))
-            }
-          />
-          <TextField
-            fullWidth
-            label="Logo de la Empresa"
-            style={{ marginBottom: "10px" }}
-            sx={{
-              "& input": {
-                height: "10px",
-                color: "#242424",
-                backgroundColor: "white",
-              },
-            }}
-            value={formValues.company.logo}
-            onChange={(e) =>
-              setFormValues((prevFormValues) => ({
-                ...prevFormValues,
-                company: {
-                  ...prevFormValues.company,
-                  logo: e.target.value,
-                },
-              }))
-            }
-          />
-          <TextField
-            fullWidth
-            label="Teléfono de la Empresa"
-            style={{ marginBottom: "10px" }}
-            sx={{
-              "& input": {
-                height: "10px",
-                color: "#242424",
-                backgroundColor: "white",
-              },
-            }}
-            type="number"
-            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-            value={formValues.company.phone}
-            onChange={(e) =>
-              setFormValues((prevFormValues) => ({
-                ...prevFormValues,
-                company: {
-                  ...prevFormValues.company,
-                  phone: e.target.value,
-                },
-              }))
-            }
-          />
-          <TextField
-            fullWidth
-            label="Email de la Empresa"
-            style={{ marginBottom: "10px" }}
-            sx={{
-              "& input": {
-                height: "10px",
-                color: "#242424",
-                backgroundColor: "white",
-              },
-            }}
-            value={formValues.company.email}
-            onChange={(e) =>
-              setFormValues((prevFormValues) => ({
-                ...prevFormValues,
-                company: {
-                  ...prevFormValues.company,
-                  email: e.target.value,
-                },
-              }))
-            }
-          />
-          <FormControl fullWidth style={{ marginBottom: "10px" }}>
-            <InputLabel>Servicio de</InputLabel>
-            <Select
-              label="Servicio de"
+            style={{ marginBottom: "8px" }}
+          >
+            Para ofrecer sus servicios, complete los siguientes campos:
+          </DialogTitle>
+          <div style={{ padding: "20px" }}>
+            <TextField
+              fullWidth
+              label="Nombre de la Empresa"
+              style={{ marginBottom: "10px" }}
               sx={{
-                "& select": {
+                "& input": {
                   height: "10px",
-                },
-                "& label": {
                   color: "#242424",
+                  backgroundColor: "white",
                 },
               }}
-              value={formValues.service.type}
+              value={formValues.company.name}
               onChange={(e) =>
                 setFormValues((prevFormValues) => ({
                   ...prevFormValues,
-                  service: {
-                    ...prevFormValues.service,
-                    type: e.target.value as string,
+                  company: {
+                    ...prevFormValues.company,
+                    name: e.target.value,
                   },
                 }))
               }
-            >
-              <MenuItem value="Coctelería">Coctelería</MenuItem>
-              <MenuItem value="Cervecería">Cervecería</MenuItem>
-              <MenuItem value="Ambos">Ambos</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            fullWidth
-            label="Responsable de la Empresa"
-            style={{ marginBottom: "10px" }}
-            sx={{
-              "& input": {
-                height: "10px",
-                color: "#242424",
-                backgroundColor: "white",
-              },
-            }}
-            value={formValues.responsibleCompany.name}
-            onChange={(e) =>
-              setFormValues((prevFormValues) => ({
-                ...prevFormValues,
-                responsibleCompany: {
-                  ...prevFormValues.responsibleCompany,
-                  name: e.target.value,
-                },
-              }))
-            }
-          />
-          <TextField
-            fullWidth
-            label="Teléfono del Responsable"
-            style={{ marginBottom: "10px" }}
-            sx={{
-              "& input": {
-                height: "10px",
-                color: "#242424",
-                backgroundColor: "white",
-              },
-            }}
-            type="number"
-            inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-            value={formValues.responsibleCompany.phone}
-            onChange={(e) =>
-              setFormValues((prevFormValues) => ({
-                ...prevFormValues,
-                responsibleCompany: {
-                  ...prevFormValues.responsibleCompany,
-                  phone: e.target.value,
-                },
-              }))
-            }
-          />
-          <TextField
-            fullWidth
-            label="Email del Responsable"
-            style={{ marginBottom: "10px" }}
-            sx={{
-              "& input": {
-                height: "10px",
-                color: "#242424",
-                backgroundColor: "white",
-              },
-            }}
-            value={formValues.responsibleCompany.email}
-            onChange={(e) =>
-              setFormValues((prevFormValues) => ({
-                ...prevFormValues,
-                responsibleCompany: {
-                  ...prevFormValues.responsibleCompany,
-                  email: e.target.value,
-                },
-              }))
-            }
-          />
-          <TextField
-            fullWidth
-            label="foto del Responsable"
-            style={{ marginBottom: "25px" }}
-            sx={{
-              "& input": {
-                height: "10px",
-                color: "#242424",
-                backgroundColor: "white",
-              },
-            }}
-            value={formValues.responsibleCompany.photo}
-            onChange={(e) =>
-              setFormValues((prevFormValues) => ({
-                ...prevFormValues,
-                responsibleCompany: {
-                  ...prevFormValues.responsibleCompany,
-                  photo: e.target.value,
-                },
-              }))
-            }
-          />
-
-          <Card
-            sx={{
-              backgroundColor: "#242424",
-            }}
-          >
-            <CardContent>
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  color: "white",
-                  textAlign: "center",
-                }}
-              >
-                Ahora defina su Username y Contraseña para ingresar
-              </Typography>
-              <TextField
-                fullWidth
-                label="Nombre de Usuario"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "20px",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "#01FF72",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#01FF72",
-                    },
-                  },
-                }}
-                value={formValues.login.username}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    login: {
-                      ...prevFormValues.login,
-                      username: e.target.value,
-                    },
-                  }))
-                }
-              />
-              <TextField
-                fullWidth
-                label="Contraseña"
-                type="password"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "20px",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "#01FF72",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#01FF72",
-                    },
-                  },
-                }}
-                value={formValues.login.password}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    login: {
-                      ...prevFormValues.login,
-                      password: e.target.value,
-                    },
-                  }))
-                }
-              />
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    backgroundColor: "#01FF72",
-                    fontFamily: "Nunito, sans-serif",
-                    fontWeight: "bold",
-                  }}
-                  onClick={handleProviderRegistration}
-                >
-                  Registrarse
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </Dialog>
-
-      <Dialog open={isWelcomeDialogOpen} onClose={handleWelcomeDialogClose}>
-        <DialogTitle
-          sx={{
-            backgroundColor: "#01FF72",
-            textAlign: "center",
-          }}
-          style={{ marginBottom: "8px" }}
-        >
-          {`BIENVENIDO "${welcomeDialogCompanyName}"`}
-        </DialogTitle>
-        <div style={{ padding: "20px" }}>
-          <Typography
-            variant="h5"
-            sx={{
-              textAlign: "center",
-              marginBottom: "20px",
-            }}
-          >
-            GRACIAS POR CONFIAR EN NOSOTROS.
-          </Typography>
-          <Typography
-            variant="h6"
-            sx={{
-              textAlign: "center",
-              marginBottom: "20px",
-            }}
-          >
-            En breve recibirá el e-mail para completar la registración.
-          </Typography>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <img
-              src="/images/logo1.png"
-              alt="Logo"
-              style={{
-                width: "150px",
-                height: "150px",
-              }}
             />
-          </div>
-          <Divider
-            variant="middle"
-            sx={{ marginTop: "20px", marginBottom: "20px" }}
-          />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "20px",
-            }}
-          >
-            <Button
-              variant="contained"
-              color="primary"
+            <TextField
+              fullWidth
+              label="Logo de la Empresa"
+              style={{ marginBottom: "10px" }}
               sx={{
-                backgroundColor: "#01FF72",
-                fontFamily: "Nunito, sans-serif",
-                fontWeight: "bold",
+                "& input": {
+                  height: "10px",
+                  color: "#242424",
+                  backgroundColor: "white",
+                },
               }}
-              onClick={handleWelcomeDialogClose}
+              value={formValues.company.logo}
+              onChange={(e) =>
+                setFormValues((prevFormValues) => ({
+                  ...prevFormValues,
+                  company: {
+                    ...prevFormValues.company,
+                    logo: e.target.value,
+                  },
+                }))
+              }
+            />
+            <TextField
+              fullWidth
+              label="Teléfono de la Empresa"
+              style={{ marginBottom: "10px" }}
+              sx={{
+                "& input": {
+                  height: "10px",
+                  color: "#242424",
+                  backgroundColor: "white",
+                },
+              }}
+              type="number"
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+              value={formValues.company.phone}
+              onChange={(e) =>
+                setFormValues((prevFormValues) => ({
+                  ...prevFormValues,
+                  company: {
+                    ...prevFormValues.company,
+                    phone: e.target.value,
+                  },
+                }))
+              }
+            />
+            <TextField
+              fullWidth
+              label="Email de la Empresa"
+              style={{ marginBottom: "10px" }}
+              sx={{
+                "& input": {
+                  height: "10px",
+                  color: "#242424",
+                  backgroundColor: "white",
+                },
+              }}
+              value={formValues.company.email}
+              onChange={(e) =>
+                setFormValues((prevFormValues) => ({
+                  ...prevFormValues,
+                  company: {
+                    ...prevFormValues.company,
+                    email: e.target.value,
+                  },
+                }))
+              }
+            />
+            <FormControl fullWidth style={{ marginBottom: "10px" }}>
+              <InputLabel>Servicio de</InputLabel>
+              <Select
+                label="Servicio de"
+                sx={{
+                  "& select": {
+                    height: "10px",
+                  },
+                  "& label": {
+                    color: "#242424",
+                  },
+                }}
+                value={formValues.service.type}
+                onChange={(e) =>
+                  setFormValues((prevFormValues) => ({
+                    ...prevFormValues,
+                    service: {
+                      ...prevFormValues.service,
+                      type: e.target.value as string,
+                    },
+                  }))
+                }
+              >
+                <MenuItem value="Coctelería">Coctelería</MenuItem>
+                <MenuItem value="Cervecería">Cervecería</MenuItem>
+                <MenuItem value="Ambos">Ambos</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              fullWidth
+              label="Responsable de la Empresa"
+              style={{ marginBottom: "10px" }}
+              sx={{
+                "& input": {
+                  height: "10px",
+                  color: "#242424",
+                  backgroundColor: "white",
+                },
+              }}
+              value={formValues.responsibleCompany.name}
+              onChange={(e) =>
+                setFormValues((prevFormValues) => ({
+                  ...prevFormValues,
+                  responsibleCompany: {
+                    ...prevFormValues.responsibleCompany,
+                    name: e.target.value,
+                  },
+                }))
+              }
+            />
+            <TextField
+              fullWidth
+              label="Teléfono del Responsable"
+              style={{ marginBottom: "10px" }}
+              sx={{
+                "& input": {
+                  height: "10px",
+                  color: "#242424",
+                  backgroundColor: "white",
+                },
+              }}
+              type="number"
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+              value={formValues.responsibleCompany.phone}
+              onChange={(e) =>
+                setFormValues((prevFormValues) => ({
+                  ...prevFormValues,
+                  responsibleCompany: {
+                    ...prevFormValues.responsibleCompany,
+                    phone: e.target.value,
+                  },
+                }))
+              }
+            />
+            <TextField
+              fullWidth
+              label="Email del Responsable"
+              style={{ marginBottom: "10px" }}
+              sx={{
+                "& input": {
+                  height: "10px",
+                  color: "#242424",
+                  backgroundColor: "white",
+                },
+              }}
+              value={formValues.responsibleCompany.email}
+              onChange={(e) =>
+                setFormValues((prevFormValues) => ({
+                  ...prevFormValues,
+                  responsibleCompany: {
+                    ...prevFormValues.responsibleCompany,
+                    email: e.target.value,
+                  },
+                }))
+              }
+            />
+            <TextField
+              fullWidth
+              label="foto del Responsable"
+              style={{ marginBottom: "25px" }}
+              sx={{
+                "& input": {
+                  height: "10px",
+                  color: "#242424",
+                  backgroundColor: "white",
+                },
+              }}
+              value={formValues.responsibleCompany.photo}
+              onChange={(e) =>
+                setFormValues((prevFormValues) => ({
+                  ...prevFormValues,
+                  responsibleCompany: {
+                    ...prevFormValues.responsibleCompany,
+                    photo: e.target.value,
+                  },
+                }))
+              }
+            />
+
+            <Card
+              sx={{
+                backgroundColor: "#242424",
+              }}
             >
-              Cerrar
-            </Button>
+              <CardContent>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    color: "white",
+                    textAlign: "center",
+                  }}
+                >
+                  Ahora defina su Username y Contraseña para ingresar
+                </Typography>
+                <TextField
+                  fullWidth
+                  label="Nombre de Usuario"
+                  style={{ marginBottom: "10px" }}
+                  sx={{
+                    "& input": {
+                      height: "20px",
+                      backgroundColor: "white",
+                    },
+                    "& label": {
+                      color: "#01FF72",
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#01FF72",
+                      },
+                    },
+                  }}
+                  value={formValues.login.username}
+                  onChange={(e) =>
+                    setFormValues((prevFormValues) => ({
+                      ...prevFormValues,
+                      login: {
+                        ...prevFormValues.login,
+                        username: e.target.value,
+                      },
+                    }))
+                  }
+                />
+                <TextField
+                  fullWidth
+                  label="Contraseña"
+                  type="password"
+                  style={{ marginBottom: "10px" }}
+                  sx={{
+                    "& input": {
+                      height: "20px",
+                      backgroundColor: "white",
+                    },
+                    "& label": {
+                      color: "#01FF72",
+                    },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#01FF72",
+                      },
+                    },
+                  }}
+                  value={formValues.login.password}
+                  onChange={(e) =>
+                    setFormValues((prevFormValues) => ({
+                      ...prevFormValues,
+                      login: {
+                        ...prevFormValues.login,
+                        password: e.target.value,
+                      },
+                    }))
+                  }
+                />
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      backgroundColor: "#01FF72",
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                    }}
+                    onClick={handleProviderRegistration}
+                  >
+                    Registrarse
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </div>
-      </Dialog>
+        </Dialog>
+
+        <Dialog open={isWelcomeDialogOpen} onClose={handleWelcomeDialogClose}>
+          <DialogTitle
+            sx={{
+              backgroundColor: "#01FF72",
+              textAlign: "center",
+            }}
+            style={{ marginBottom: "8px" }}
+          >
+            {`BIENVENIDO "${welcomeDialogCompanyName}"`}
+          </DialogTitle>
+          <div style={{ padding: "20px" }}>
+            <Typography
+              variant="h5"
+              sx={{
+                textAlign: "center",
+                marginBottom: "20px",
+              }}
+            >
+              GRACIAS POR CONFIAR EN NOSOTROS.
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{
+                textAlign: "center",
+                marginBottom: "20px",
+              }}
+            >
+              En breve recibirá el e-mail para completar la registración.
+            </Typography>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <img
+                src="/images/logo1.png"
+                alt="Logo"
+                style={{
+                  width: "150px",
+                  height: "150px",
+                }}
+              />
+            </div>
+            <Divider
+              variant="middle"
+              sx={{ marginTop: "20px", marginBottom: "20px" }}
+            />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "20px",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{
+                  backgroundColor: "#01FF72",
+                  fontFamily: "Nunito, sans-serif",
+                  fontWeight: "bold",
+                }}
+                onClick={handleWelcomeDialogClose}
+              >
+                Cerrar
+              </Button>
+            </div>
+          </div>
+        </Dialog>
+      </FormControl>
     </div>
   );
 }
