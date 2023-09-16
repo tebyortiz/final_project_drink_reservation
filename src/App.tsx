@@ -7,11 +7,11 @@ function App() {
     <div className="App">
       <MenuBar />
       <Routes>
-      <Route path="/" element={<h1>Home</h1>} />
-      <Route path="/registration" element={<Registration />} />
+        <Route path="/" element={<h1>Home</h1>} />
+        <Route path="/registration" element={<Registration />} />
       </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

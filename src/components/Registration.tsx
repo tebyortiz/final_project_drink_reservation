@@ -661,23 +661,24 @@ function Registration() {
                   label="Nombre de Usuario"
                   style={{ marginBottom: "10px" }}
                   sx={{
-                    "& input": {
-                      height: "30px",
+                    "& .MuiInputBase-root": {
                       color: "#242424",
                       backgroundColor: "white",
                       borderRadius: "7px",
                       border: "2px solid #01FF72",
                     },
-                    "& label": {
-                      color: "#01FF72",
-                    },
-                    "& label.Mui-focused": {
+                    "& .MuiInputLabel-root": {
                       color: "white",
                     },
-                    "& .MuiInput-underline:after": {
-                      borderBottomColor: "#01FF72",
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#01FF72",
                     },
-                    borderRadius: "7px",
+                    "& .MuiInputBase-root.Mui-focused": {
+                      borderColor: "#01FF72",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottom: "none",
+                    },
                   }}
                   InputLabelProps={{ shrink: true }}
                   variant="standard"
@@ -692,29 +693,31 @@ function Registration() {
                     }))
                   }
                 />
+
                 <TextField
                   fullWidth
                   label="Contraseña"
                   type="password"
                   style={{ marginBottom: "10px" }}
                   sx={{
-                    "& input": {
-                      height: "30px",
+                    "& .MuiInputBase-root": {
                       color: "#242424",
                       backgroundColor: "white",
                       borderRadius: "7px",
                       border: "2px solid #01FF72",
                     },
-                    "& label": {
-                      color: "#01FF72",
-                    },
-                    "& label.Mui-focused": {
+                    "& .MuiInputLabel-root": {
                       color: "white",
                     },
-                    "& .MuiInput-underline:after": {
-                      borderBottomColor: "#01FF72",
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#01FF72",
                     },
-                    borderRadius: "7px",
+                    "& .MuiInputBase-root.Mui-focused": {
+                      borderColor: "#01FF72",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottom: "none",
+                    },
                   }}
                   InputLabelProps={{ shrink: true }}
                   variant="standard"
@@ -729,6 +732,7 @@ function Registration() {
                     }))
                   }
                 />
+
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <Button
                     variant="contained"
@@ -752,79 +756,79 @@ function Registration() {
             </Card>
           </div>
         </Dialog>
-
-        <Dialog open={isWelcomeDialogOpen} onClose={handleWelcomeDialogClose}>
-          <DialogTitle
-            sx={{
-              backgroundColor: "#01FF72",
-              textAlign: "center",
-            }}
-            style={{ marginBottom: "8px" }}
-          >
-            {`BIENVENIDO "${welcomeDialogCompanyName}"`}
-          </DialogTitle>
-          <div style={{ padding: "20px" }}>
-            <Typography
-              variant="h5"
-              sx={{
-                textAlign: "center",
-                marginBottom: "20px",
-              }}
-            >
-              GRACIAS POR CONFIAR EN NOSOTROS.
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                textAlign: "center",
-                marginBottom: "20px",
-              }}
-            >
-              En breve recibirá el e-mail para completar la registración.
-            </Typography>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <img
-                src="/images/logo1.png"
-                alt="Logo"
-                style={{
-                  width: "150px",
-                  height: "150px",
-                }}
-              />
-            </div>
-            <Divider
-              variant="middle"
-              sx={{ marginTop: "20px", marginBottom: "20px" }}
-            />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "20px",
-              }}
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{
-                  backgroundColor: "#01FF72",
-                  fontFamily: "Nunito, sans-serif",
-                  fontWeight: "bold",
-                  marginTop: "10px",
-                  marginBottom: "10px",
-                  "&:hover": {
-                    backgroundColor: "#242424",
-                    color: "#01FF72",
-                  },
-                }}
-                onClick={handleWelcomeDialogClose}
-              >
-                Cerrar
-              </Button>
-            </div>
-          </div>
-        </Dialog>
       </FormControl>
+
+      <Dialog open={isWelcomeDialogOpen} onClose={handleWelcomeDialogClose}>
+        <DialogTitle
+          sx={{
+            backgroundColor: "#01FF72",
+            textAlign: "center",
+          }}
+          style={{ marginBottom: "8px" }}
+        >
+          {`BIENVENIDO "${welcomeDialogCompanyName}"`}
+        </DialogTitle>
+        <div style={{ padding: "20px" }}>
+          <Typography
+            variant="h5"
+            sx={{
+              textAlign: "center",
+              marginBottom: "20px",
+            }}
+          >
+            GRACIAS POR CONFIAR EN NOSOTROS.
+          </Typography>
+          <Typography
+            variant="h6"
+            sx={{
+              textAlign: "center",
+              marginBottom: "20px",
+            }}
+          >
+            En breve recibirá el e-mail para completar la registración.
+          </Typography>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <img
+              src="/images/logo1.png"
+              alt="Logo"
+              style={{
+                width: "150px",
+                height: "150px",
+              }}
+            />
+          </div>
+          <Divider
+            variant="middle"
+            sx={{ marginTop: "20px", marginBottom: "20px" }}
+          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "20px",
+            }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                backgroundColor: "#01FF72",
+                fontFamily: "Nunito, sans-serif",
+                fontWeight: "bold",
+                marginTop: "10px",
+                marginBottom: "10px",
+                "&:hover": {
+                  backgroundColor: "#242424",
+                  color: "#01FF72",
+                },
+              }}
+              onClick={handleWelcomeDialogClose}
+            >
+              Cerrar
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }
