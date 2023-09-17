@@ -17,6 +17,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { addProvider } from "../redux/providersSlice";
+import UsersRegistration from "./UsersRegistration";
 
 interface Provider {
   company: {
@@ -40,10 +41,11 @@ interface Provider {
   };
 }
 
-function Registration() {
+function ProvidersRegistration() {
   const [isProviderDialogOpen, setIsProviderDialogOpen] = useState(false);
   const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(false);
   const [welcomeDialogCompanyName, setWelcomeDialogCompanyName] = useState("");
+  const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
   const [formValues, setFormValues] = useState<Provider>({
     company: {
       name: "",
@@ -76,6 +78,10 @@ function Registration() {
 
   const handleWelcomeDialogClose = () => {
     setIsWelcomeDialogOpen(false);
+  };
+
+  const openUserForm = () => {
+    setIsUserDialogOpen(true);
   };
 
   const dispatch = useDispatch();
@@ -201,6 +207,7 @@ function Registration() {
 
     setWelcomeDialogCompanyName(companyName);
     setIsWelcomeDialogOpen(true);
+    setIsUserDialogOpen(false);
   };
 
   return (
@@ -262,27 +269,29 @@ function Registration() {
             </Button>
           </Card>
           <Card sx={cardStyleClient}>
-            <CardContent
-              style={{
-                textAlign: "center",
-                flex: "1",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-end",
-              }}
-            >
-              <img
-                src="/images/cliente1.png"
-                alt="Cliente"
+            <Button onClick={openUserForm}>
+              <CardContent
                 style={{
-                  width: "auto",
-                  height: "auto",
-                  maxHeight: "350px",
+                  textAlign: "center",
+                  flex: "1",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
                 }}
-              />
+              >
+                <img
+                  src="/images/cliente1.png"
+                  alt="Cliente"
+                  style={{
+                    width: "auto",
+                    height: "auto",
+                    maxHeight: "350px",
+                  }}
+                />
 
-              <Title2 variant="h4">CLIENTE</Title2>
-            </CardContent>
+                <Title2 variant="h4">CLIENTE</Title2>
+              </CardContent>
+            </Button>
           </Card>
         </div>
         <Typography
@@ -829,8 +838,12 @@ function Registration() {
           </div>
         </div>
       </Dialog>
+      <UsersRegistration
+        isUserDialogOpen={isUserDialogOpen}
+        setIsUserDialogOpen={setIsUserDialogOpen}
+      />
     </div>
   );
 }
 
-export default Registration;
+export default ProvidersRegistration;
