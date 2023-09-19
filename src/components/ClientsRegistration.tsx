@@ -26,11 +26,11 @@ interface User {
 }
 
 export interface UsersRegistrationProps {
-  isUserDialogOpen: boolean; // Cambio aquí
+  isUserDialogOpen: boolean;
   setIsUserDialogOpen: (isOpen: boolean) => void;
 }
 
-function UsersRegistration({
+function ClientsRegistration({
   isUserDialogOpen,
   setIsUserDialogOpen,
 }: UsersRegistrationProps) {
@@ -473,4 +473,4 @@ function UsersRegistration({
   );
 }
 
-export default UsersRegistration;
+export default ClientsRegistration;

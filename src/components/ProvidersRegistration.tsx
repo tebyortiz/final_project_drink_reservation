@@ -17,7 +17,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { addProvider } from "../redux/providersSlice";
-import UsersRegistration from "./UsersRegistration";
+import ClientsRegistration from "./ClientsRegistration";
 
 interface Provider {
   company: {
@@ -224,7 +224,13 @@ function ProvidersRegistration() {
       <img
         src="/images/logo1.png"
         alt="Logo"
-        style={{ width: "250px", height: "250px", marginBottom: "20px" }}
+        style={{
+          width: "250px",
+          height: "250px",
+          marginBottom: "20px",
+          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
+          borderRadius: "50%",
+        }}
       />
       <div
         style={{
@@ -838,7 +844,7 @@ function ProvidersRegistration() {
           </div>
         </div>
       </Dialog>
-      <UsersRegistration
+      <ClientsRegistration
         isUserDialogOpen={isUserDialogOpen}
         setIsUserDialogOpen={setIsUserDialogOpen}
       />
