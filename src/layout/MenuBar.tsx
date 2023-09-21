@@ -16,9 +16,32 @@ const MenuBar = () => {
                     color: "#242424",
                     fontFamily: "Quicksand, sans-serif",
                     fontWeight: "bold",
+                    "&:hover": {
+                      backgroundColor: "#01FF72",
+                      color: "white",
+                    },
                   }}
                 >
                   Registrarse
+                </Button>
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link to="/login" style={{ textDecoration: "none" }}>
+                <Button
+                  color="inherit"
+                  sx={{
+                    backgroundColor: "#01FF72",
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                    "&:hover": {
+                      backgroundColor: "#01FF72",
+                      color: "white",
+                    },
+                  }}
+                >
+                  Ingresar
                 </Button>
               </Link>
             </Grid>
