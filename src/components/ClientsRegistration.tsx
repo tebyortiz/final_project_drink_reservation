@@ -11,29 +11,18 @@ import {
   Divider,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { addUser } from "../redux/usersSlice";
-
-interface User {
-  name: string;
-  phone: string;
-  email: string;
-  photo: string;
-  address: string;
-  login: {
-    username: string;
-    password: string;
-  };
-}
+import { addUser } from "../redux/ClientsSlice";
+import { User } from "../models/UsersModels";
 
 export interface UsersRegistrationProps {
   isUserDialogOpen: boolean;
   setIsUserDialogOpen: (isOpen: boolean) => void;
 }
 
-function ClientsRegistration({
+const ClientsRegistration = ({
   isUserDialogOpen,
   setIsUserDialogOpen,
-}: UsersRegistrationProps) {
+}: UsersRegistrationProps) => {
   const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(false);
   const [welcomeDialogUserName, setWelcomeDialogUserName] = useState("");
 
@@ -81,6 +70,9 @@ function ClientsRegistration({
     const userName = formValues.name;
     const newUser: User = { ...formValues };
 
+    {
+      /* Action de Redux Toolkit para agregar un nuevo Cliente */
+    }
     dispatch(addUser(newUser));
 
     handleUserDialogClose();
@@ -102,6 +94,7 @@ function ClientsRegistration({
 
   return (
     <div>
+      {/* Formulario de Registro Clientes */}
       <FormControl fullWidth style={{ marginBottom: "10px" }}>
         <Dialog
           open={isUserDialogOpen}
@@ -277,6 +270,7 @@ function ClientsRegistration({
               }
             />
 
+            {/* Card para definir Username y Contraseña */}
             <Card
               sx={{
                 backgroundColor: "#242424",
@@ -298,7 +292,7 @@ function ClientsRegistration({
                 </Typography>
                 <TextField
                   fullWidth
-                  label="Nombre de Usuario"
+                  label="Username"
                   style={{ marginBottom: "10px" }}
                   sx={{
                     "& .MuiInputBase-root": {
@@ -372,7 +366,7 @@ function ClientsRegistration({
                     }))
                   }
                 />
-
+                {/* Botón de Registro + Evento */}
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <Button
                     variant="contained"
@@ -398,6 +392,7 @@ function ClientsRegistration({
         </Dialog>
       </FormControl>
 
+      {/* Cuadro de Diálogo de Bienvenida */}
       <Dialog open={isWelcomeDialogOpen} onClose={handleWelcomeDialogClose}>
         <DialogTitle
           sx={{
@@ -471,6 +466,6 @@ function ClientsRegistration({
       </Dialog>
     </div>
   );
-}
+};
 
 export default ClientsRegistration;

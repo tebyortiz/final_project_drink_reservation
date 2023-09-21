@@ -18,30 +18,9 @@ import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { addProvider } from "../redux/providersSlice";
 import ClientsRegistration from "./ClientsRegistration";
+import { Provider } from "../models/UsersModels";
 
-interface Provider {
-  company: {
-    name: string;
-    logo: string;
-    phone: string;
-    email: string;
-  };
-  service: {
-    type: string;
-  };
-  responsibleCompany: {
-    name: string;
-    phone: string;
-    email: string;
-    photo: string;
-  };
-  login: {
-    username: string;
-    password: string;
-  };
-}
-
-function ProvidersRegistration() {
+const ProvidersRegistration = () => {
   const [isProviderDialogOpen, setIsProviderDialogOpen] = useState(false);
   const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(false);
   const [welcomeDialogCompanyName, setWelcomeDialogCompanyName] = useState("");
@@ -86,6 +65,9 @@ function ProvidersRegistration() {
 
   const dispatch = useDispatch();
 
+  {
+    /* Estilo de Card PROVEEDOR */
+  }
   const cardStyleProvider = {
     width: "400px",
     height: "500px",
@@ -100,6 +82,9 @@ function ProvidersRegistration() {
     },
   };
 
+  {
+    /* Estilo de Card CLIENTE */
+  }
   const cardStyleClient = {
     width: "400px",
     height: "500px",
@@ -113,6 +98,10 @@ function ProvidersRegistration() {
       boxShadow: "15px 15px 20px rgba(202, 35, 132, 0.8)",
     },
   };
+
+  {
+    /* Estilos y transiciones */
+  }
 
   const Title1 = styled(Typography)(() => ({
     color: "white",
@@ -180,6 +169,9 @@ function ProvidersRegistration() {
     const companyName = formValues.company.name;
     const newProvider: Provider = { ...formValues };
 
+    {
+      /* Action de Redux Toolkit para agregar un nuevo Proveedor */
+    }
     dispatch(addProvider(newProvider));
 
     handleProviderDialogClose();
@@ -227,7 +219,6 @@ function ProvidersRegistration() {
         style={{
           width: "250px",
           height: "250px",
-          marginBottom: "20px",
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
           borderRadius: "50%",
         }}
@@ -241,6 +232,17 @@ function ProvidersRegistration() {
           margin: "20px",
         }}
       >
+        <Typography
+          variant="h4"
+          style={{
+            marginBottom: "20px",
+            textAlign: "center",
+            fontFamily: "Quicksand, sans-serif",
+            fontWeight: "bold",
+          }}
+        >
+          Para Registrarte, selecciona tu tipo de Usuario.
+        </Typography>
         <div
           style={{
             display: "flex",
@@ -249,6 +251,8 @@ function ProvidersRegistration() {
             gap: "120px",
           }}
         >
+          {/* Cards de selección de tipo de Usuario */}
+
           <Card sx={cardStyleProvider}>
             <Button onClick={handleProviderDialogOpen}>
               <CardContent
@@ -300,20 +304,9 @@ function ProvidersRegistration() {
             </Button>
           </Card>
         </div>
-        <Typography
-          variant="h4"
-          style={{
-            marginTop: "10px",
-            marginBottom: "20px",
-            textAlign: "center",
-            fontFamily: "Quicksand, sans-serif",
-            fontWeight: "bold",
-          }}
-        >
-          Selecciona el tipo de usuario.
-        </Typography>
       </div>
 
+      {/* Formulario de Registro Proveedores */}
       <FormControl fullWidth style={{ marginBottom: "10px" }}>
         <Dialog
           open={isProviderDialogOpen}
@@ -652,6 +645,7 @@ function ProvidersRegistration() {
               }
             />
 
+            {/* Card para definir Username y Contraseña */}
             <Card
               sx={{
                 backgroundColor: "#242424",
@@ -673,7 +667,7 @@ function ProvidersRegistration() {
                 </Typography>
                 <TextField
                   fullWidth
-                  label="Nombre de Usuario"
+                  label="Username"
                   style={{ marginBottom: "10px" }}
                   sx={{
                     "& .MuiInputBase-root": {
@@ -748,6 +742,7 @@ function ProvidersRegistration() {
                   }
                 />
 
+                {/* Botón de Registro + Evento */}
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <Button
                     variant="contained"
@@ -773,6 +768,7 @@ function ProvidersRegistration() {
         </Dialog>
       </FormControl>
 
+      {/* Cuadro de Diálogo de Bienvenida */}
       <Dialog open={isWelcomeDialogOpen} onClose={handleWelcomeDialogClose}>
         <DialogTitle
           sx={{
@@ -850,6 +846,6 @@ function ProvidersRegistration() {
       />
     </div>
   );
-}
+};
 
 export default ProvidersRegistration;

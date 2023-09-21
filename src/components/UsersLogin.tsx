@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
-function UsersLogin() {
+const UsersLogin = () => {
   return (
     <Box
       display="flex"
@@ -41,6 +41,9 @@ function UsersLogin() {
         Bienvenidos <br /> Para acceder a nuestro servicio, primero debes
         loguearte.
       </Typography>
+
+      {/* Card para ingreso */}
+
       <Card
         sx={{
           backgroundColor: "#242424",
@@ -63,7 +66,7 @@ function UsersLogin() {
           </Typography>
           <TextField
             fullWidth
-            label="Nombre de Usuario"
+            label="Username"
             style={{ marginBottom: "10px" }}
             sx={{
               "& .MuiInputBase-root": {
@@ -132,7 +135,8 @@ function UsersLogin() {
                   color: "#01FF72",
                 },
               }}
-              //onClick
+
+              // Aqúi iría el evento onClick de ingreso.
             >
               Ingresar
             </Button>
@@ -147,6 +151,8 @@ function UsersLogin() {
         ¿Todavía no estás registrado? Regístrate Gratis
       </Typography>
       <Link to="/registration" style={{ textDecoration: "none" }}>
+        {/* Botón para ir al Registro */}
+
         <Button
           variant="contained"
           color="primary"
@@ -166,6 +172,6 @@ function UsersLogin() {
       </Link>
     </Box>
   );
-}
+};
 
 export default UsersLogin;

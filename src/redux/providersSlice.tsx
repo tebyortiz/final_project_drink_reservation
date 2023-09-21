@@ -1,26 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Provider {
-  company: {
-    name: string;
-    logo: string;
-    phone: string;
-    email: string;
-  };
-  service: {
-    type: string;
-  };
-  responsibleCompany: {
-    name: string;
-    phone: string;
-    email: string;
-    photo: string;
-  };
-  login: {
-    username: string;
-    password: string;
-  };
-}
+import { Provider } from "../models/UsersModels";
 
 interface ProvidersState {
   providers: Provider[];
