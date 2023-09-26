@@ -22,7 +22,7 @@ interface Provider {
 
 export type { Provider };
 
-interface User {
+interface Client {
   name: string;
   phone: string;
   email: string;
@@ -34,4 +34,4 @@ interface User {
   };
 }
 
-export type { User };
+export type { Client };

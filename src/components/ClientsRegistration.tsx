@@ -11,8 +11,8 @@ import {
   Divider,
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { addUser } from "../redux/ClientsSlice";
-import { User } from "../models/UsersModels";
+import { addClient } from "../redux/ClientsSlice";
+import { Client } from "../models/UsersModels";
 
 export interface UsersRegistrationProps {
   isUserDialogOpen: boolean;
@@ -26,7 +26,7 @@ const ClientsRegistration = ({
   const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(false);
   const [welcomeDialogUserName, setWelcomeDialogUserName] = useState("");
 
-  const [formValues, setFormValues] = useState<User>({
+  const [formValues, setFormValues] = useState<Client>({
     name: "",
     phone: "",
     email: "",
@@ -68,12 +68,12 @@ const ClientsRegistration = ({
     }
 
     const userName = formValues.name;
-    const newUser: User = { ...formValues };
+    const newUser: Client = { ...formValues };
 
     {
       /* Action de Redux Toolkit para agregar un nuevo Cliente */
     }
-    dispatch(addUser(newUser));
+    dispatch(addClient(newUser));
 
     handleUserDialogClose();
     setFormValues({

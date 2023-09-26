@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import MenuBar from "./layout/MenuBar";
-import UsersRegistration from "./components/UsersRegistration";
+import ProvidersRegistration from "./components/ProvidersRegistration";
 import UsersLogin from "./components/UsersLogin";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
       <MenuBar />
       <Routes>
         <Route path="/" element={<h1>Home</h1>} />
-        <Route path="/registration" element={<UsersRegistration />} />
+        <Route path="/registration" element={<ProvidersRegistration />} />
         <Route path="/login" element={<UsersLogin />} />
       </Routes>
     </div>
