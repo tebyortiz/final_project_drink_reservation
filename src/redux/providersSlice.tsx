@@ -14,7 +14,7 @@ const providersSlice = createSlice({
   initialState,
   reducers: {
     addProvider: (state, action: PayloadAction<Provider>) => {
-      state.providers.push(action.payload);
+      state.providers = [...state.providers, action.payload];
     },
   },
 });

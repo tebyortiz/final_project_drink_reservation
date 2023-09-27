@@ -5,10 +5,77 @@ import {
   TextField,
   Button,
   Box,
+  DialogContent,
+  DialogContentText,
+  Dialog,
+  DialogTitle,
+  DialogActions,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import RootState from "../models/RootStateTypes";
 
 const UsersLogin = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showDialog, setShowDialog] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [userType, setUserType] = useState("");
+
+  const clients = useSelector((state: RootState) => state.clients.clients);
+  const providers = useSelector(
+    (state: RootState) => state.providers.providers
+  );
+
+  const handleLogin = () => {
+    console.log("Ingreso de usuario", clients);
+    console.log("Ingreso de proveedor", providers);
+
+    const client =
+      clients &&
+      clients.find(
+        (c) => c.login.username === username && c.login.password === password
+      );
+    const provider =
+      providers &&
+      providers.find(
+        (p) => p.login.username === username && p.login.password === password
+      );
+
+    if (client || provider) {
+      setLoginSuccess(true);
+      setUserType(client ? "Cliente" : "Proveedor");
+    } else {
+      setLoginSuccess(false);
+    }
+
+    setShowDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setShowDialog(false);
+    setLoginSuccess(false);
+  };
+
+  const getDialogContent = () => {
+    if (loginSuccess) {
+      return (
+        <DialogContent>
+          <DialogContentText>
+            ¡Inicio de sesión exitoso como {userType}!
+          </DialogContentText>
+        </DialogContent>
+      );
+    } else {
+      return (
+        <DialogContent>
+          <DialogContentText>Usuario no Existente.</DialogContentText>
+        </DialogContent>
+      );
+    }
+  };
+
   return (
     <Box
       display="flex"
@@ -90,6 +157,8 @@ const UsersLogin = () => {
             }}
             InputLabelProps={{ shrink: true }}
             variant="standard"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
 
           <TextField
@@ -119,6 +188,8 @@ const UsersLogin = () => {
             }}
             InputLabelProps={{ shrink: true }}
             variant="standard"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <div style={{ display: "flex", justifyContent: "center" }}>
@@ -135,8 +206,7 @@ const UsersLogin = () => {
                   color: "#01FF72",
                 },
               }}
-
-              // Aqúi iría el evento onClick de ingreso.
+              onClick={handleLogin}
             >
               Ingresar
             </Button>
@@ -170,6 +240,19 @@ const UsersLogin = () => {
           Regístrame
         </Button>
       </Link>
+      <Dialog open={showDialog} onClose={handleCloseDialog}>
+        <DialogTitle>
+          {loginSuccess
+            ? "Éxito de Inicio de Sesión"
+            : "Error de Inicio de Sesión"}
+        </DialogTitle>
+        {getDialogContent()}
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
