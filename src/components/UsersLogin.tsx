@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -5,23 +6,23 @@ import {
   TextField,
   Button,
   Box,
-  DialogContent,
-  DialogContentText,
-  Dialog,
-  DialogTitle,
-  DialogActions,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { Link, Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import RootState from "../models/RootStateTypes";
+import { setUser } from "../redux/UserSlice";
 
-const UsersLogin = () => {
+const UsersLogin = ({
+  setLoginSuccess,
+  onUserTypeChange,
+}: {
+  setLoginSuccess: (value: boolean) => void;
+  onUserTypeChange: (type: string) => void;
+}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [showDialog, setShowDialog] = useState(false);
-  const [loginSuccess, setLoginSuccess] = useState(false);
-  const [userType, setUserType] = useState("");
+  const [redirectTo, setRedirectTo] = useState("");
+  const dispatch = useDispatch();
 
   const clients = useSelector((state: RootState) => state.clients.clients);
   const providers = useSelector(
@@ -44,37 +45,59 @@ const UsersLogin = () => {
       );
 
     if (client || provider) {
+      const newUserType = client ? "Cliente" : "Proveedor";
+      onUserTypeChange(newUserType);
+
+      // Inicializar el objeto userData con valores por defecto
+      let userData: any = {
+        username,
+        userType: newUserType,
+        name: "",
+        phone: "",
+        email: "",
+        photo: "",
+      };
+
+      if (client) {
+        userData = {
+          ...userData,
+          name: client.name,
+          phone: client.phone,
+          email: client.email,
+          photo: client.photo,
+          address: client.address, // Si es un cliente
+        };
+      } else if (provider) {
+        userData = {
+          ...userData,
+          name: provider.company.name,
+          phone: provider.company.phone,
+          email: provider.company.email,
+          photo: provider.responsibleCompany.photo,
+          company: provider.company, // Si es un proveedor
+          service: provider.service,
+          responsibleCompany: provider.responsibleCompany,
+        };
+      }
+
+      dispatch(setUser(userData));
       setLoginSuccess(true);
-      setUserType(client ? "Cliente" : "Proveedor");
+      if (newUserType === "Cliente") {
+        setRedirectTo("/client-welcome");
+      } else if (newUserType === "Proveedor") {
+        setRedirectTo("/provider-welcome");
+      }
     } else {
       setLoginSuccess(false);
-    }
-
-    setShowDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setShowDialog(false);
-    setLoginSuccess(false);
-  };
-
-  const getDialogContent = () => {
-    if (loginSuccess) {
-      return (
-        <DialogContent>
-          <DialogContentText>
-            ¡Inicio de sesión exitoso como {userType}!
-          </DialogContentText>
-        </DialogContent>
-      );
-    } else {
-      return (
-        <DialogContent>
-          <DialogContentText>Usuario no Existente.</DialogContentText>
-        </DialogContent>
+      alert(
+        "Usuario Inexistente o datos incorrectos. Por favor, inténtelo nuevamente."
       );
     }
   };
+
+  if (redirectTo) {
+    return <Navigate to={redirectTo} />;
+  }
 
   return (
     <Box
@@ -240,19 +263,6 @@ const UsersLogin = () => {
           Regístrame
         </Button>
       </Link>
-      <Dialog open={showDialog} onClose={handleCloseDialog}>
-        <DialogTitle>
-          {loginSuccess
-            ? "Éxito de Inicio de Sesión"
-            : "Error de Inicio de Sesión"}
-        </DialogTitle>
-        {getDialogContent()}
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Cerrar
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 };
