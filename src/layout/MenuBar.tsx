@@ -24,20 +24,51 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
     navigate("/login");
   };
 
+  const getAvatarStyle = () => {
+    if (user && user.userType === "Cliente") {
+      return {
+        boxShadow: "0px 0px 10px rgba(236, 41, 159, 0.9)",
+        borderRadius: "50%",
+      };
+    } else if (user && user.userType === "Proveedor") {
+      return {
+        boxShadow: "0px 0px 10px rgba(1, 255, 114, 0.9)",
+        borderRadius: "50%",
+      };
+    }
+    return {};
+  };
+
   const renderUserSection = () => {
     if (loginSuccess && user) {
       return (
         <Grid container alignItems="center">
           <Grid item>
-            <Typography variant="subtitle1" sx={{ marginRight: "8px" }}>
-              Bienvenido {user.name}
+            <Typography
+              variant="subtitle1"
+              sx={{
+                marginRight: "8px",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+                fontSize: "24px",
+              }}
+            >
+              {user.name}
             </Typography>
           </Grid>
           <Grid item>
             {user.userType === "Proveedor" ? (
-              <Avatar alt={user.company.name} src={user.company.logo} />
+              <Avatar
+                alt={user.company.name}
+                src={user.company.logo}
+                style={getAvatarStyle()}
+              />
             ) : (
-              <Avatar alt={user.name} src={user.photo} />
+              <Avatar
+                alt={user.name}
+                src={user.photo}
+                style={getAvatarStyle()}
+              />
             )}
           </Grid>
           <Grid item>
@@ -100,21 +131,21 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
         return (
           <Grid container spacing={2} justifyContent="flex-end">
             <Grid item>
-              <Link to="/client-welcome" style={{ textDecoration: "none" }}>
+              <Link to="/client_home" style={{ textDecoration: "none" }}>
                 <Button
-                  color="inherit"
+                  variant="contained"
+                  color="primary"
                   sx={{
-                    backgroundColor: "#01FF72",
-                    color: "#242424",
-                    fontFamily: "Quicksand, sans-serif",
+                    backgroundColor: "#EC299F",
+                    fontFamily: "Nunito, sans-serif",
                     fontWeight: "bold",
                     "&:hover": {
-                      backgroundColor: "#01FF72",
-                      color: "white",
+                      backgroundColor: "white",
+                      color: "#EC299F",
                     },
                   }}
                 >
-                  Cliente
+                  Inicio
                 </Button>
               </Link>
             </Grid>
@@ -124,21 +155,22 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
         return (
           <Grid container spacing={2} justifyContent="flex-end">
             <Grid item>
-              <Link to="/provider-welcome" style={{ textDecoration: "none" }}>
+              <Link to="/provider_home" style={{ textDecoration: "none" }}>
                 <Button
-                  color="inherit"
+                  variant="contained"
+                  color="primary"
                   sx={{
                     backgroundColor: "#01FF72",
                     color: "#242424",
                     fontFamily: "Quicksand, sans-serif",
                     fontWeight: "bold",
                     "&:hover": {
-                      backgroundColor: "#01FF72",
-                      color: "white",
+                      backgroundColor: "white",
+                      color: "#01FF72",
                     },
                   }}
                 >
-                  Proveedor
+                  Inicio
                 </Button>
               </Link>
             </Grid>

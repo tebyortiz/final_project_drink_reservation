@@ -48,7 +48,6 @@ const UsersLogin = ({
       const newUserType = client ? "Cliente" : "Proveedor";
       onUserTypeChange(newUserType);
 
-      // Inicializar el objeto userData con valores por defecto
       let userData: any = {
         username,
         userType: newUserType,
@@ -65,7 +64,7 @@ const UsersLogin = ({
           phone: client.phone,
           email: client.email,
           photo: client.photo,
-          address: client.address, // Si es un cliente
+          address: client.address,
         };
       } else if (provider) {
         userData = {
@@ -74,7 +73,7 @@ const UsersLogin = ({
           phone: provider.company.phone,
           email: provider.company.email,
           photo: provider.responsibleCompany.photo,
-          company: provider.company, // Si es un proveedor
+          company: provider.company,
           service: provider.service,
           responsibleCompany: provider.responsibleCompany,
         };
@@ -83,9 +82,9 @@ const UsersLogin = ({
       dispatch(setUser(userData));
       setLoginSuccess(true);
       if (newUserType === "Cliente") {
-        setRedirectTo("/client-welcome");
+        setRedirectTo("/client_home");
       } else if (newUserType === "Proveedor") {
-        setRedirectTo("/provider-welcome");
+        setRedirectTo("/provider_home");
       }
     } else {
       setLoginSuccess(false);

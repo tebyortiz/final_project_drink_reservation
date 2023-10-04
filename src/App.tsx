@@ -30,8 +30,8 @@ function App() {
             />
           }
         />
-        <Route path="/client-welcome" element={<ClientWelcome />} />
-        <Route path="/provider-welcome" element={<ProviderWelcome />} />
+        <Route path="/client_home" element={<ClientWelcome />} />
+        <Route path="/provider_home" element={<ProviderWelcome />} />
       </Routes>
     </div>
   );
