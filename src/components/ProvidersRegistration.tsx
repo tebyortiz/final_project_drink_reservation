@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
-import { addProvider } from "../redux/providersSlice";
+import { addProvider } from "../redux/ProvidersSlice";
 import { Provider } from "../models/UsersModels";
 import ClientsRegistration from "./ClientsRegistration";
 
