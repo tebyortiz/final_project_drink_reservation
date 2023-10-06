@@ -17,8 +17,8 @@ import {
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { addProvider } from "../redux/providersSlice";
-import ClientsRegistration from "./ClientsRegistration";
 import { Provider } from "../models/UsersModels";
+import ClientsRegistration from "./ClientsRegistration";
 
 const ProvidersRegistration = () => {
   const [isProviderDialogOpen, setIsProviderDialogOpen] = useState(false);
@@ -265,7 +265,7 @@ const ProvidersRegistration = () => {
                 }}
               >
                 <img
-                  src="/images/proveedor1.png"
+                  src="/images/proveedor.png"
                   alt="Proveedor"
                   style={{
                     width: "auto",
@@ -290,7 +290,7 @@ const ProvidersRegistration = () => {
                 }}
               >
                 <img
-                  src="/images/cliente1.png"
+                  src="/images/cliente.png"
                   alt="Cliente"
                   style={{
                     width: "auto",
