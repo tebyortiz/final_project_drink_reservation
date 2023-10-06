@@ -21,4 +21,4 @@ const providersSlice = createSlice({
 
 export const { addProvider } = providersSlice.actions;
 
-export default providersSlice.reducer;
+export default providersSlice.reducer; 
