@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -6,9 +7,97 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import RootState from "../models/RootStateTypes";
+import { setUser } from "../redux/UserSlice";
 
-const UsersLogin = () => {
+const UsersLogin = ({
+  setLoginSuccess,
+  onUserTypeChange,
+}: {
+  setLoginSuccess: (value: boolean) => void;
+  onUserTypeChange: (type: string) => void;
+}) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [redirectTo, setRedirectTo] = useState("");
+  const dispatch = useDispatch();
+
+  const clients = useSelector((state: RootState) => state.clients.clients);
+  const providers = useSelector(
+    (state: RootState) => state.providers.providers
+  );
+
+  const handleLogin = () => {
+    console.log("Ingreso de usuario", clients);
+    console.log("Ingreso de proveedor", providers);
+
+    const client =
+      clients &&
+      clients.find(
+        (c) => c.login.username === username && c.login.password === password
+      );
+    const provider =
+      providers &&
+      providers.find(
+        (p) => p.login.username === username && p.login.password === password
+      );
+
+    if (client || provider) {
+      const newUserType = client ? "Cliente" : "Proveedor";
+      onUserTypeChange(newUserType);
+
+      let userData: any = {
+        username,
+        userType: newUserType,
+        name: "",
+        phone: "",
+        email: "",
+        photo: "",
+      };
+
+      if (client) {
+        userData = {
+          ...userData,
+          name: client.name,
+          phone: client.phone,
+          email: client.email,
+          photo: client.photo,
+          address: client.address,
+        };
+      } else if (provider) {
+        userData = {
+          ...userData,
+          name: provider.company.name,
+          phone: provider.company.phone,
+          email: provider.company.email,
+          photo: provider.responsibleCompany.photo,
+          company: provider.company,
+          service: provider.service,
+          responsibleCompany: provider.responsibleCompany,
+        };
+      }
+
+      dispatch(setUser(userData));
+      setLoginSuccess(true);
+      if (newUserType === "Cliente") {
+        setRedirectTo("/client_home");
+      } else if (newUserType === "Proveedor") {
+        setRedirectTo("/provider_home");
+      }
+    } else {
+      setLoginSuccess(false);
+      alert(
+        "Usuario Inexistente o datos incorrectos. Por favor, inténtelo nuevamente."
+      );
+    }
+  };
+
+  if (redirectTo) {
+    return <Navigate to={redirectTo} />;
+  }
+
   return (
     <Box
       display="flex"
@@ -90,6 +179,8 @@ const UsersLogin = () => {
             }}
             InputLabelProps={{ shrink: true }}
             variant="standard"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
 
           <TextField
@@ -119,6 +210,8 @@ const UsersLogin = () => {
             }}
             InputLabelProps={{ shrink: true }}
             variant="standard"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <div style={{ display: "flex", justifyContent: "center" }}>
@@ -135,8 +228,7 @@ const UsersLogin = () => {
                   color: "#01FF72",
                 },
               }}
-
-              // Aqúi iría el evento onClick de ingreso.
+              onClick={handleLogin}
             >
               Ingresar
             </Button>

@@ -22,7 +22,7 @@ interface Provider {
 
 export type { Provider };
 
-interface User {
+interface Client {
   name: string;
   phone: string;
   email: string;
@@ -34,4 +34,36 @@ interface User {
   };
 }
 
-export type { User };
+export type { Client };
+
+interface UserState {
+  user: {
+    username: string;
+    userType: string;
+
+    name: string;
+    phone: string;
+    email: string;
+    photo: string;
+
+    address?: string;
+
+    company?: {
+      name: string;
+      logo: string;
+      phone: string;
+      email: string;
+    };
+    service?: {
+      type: string;
+    };
+    responsibleCompany?: {
+      name: string;
+      phone: string;
+      email: string;
+      photo: string;
+    };
+  } | null;
+}
+
+export type { UserState };

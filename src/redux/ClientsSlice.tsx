@@ -1,23 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../models/UsersModels";
+import { Client } from "../models/UsersModels";
 
-interface UsersState {
-  users: User[];
+interface ClientsState {
+  clients: Client[];
 }
 
-const initialState: UsersState = {
-  users: [],
+const initialState: ClientsState = {
+  clients: [],
 };
-const usersSlice = createSlice({
-  name: "users",
+
+const clientsSlice = createSlice({
+  name: "clients",
   initialState,
   reducers: {
-    addUser: (state, action: PayloadAction<User>) => {
-      state.users.push(action.payload);
+    addClient: (state, action: PayloadAction<Client>) => {
+      state.clients = [...state.clients, action.payload];
     },
   },
 });
 
-export const { addUser } = usersSlice.actions;
+export const { addClient } = clientsSlice.actions;
 
-export default usersSlice.reducer;
+export default clientsSlice.reducer;
