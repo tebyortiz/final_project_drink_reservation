@@ -59,8 +59,8 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
           <Grid item>
             {user.userType === "Proveedor" ? (
               <Avatar
-                alt={user.company.name}
-                src={user.company.logo}
+                alt={user.company?.name}
+                src={user.company?.logo}
                 style={getAvatarStyle()}
               />
             ) : (
@@ -181,6 +181,7 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
   };
 
   return (
+    <Grid item xs={12}>
     <AppBar position="static" sx={{ backgroundColor: "#242424" }}>
       <Toolbar>
         <Box sx={{ flexGrow: 1 }}>
@@ -191,6 +192,7 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
         </Box>
       </Toolbar>
     </AppBar>
+    </Grid>
   );
 };
 
