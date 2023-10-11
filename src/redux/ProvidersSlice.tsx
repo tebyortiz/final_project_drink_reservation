@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Provider } from "../models/UsersModels";
+import { Provider, Cocktail, Beer } from "../models/UsersModels";
 
 interface ProvidersState {
   providers: Provider[];
@@ -16,6 +16,8 @@ const initialState: ProvidersState = {
       },
       service: {
         type: "Cervecería",
+        cocktails: [],
+        beers: [],
       },
       responsibleCompany: {
         name: "Andres Rojo",
@@ -38,6 +40,8 @@ const initialState: ProvidersState = {
       },
       service: {
         type: "Coctelería",
+        cocktails: [],
+        beers: [],
       },
       responsibleCompany: {
         name: "Lucía Soul",
@@ -60,6 +64,8 @@ const initialState: ProvidersState = {
       },
       service: {
         type: "Ambos",
+        cocktails: [],
+        beers: [],
       },
       responsibleCompany: {
         name: "Juan Polo",
@@ -83,9 +89,68 @@ const providersSlice = createSlice({
     addProvider: (state, action: PayloadAction<Provider>) => {
       state.providers = [...state.providers, action.payload];
     },
+    addCocktail: (
+      state,
+      action: PayloadAction<{ providerName: string; cocktail: Cocktail }>
+    ) => {
+      const { providerName, cocktail } = action.payload;
+      const providerIndex = state.providers.findIndex(
+        (provider) => provider.company.name === providerName
+      );
+      if (providerIndex !== -1) {
+        state.providers[providerIndex].service.cocktails = [
+          ...(state.providers[providerIndex].service.cocktails || []),
+          cocktail,
+        ];
+      }
+    },
+    removeCocktail: (
+      state,
+      action: PayloadAction<{ providerName: string; cocktail: string }>
+    ) => {
+      const { providerName, cocktail } = action.payload;
+      const providerIndex = state.providers.findIndex(
+        (provider) => provider.company.name === providerName
+      );
+      if (providerIndex !== -1) {
+        state.providers[providerIndex].service.cocktails = (
+          state.providers[providerIndex].service.cocktails || []
+        ).filter((c) => c.name !== cocktail);
+      }
+    },
+    addBeer: (
+      state,
+      action: PayloadAction<{ providerName: string; beer: Beer }>
+    ) => {
+      const { providerName, beer } = action.payload;
+      const providerIndex = state.providers.findIndex(
+        (provider) => provider.company.name === providerName
+      );
+      if (providerIndex !== -1) {
+        state.providers[providerIndex].service.beers = [
+          ...(state.providers[providerIndex].service.beers || []),
+          beer,
+        ];
+      }
+    },
+    removeBeer: (
+      state,
+      action: PayloadAction<{ providerName: string; beer: string }>
+    ) => {
+      const { providerName, beer } = action.payload;
+      const providerIndex = state.providers.findIndex(
+        (provider) => provider.company.name === providerName
+      );
+      if (providerIndex !== -1) {
+        state.providers[providerIndex].service.beers = (
+          state.providers[providerIndex].service.beers || []
+        ).filter((b) => b.name !== beer);
+      }
+    },
   },
 });
 
-export const { addProvider } = providersSlice.actions;
+export const { addProvider, addCocktail, removeCocktail, addBeer, removeBeer } =
+  providersSlice.actions;
 
 export default providersSlice.reducer;

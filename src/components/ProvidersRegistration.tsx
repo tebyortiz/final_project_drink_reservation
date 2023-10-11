@@ -34,7 +34,9 @@ const ProvidersRegistration = () => {
       email: "",
     },
     service: {
-      type: "",
+      type: "Ambos",
+      cocktails: [],
+      beers: [],
     },
     responsibleCompany: {
       name: "",
@@ -184,7 +186,9 @@ const ProvidersRegistration = () => {
         email: "",
       },
       service: {
-        type: "",
+        type: "Ambos",
+        cocktails: [],
+        beers: [],
       },
       responsibleCompany: {
         name: "",
@@ -205,133 +209,590 @@ const ProvidersRegistration = () => {
 
   return (
     <Grid item xs={12}>
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "flex-start",
-        height: "100vh",
-        marginTop: "20px",
-      }}
-    >
-      <Grid item xs={12}>
-        <img
-          src="/images/logo1.png"
-          alt="Logo"
-          style={{
-            width: "250px",
-            height: "250px",
-            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
-            borderRadius: "50%",
-          }}
-        />
-      </Grid>
-      <Grid item xs={12}>
       <div
         style={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "flex-start",
-          margin: "20px",
+          height: "100vh",
+          marginTop: "20px",
         }}
       >
-        <Grid item xs={6}>
-          <Typography
-            variant="h4"
+        <Grid item xs={12}>
+          <img
+            src="/images/logo1.png"
+            alt="Logo"
             style={{
-              marginBottom: "20px",
-              textAlign: "center",
-              fontFamily: "Quicksand, sans-serif",
-              fontWeight: "bold",
+              width: "250px",
+              height: "250px",
+              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
+              borderRadius: "50%",
             }}
-          >
-            Para Registrarte, selecciona tu tipo de Usuario.
-          </Typography>
+          />
         </Grid>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "flex-start",
-            gap: "120px",
-          }}
-        >
-          {/* Cards de selección de tipo de Usuario */}
-
-          <Grid item xs={3}>
-            <Card sx={cardStyleProvider}>
-              <Button onClick={handleProviderDialogOpen}>
-                <CardContent
-                  style={{
-                    textAlign: "center",
-                    flex: "1",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <img
-                    src="/images/proveedor.png"
-                    alt="Proveedor"
-                    style={{
-                      width: "auto",
-                      height: "auto",
-                      maxHeight: "350px",
-                    }}
-                  />
-
-                  <Title1 variant="h4">PROVEEDOR</Title1>
-                </CardContent>
-              </Button>
-            </Card>
-            </Grid>
-            <Grid item xs={3}>
-            <Card sx={cardStyleClient}>
-              <Button onClick={openUserForm}>
-                <CardContent
-                  style={{
-                    textAlign: "center",
-                    flex: "1",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <img
-                    src="/images/cliente.png"
-                    alt="Cliente"
-                    style={{
-                      width: "auto",
-                      height: "auto",
-                      maxHeight: "350px",
-                    }}
-                  />
-
-                  <Title2 variant="h4">CLIENTE</Title2>
-                </CardContent>
-              </Button>
-            </Card>
-          </Grid>
-        </div>
-      </div>
-      </Grid>
-
-      {/* Formulario de Registro Proveedores */}
-      <Grid item xs={12}>
-        <FormControl fullWidth style={{ marginBottom: "10px" }}>
-          <Dialog
-            open={isProviderDialogOpen}
-            onClose={handleProviderDialogClose}
-            sx={{
-              "& .MuiDialog-paper": {
-                width: "80%",
-                maxWidth: "700px",
-                borderRadius: "15px",
-              },
+        <Grid item xs={12}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              margin: "20px",
             }}
           >
+            <Grid item xs={6}>
+              <Typography
+                variant="h4"
+                style={{
+                  marginBottom: "20px",
+                  textAlign: "center",
+                  fontFamily: "Quicksand, sans-serif",
+                  fontWeight: "bold",
+                }}
+              >
+                Para Registrarte, selecciona tu tipo de Usuario.
+              </Typography>
+            </Grid>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "flex-start",
+                gap: "120px",
+              }}
+            >
+              {/* Cards de selección de tipo de Usuario */}
+
+              <Grid item xs={3}>
+                <Card sx={cardStyleProvider}>
+                  <Button onClick={handleProviderDialogOpen}>
+                    <CardContent
+                      style={{
+                        textAlign: "center",
+                        flex: "1",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      <img
+                        src="/images/proveedor.png"
+                        alt="Proveedor"
+                        style={{
+                          width: "auto",
+                          height: "auto",
+                          maxHeight: "350px",
+                        }}
+                      />
+
+                      <Title1 variant="h4">PROVEEDOR</Title1>
+                    </CardContent>
+                  </Button>
+                </Card>
+              </Grid>
+              <Grid item xs={3}>
+                <Card sx={cardStyleClient}>
+                  <Button onClick={openUserForm}>
+                    <CardContent
+                      style={{
+                        textAlign: "center",
+                        flex: "1",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      <img
+                        src="/images/cliente.png"
+                        alt="Cliente"
+                        style={{
+                          width: "auto",
+                          height: "auto",
+                          maxHeight: "350px",
+                        }}
+                      />
+
+                      <Title2 variant="h4">CLIENTE</Title2>
+                    </CardContent>
+                  </Button>
+                </Card>
+              </Grid>
+            </div>
+          </div>
+        </Grid>
+
+        {/* Formulario de Registro Proveedores */}
+        <Grid item xs={12}>
+          <FormControl fullWidth style={{ marginBottom: "10px" }}>
+            <Dialog
+              open={isProviderDialogOpen}
+              onClose={handleProviderDialogClose}
+              sx={{
+                "& .MuiDialog-paper": {
+                  width: "80%",
+                  maxWidth: "700px",
+                  borderRadius: "15px",
+                },
+              }}
+            >
+              <DialogTitle
+                sx={{
+                  backgroundColor: "#01FF72",
+                  textAlign: "center",
+                }}
+                style={{ marginBottom: "8px" }}
+              >
+                Para ofrecer sus servicios, complete los siguientes campos:
+              </DialogTitle>
+              <div style={{ padding: "20px" }}>
+                <TextField
+                  fullWidth
+                  label="Nombre de la Empresa"
+                  style={{ marginBottom: "10px" }}
+                  sx={{
+                    "& input": {
+                      height: "15px",
+                      color: "#242424",
+                      backgroundColor: "white",
+                    },
+                    "& label": {
+                      color: "black",
+                    },
+                    "& label.Mui-focused": {
+                      color: "#242424",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "#01FF72",
+                    },
+                  }}
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  value={formValues.company.name}
+                  onChange={(e) =>
+                    setFormValues((prevFormValues) => ({
+                      ...prevFormValues,
+                      company: {
+                        ...prevFormValues.company,
+                        name: e.target.value,
+                      },
+                    }))
+                  }
+                />
+                <TextField
+                  fullWidth
+                  label="Logo de la Empresa"
+                  style={{ marginBottom: "10px" }}
+                  sx={{
+                    "& input": {
+                      height: "15px",
+                      color: "#242424",
+                      backgroundColor: "white",
+                    },
+                    "& label": {
+                      color: "black",
+                    },
+                    "& label.Mui-focused": {
+                      color: "#242424",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "#01FF72",
+                    },
+                  }}
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  value={formValues.company.logo}
+                  onChange={(e) =>
+                    setFormValues((prevFormValues) => ({
+                      ...prevFormValues,
+                      company: {
+                        ...prevFormValues.company,
+                        logo: e.target.value,
+                      },
+                    }))
+                  }
+                />
+                <TextField
+                  fullWidth
+                  label="Teléfono de la Empresa"
+                  style={{ marginBottom: "10px" }}
+                  sx={{
+                    "& input": {
+                      height: "15px",
+                      color: "#242424",
+                      backgroundColor: "white",
+                    },
+                    "& label": {
+                      color: "black",
+                    },
+                    "& label.Mui-focused": {
+                      color: "#242424",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "#01FF72",
+                    },
+                  }}
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  type="number"
+                  inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                  value={formValues.company.phone}
+                  onChange={(e) =>
+                    setFormValues((prevFormValues) => ({
+                      ...prevFormValues,
+                      company: {
+                        ...prevFormValues.company,
+                        phone: e.target.value,
+                      },
+                    }))
+                  }
+                />
+                <TextField
+                  fullWidth
+                  label="Email de la Empresa"
+                  style={{ marginBottom: "10px" }}
+                  sx={{
+                    "& input": {
+                      height: "15px",
+                      color: "#242424",
+                      backgroundColor: "white",
+                    },
+                    "& label": {
+                      color: "black",
+                    },
+                    "& label.Mui-focused": {
+                      color: "#242424",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "#01FF72",
+                    },
+                  }}
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  value={formValues.company.email}
+                  onChange={(e) =>
+                    setFormValues((prevFormValues) => ({
+                      ...prevFormValues,
+                      company: {
+                        ...prevFormValues.company,
+                        email: e.target.value,
+                      },
+                    }))
+                  }
+                />
+                <FormControl
+                  fullWidth
+                  style={{ marginBottom: "10px", marginTop: "10px" }}
+                >
+                  <InputLabel
+                    sx={{
+                      color: "#242424",
+                      "&.Mui-focused": {
+                        color: "#242424",
+                      },
+                    }}
+                  >
+                    Servicio de
+                  </InputLabel>
+                  <Select
+                    label="Servicio de"
+                    sx={{
+                      "& select": {
+                        height: "15px",
+                        color: "#242424",
+                        backgroundColor: "white",
+                      },
+                      "& label": {
+                        color: "#242424",
+                      },
+                      "&.Mui-focused": {
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#01FF72",
+                        },
+                      },
+                    }}
+                    value={formValues.service.type}
+                    onChange={(e) =>
+                      setFormValues((prevFormValues) => ({
+                        ...prevFormValues,
+                        service: {
+                          ...prevFormValues.service,
+                          type: e.target.value as
+                            | "Coctelería"
+                            | "Cervecería"
+                            | "Ambos",
+                        },
+                      }))
+                    }
+                  >
+                    <MenuItem value="Coctelería">Coctelería</MenuItem>
+                    <MenuItem value="Cervecería">Cervecería</MenuItem>
+                    <MenuItem value="Ambos">Ambos</MenuItem>
+                  </Select>
+                </FormControl>
+
+                <TextField
+                  fullWidth
+                  label="Responsable de la Empresa"
+                  style={{ marginBottom: "10px" }}
+                  sx={{
+                    "& input": {
+                      height: "15px",
+                      color: "#242424",
+                      backgroundColor: "white",
+                    },
+                    "& label": {
+                      color: "black",
+                    },
+                    "& label.Mui-focused": {
+                      color: "#242424",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "#01FF72",
+                    },
+                  }}
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  value={formValues.responsibleCompany.name}
+                  onChange={(e) =>
+                    setFormValues((prevFormValues) => ({
+                      ...prevFormValues,
+                      responsibleCompany: {
+                        ...prevFormValues.responsibleCompany,
+                        name: e.target.value,
+                      },
+                    }))
+                  }
+                />
+                <TextField
+                  fullWidth
+                  label="Teléfono del Responsable"
+                  style={{ marginBottom: "10px" }}
+                  sx={{
+                    "& input": {
+                      height: "15px",
+                      color: "#242424",
+                      backgroundColor: "white",
+                    },
+                    "& label": {
+                      color: "black",
+                    },
+                    "& label.Mui-focused": {
+                      color: "#242424",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "#01FF72",
+                    },
+                  }}
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  type="number"
+                  inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                  value={formValues.responsibleCompany.phone}
+                  onChange={(e) =>
+                    setFormValues((prevFormValues) => ({
+                      ...prevFormValues,
+                      responsibleCompany: {
+                        ...prevFormValues.responsibleCompany,
+                        phone: e.target.value,
+                      },
+                    }))
+                  }
+                />
+                <TextField
+                  fullWidth
+                  label="Email del Responsable"
+                  style={{ marginBottom: "10px" }}
+                  sx={{
+                    "& input": {
+                      height: "15px",
+                      color: "#242424",
+                      backgroundColor: "white",
+                    },
+                    "& label": {
+                      color: "black",
+                    },
+                    "& label.Mui-focused": {
+                      color: "#242424",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "#01FF72",
+                    },
+                  }}
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  value={formValues.responsibleCompany.email}
+                  onChange={(e) =>
+                    setFormValues((prevFormValues) => ({
+                      ...prevFormValues,
+                      responsibleCompany: {
+                        ...prevFormValues.responsibleCompany,
+                        email: e.target.value,
+                      },
+                    }))
+                  }
+                />
+                <TextField
+                  fullWidth
+                  label="foto del Responsable"
+                  style={{ marginBottom: "25px" }}
+                  sx={{
+                    "& input": {
+                      height: "15px",
+                      color: "#242424",
+                      backgroundColor: "white",
+                    },
+                    "& label": {
+                      color: "black",
+                    },
+                    "& label.Mui-focused": {
+                      color: "#242424",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "#01FF72",
+                    },
+                  }}
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  value={formValues.responsibleCompany.photo}
+                  onChange={(e) =>
+                    setFormValues((prevFormValues) => ({
+                      ...prevFormValues,
+                      responsibleCompany: {
+                        ...prevFormValues.responsibleCompany,
+                        photo: e.target.value,
+                      },
+                    }))
+                  }
+                />
+
+                {/* Card para definir Username y Contraseña */}
+                <Card
+                  sx={{
+                    backgroundColor: "#242424",
+                    marginTop: "10px",
+                    borderRadius: "15px",
+                  }}
+                >
+                  <CardContent>
+                    <Typography
+                      variant="h6"
+                      gutterBottom
+                      sx={{
+                        color: "white",
+                        textAlign: "center",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      Ahora defina su Username y Contraseña para ingresar
+                    </Typography>
+                    <TextField
+                      fullWidth
+                      label="Username"
+                      style={{ marginBottom: "10px" }}
+                      sx={{
+                        "& .MuiInputBase-root": {
+                          color: "#242424",
+                          backgroundColor: "white",
+                          borderRadius: "7px",
+                          border: "2px solid #01FF72",
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "white",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "#01FF72",
+                        },
+                        "& .MuiInputBase-root.Mui-focused": {
+                          borderColor: "#01FF72",
+                        },
+                        "& .MuiInput-underline:after": {
+                          borderBottom: "none",
+                        },
+                      }}
+                      InputLabelProps={{ shrink: true }}
+                      variant="standard"
+                      value={formValues.login.username}
+                      onChange={(e) =>
+                        setFormValues((prevFormValues) => ({
+                          ...prevFormValues,
+                          login: {
+                            ...prevFormValues.login,
+                            username: e.target.value,
+                          },
+                        }))
+                      }
+                    />
+
+                    <TextField
+                      fullWidth
+                      label="Contraseña"
+                      type="password"
+                      style={{ marginBottom: "10px" }}
+                      sx={{
+                        "& .MuiInputBase-root": {
+                          color: "#242424",
+                          backgroundColor: "white",
+                          borderRadius: "7px",
+                          border: "2px solid #01FF72",
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "white",
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "#01FF72",
+                        },
+                        "& .MuiInputBase-root.Mui-focused": {
+                          borderColor: "#01FF72",
+                        },
+                        "& .MuiInput-underline:after": {
+                          borderBottom: "none",
+                        },
+                      }}
+                      InputLabelProps={{ shrink: true }}
+                      variant="standard"
+                      value={formValues.login.password}
+                      onChange={(e) =>
+                        setFormValues((prevFormValues) => ({
+                          ...prevFormValues,
+                          login: {
+                            ...prevFormValues.login,
+                            password: e.target.value,
+                          },
+                        }))
+                      }
+                    />
+
+                    {/* Botón de Registro + Evento */}
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                          backgroundColor: "#01FF72",
+                          fontFamily: "Nunito, sans-serif",
+                          fontWeight: "bold",
+                          marginTop: "15px",
+                          "&:hover": {
+                            backgroundColor: "white",
+                            color: "#01FF72",
+                          },
+                        }}
+                        onClick={handleProviderRegistration}
+                      >
+                        Registrarse
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </Dialog>
+          </FormControl>
+        </Grid>
+
+        {/* Cuadro de Diálogo de Bienvenida */}
+        <Grid item xs={12}>
+          <Dialog open={isWelcomeDialogOpen} onClose={handleWelcomeDialogClose}>
             <DialogTitle
               sx={{
                 backgroundColor: "#01FF72",
@@ -339,528 +800,75 @@ const ProvidersRegistration = () => {
               }}
               style={{ marginBottom: "8px" }}
             >
-              Para ofrecer sus servicios, complete los siguientes campos:
+              {`BIENVENIDO "${welcomeDialogCompanyName}"`}
             </DialogTitle>
             <div style={{ padding: "20px" }}>
-              <TextField
-                fullWidth
-                label="Nombre de la Empresa"
-                style={{ marginBottom: "10px" }}
+              <Typography
+                variant="h5"
                 sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#01FF72",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                value={formValues.company.name}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    company: {
-                      ...prevFormValues.company,
-                      name: e.target.value,
-                    },
-                  }))
-                }
-              />
-              <TextField
-                fullWidth
-                label="Logo de la Empresa"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#01FF72",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                value={formValues.company.logo}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    company: {
-                      ...prevFormValues.company,
-                      logo: e.target.value,
-                    },
-                  }))
-                }
-              />
-              <TextField
-                fullWidth
-                label="Teléfono de la Empresa"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#01FF72",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                type="number"
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                value={formValues.company.phone}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    company: {
-                      ...prevFormValues.company,
-                      phone: e.target.value,
-                    },
-                  }))
-                }
-              />
-              <TextField
-                fullWidth
-                label="Email de la Empresa"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#01FF72",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                value={formValues.company.email}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    company: {
-                      ...prevFormValues.company,
-                      email: e.target.value,
-                    },
-                  }))
-                }
-              />
-              <FormControl
-                fullWidth
-                style={{ marginBottom: "10px", marginTop: "10px" }}
-              >
-                <InputLabel
-                  sx={{
-                    color: "#242424",
-                    "&.Mui-focused": {
-                      color: "#242424",
-                    },
-                  }}
-                >
-                  Servicio de
-                </InputLabel>
-                <Select
-                  label="Servicio de"
-                  sx={{
-                    "& select": {
-                      height: "15px",
-                      color: "#242424",
-                      backgroundColor: "white",
-                    },
-                    "& label": {
-                      color: "#242424",
-                    },
-                    "&.Mui-focused": {
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "#01FF72",
-                      },
-                    },
-                  }}
-                  value={formValues.service.type}
-                  onChange={(e) =>
-                    setFormValues((prevFormValues) => ({
-                      ...prevFormValues,
-                      service: {
-                        ...prevFormValues.service,
-                        type: e.target.value as string,
-                      },
-                    }))
-                  }
-                >
-                  <MenuItem value="Coctelería">Coctelería</MenuItem>
-                  <MenuItem value="Cervecería">Cervecería</MenuItem>
-                  <MenuItem value="Ambos">Ambos</MenuItem>
-                </Select>
-              </FormControl>
-              <TextField
-                fullWidth
-                label="Responsable de la Empresa"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#01FF72",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                value={formValues.responsibleCompany.name}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    responsibleCompany: {
-                      ...prevFormValues.responsibleCompany,
-                      name: e.target.value,
-                    },
-                  }))
-                }
-              />
-              <TextField
-                fullWidth
-                label="Teléfono del Responsable"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#01FF72",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                type="number"
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                value={formValues.responsibleCompany.phone}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    responsibleCompany: {
-                      ...prevFormValues.responsibleCompany,
-                      phone: e.target.value,
-                    },
-                  }))
-                }
-              />
-              <TextField
-                fullWidth
-                label="Email del Responsable"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#01FF72",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                value={formValues.responsibleCompany.email}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    responsibleCompany: {
-                      ...prevFormValues.responsibleCompany,
-                      email: e.target.value,
-                    },
-                  }))
-                }
-              />
-              <TextField
-                fullWidth
-                label="foto del Responsable"
-                style={{ marginBottom: "25px" }}
-                sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#01FF72",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                value={formValues.responsibleCompany.photo}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    responsibleCompany: {
-                      ...prevFormValues.responsibleCompany,
-                      photo: e.target.value,
-                    },
-                  }))
-                }
-              />
-
-              {/* Card para definir Username y Contraseña */}
-              <Card
-                sx={{
-                  backgroundColor: "#242424",
-                  marginTop: "10px",
-                  borderRadius: "15px",
+                  textAlign: "center",
+                  marginBottom: "20px",
                 }}
               >
-                <CardContent>
-                  <Typography
-                    variant="h6"
-                    gutterBottom
-                    sx={{
-                      color: "white",
-                      textAlign: "center",
-                      marginBottom: "20px",
-                    }}
-                  >
-                    Ahora defina su Username y Contraseña para ingresar
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    label="Username"
-                    style={{ marginBottom: "10px" }}
-                    sx={{
-                      "& .MuiInputBase-root": {
-                        color: "#242424",
-                        backgroundColor: "white",
-                        borderRadius: "7px",
-                        border: "2px solid #01FF72",
-                      },
-                      "& .MuiInputLabel-root": {
-                        color: "white",
-                      },
-                      "& .MuiInputLabel-root.Mui-focused": {
-                        color: "#01FF72",
-                      },
-                      "& .MuiInputBase-root.Mui-focused": {
-                        borderColor: "#01FF72",
-                      },
-                      "& .MuiInput-underline:after": {
-                        borderBottom: "none",
-                      },
-                    }}
-                    InputLabelProps={{ shrink: true }}
-                    variant="standard"
-                    value={formValues.login.username}
-                    onChange={(e) =>
-                      setFormValues((prevFormValues) => ({
-                        ...prevFormValues,
-                        login: {
-                          ...prevFormValues.login,
-                          username: e.target.value,
-                        },
-                      }))
-                    }
-                  />
-
-                  <TextField
-                    fullWidth
-                    label="Contraseña"
-                    type="password"
-                    style={{ marginBottom: "10px" }}
-                    sx={{
-                      "& .MuiInputBase-root": {
-                        color: "#242424",
-                        backgroundColor: "white",
-                        borderRadius: "7px",
-                        border: "2px solid #01FF72",
-                      },
-                      "& .MuiInputLabel-root": {
-                        color: "white",
-                      },
-                      "& .MuiInputLabel-root.Mui-focused": {
-                        color: "#01FF72",
-                      },
-                      "& .MuiInputBase-root.Mui-focused": {
-                        borderColor: "#01FF72",
-                      },
-                      "& .MuiInput-underline:after": {
-                        borderBottom: "none",
-                      },
-                    }}
-                    InputLabelProps={{ shrink: true }}
-                    variant="standard"
-                    value={formValues.login.password}
-                    onChange={(e) =>
-                      setFormValues((prevFormValues) => ({
-                        ...prevFormValues,
-                        login: {
-                          ...prevFormValues.login,
-                          password: e.target.value,
-                        },
-                      }))
-                    }
-                  />
-
-                  {/* Botón de Registro + Evento */}
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      sx={{
-                        backgroundColor: "#01FF72",
-                        fontFamily: "Nunito, sans-serif",
-                        fontWeight: "bold",
-                        marginTop: "15px",
-                        "&:hover": {
-                          backgroundColor: "white",
-                          color: "#01FF72",
-                        },
-                      }}
-                      onClick={handleProviderRegistration}
-                    >
-                      Registrarse
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                GRACIAS POR CONFIAR EN NOSOTROS.
+              </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  textAlign: "center",
+                  marginBottom: "20px",
+                }}
+              >
+                En breve recibirá el e-mail para completar la registración.
+              </Typography>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <img
+                  src="/images/logo1.png"
+                  alt="Logo"
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                  }}
+                />
+              </div>
+              <Divider
+                variant="middle"
+                sx={{ marginTop: "20px", marginBottom: "20px" }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    backgroundColor: "#01FF72",
+                    fontFamily: "Nunito, sans-serif",
+                    fontWeight: "bold",
+                    marginTop: "10px",
+                    marginBottom: "10px",
+                    "&:hover": {
+                      backgroundColor: "#242424",
+                      color: "#01FF72",
+                    },
+                  }}
+                  onClick={handleWelcomeDialogClose}
+                >
+                  Cerrar
+                </Button>
+              </div>
             </div>
           </Dialog>
-        </FormControl>
-      </Grid>
-
-      {/* Cuadro de Diálogo de Bienvenida */}
-      <Grid item xs={12}>
-        <Dialog open={isWelcomeDialogOpen} onClose={handleWelcomeDialogClose}>
-          <DialogTitle
-            sx={{
-              backgroundColor: "#01FF72",
-              textAlign: "center",
-            }}
-            style={{ marginBottom: "8px" }}
-          >
-            {`BIENVENIDO "${welcomeDialogCompanyName}"`}
-          </DialogTitle>
-          <div style={{ padding: "20px" }}>
-            <Typography
-              variant="h5"
-              sx={{
-                textAlign: "center",
-                marginBottom: "20px",
-              }}
-            >
-              GRACIAS POR CONFIAR EN NOSOTROS.
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                textAlign: "center",
-                marginBottom: "20px",
-              }}
-            >
-              En breve recibirá el e-mail para completar la registración.
-            </Typography>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <img
-                src="/images/logo1.png"
-                alt="Logo"
-                style={{
-                  width: "150px",
-                  height: "150px",
-                }}
-              />
-            </div>
-            <Divider
-              variant="middle"
-              sx={{ marginTop: "20px", marginBottom: "20px" }}
-            />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "20px",
-              }}
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{
-                  backgroundColor: "#01FF72",
-                  fontFamily: "Nunito, sans-serif",
-                  fontWeight: "bold",
-                  marginTop: "10px",
-                  marginBottom: "10px",
-                  "&:hover": {
-                    backgroundColor: "#242424",
-                    color: "#01FF72",
-                  },
-                }}
-                onClick={handleWelcomeDialogClose}
-              >
-                Cerrar
-              </Button>
-            </div>
-          </div>
-        </Dialog>
-      </Grid>
-      <ClientsRegistration
-        isUserDialogOpen={isUserDialogOpen}
-        setIsUserDialogOpen={setIsUserDialogOpen}
-      />
-    </div>
+        </Grid>
+        <ClientsRegistration
+          isUserDialogOpen={isUserDialogOpen}
+          setIsUserDialogOpen={setIsUserDialogOpen}
+        />
+      </div>
     </Grid>
   );
 };

@@ -5,16 +5,16 @@ import UsersLogin from "./components/UsersLogin";
 import { useState } from "react";
 import ClientWelcome from "./components/clients-components/ClientWelcome";
 import ProviderWelcome from "./components/providers-components/ProviderWelcome";
+import ProviderMenu from "./components/providers-components/ProviderMenu";
 
 function App() {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [_userType, setUserType] = useState<string>("");
 
-  
   const handleUserTypeChange = (type: string) => {
     setUserType(type);
   };
-  
+
   return (
     <div className="App">
       <MenuBar loginSuccess={loginSuccess} />
@@ -32,6 +32,7 @@ function App() {
         />
         <Route path="/client_home" element={<ClientWelcome />} />
         <Route path="/provider_home" element={<ProviderWelcome />} />
+        <Route path="/provider_menu" element={<ProviderMenu />} />
       </Routes>
     </div>
   );
