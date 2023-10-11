@@ -1,7 +1,7 @@
 import { Provider as Provider, Client as Client } from "./UsersModels";
 import { UserState } from "./UsersModels";
 
-interface RootState {
+export interface RootState {
   user: UserState;
   clients: { clients: Client[] };
   providers: { providers: Provider[] };

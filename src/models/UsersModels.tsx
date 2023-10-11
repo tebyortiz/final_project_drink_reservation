@@ -6,7 +6,9 @@ interface Provider {
     email: string;
   };
   service: {
-    type: string;
+    type: "Coctelería" | "Cervecería" | "Ambos";
+    cocktails: Cocktail[];
+    beers: Beer[];
   };
   responsibleCompany: {
     name: string;
@@ -55,7 +57,9 @@ interface UserState {
       email: string;
     };
     service?: {
-      type: string;
+      type: "Coctelería" | "Cervecería" | "Ambos";
+      cocktails?: Cocktail[];
+      beers?: Beer[];
     };
     responsibleCompany?: {
       name: string;
@@ -67,3 +71,13 @@ interface UserState {
 }
 
 export type { UserState };
+
+export type Cocktail = {
+  name: string;
+  price: number;
+};
+
+export type Beer = {
+  name: string;
+  price: number;
+};

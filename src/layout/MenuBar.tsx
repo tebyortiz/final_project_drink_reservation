@@ -59,8 +59,8 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
           <Grid item>
             {user.userType === "Proveedor" ? (
               <Avatar
-                alt={user.company.name}
-                src={user.company.logo}
+                alt={user.company?.name}
+                src={user.company?.logo}
                 style={getAvatarStyle()}
               />
             ) : (
@@ -105,7 +105,7 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
               </Button>
             </Link>
           </Grid>
-          <Grid item>
+          <Grid item sx={{ marginRight: 8 }}>
             <Link to="/login" style={{ textDecoration: "none" }}>
               <Button
                 color="inherit"
@@ -149,6 +149,26 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                 </Button>
               </Link>
             </Grid>
+            <Grid item sx={{ marginRight: 8 }}>
+              <Link to="/provider_menu" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    backgroundColor: "#01FF72",
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                    "&:hover": {
+                      backgroundColor: "white",
+                      color: "#01FF72",
+                    },
+                  }}
+                >
+                  Servicios
+                </Button>
+              </Link>
+            </Grid>
           </Grid>
         );
       } else if (user.userType === "Proveedor") {
@@ -174,6 +194,26 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                 </Button>
               </Link>
             </Grid>
+            <Grid item sx={{ marginRight: 8 }}>
+              <Link to="/provider_menu" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    backgroundColor: "#01FF72",
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                    "&:hover": {
+                      backgroundColor: "white",
+                      color: "#01FF72",
+                    },
+                  }}
+                >
+                  Servicios
+                </Button>
+              </Link>
+            </Grid>
           </Grid>
         );
       }
@@ -181,16 +221,18 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#242424" }}>
-      <Toolbar>
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container alignItems="center" justifyContent="space-between">
-            <Grid item>{renderButtons()}</Grid>
-            <Grid item>{renderUserSection()}</Grid>
-          </Grid>
-        </Box>
-      </Toolbar>
-    </AppBar>
+    <Grid item xs={12}>
+      <AppBar position="static" sx={{ backgroundColor: "#242424" }}>
+        <Toolbar>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container alignItems="center" justifyContent="space-between">
+              <Grid item>{renderButtons()}</Grid>
+              <Grid item>{renderUserSection()}</Grid>
+            </Grid>
+          </Box>
+        </Toolbar>
+      </AppBar>
+    </Grid>
   );
 };
 
