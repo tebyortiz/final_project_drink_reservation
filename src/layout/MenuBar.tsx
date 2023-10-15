@@ -214,6 +214,26 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                 </Button>
               </Link>
             </Grid>
+            <Grid item sx={{ marginRight: 8 }}>
+              <Link to="/provider_areas" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    backgroundColor: "#01FF72",
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                    "&:hover": {
+                      backgroundColor: "white",
+                      color: "#01FF72",
+                    },
+                  }}
+                >
+                  Áreas
+                </Button>
+              </Link>
+            </Grid>
           </Grid>
         );
       }
