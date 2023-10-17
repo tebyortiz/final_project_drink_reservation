@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import GoogleMapReact from "google-map-react";
 import {
   Button,
@@ -12,6 +12,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Grid,
+  Box,
+  Typography,
+  Paper,
 } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
@@ -28,7 +32,7 @@ const defaultCenter = {
 const ProviderAreas = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => {
-    console.log("User:", state.user.user);
+    //console.log("User:", state.user.user);
     return state.user.user;
   });
 
@@ -38,15 +42,13 @@ const ProviderAreas = () => {
   const [areaName, setAreaName] = useState("");
   const [areas, setAreas] = useState<Area[]>([]);
 
-
   const mapRef = useRef(null);
-  const circleRef = useRef(null);
+  const circleRef = useRef<google.maps.Circle | null>(null);
 
   const handleAddArea = () => {
     const companyName = user?.company?.name || "";
     console.log("areaName:", areaName);
     console.log("selectedArea:", selectedArea);
-
     const circle = circleRef.current;
     if (areaName && circle) {
       const newArea: Area = {
@@ -55,23 +57,32 @@ const ProviderAreas = () => {
         lng: String(circle.getCenter().lng()),
       };
       console.log("Nueva área:", newArea);
-
       setAreas((prevAreas) => {
         const updatedAreas = [...prevAreas, newArea];
         console.log("Áreas actualizadas:", updatedAreas);
         return updatedAreas;
       });
+      setSelectedArea(null);
       dispatch(addArea({ providerName: companyName, area: newArea }));
-
+      handleShowArea(newArea);
       console.log("Nombre de la nueva área:", areaName);
       setAreaName("");
     }
   };
 
+  const handleCircleDrag = (circle: { getCenter: () => any }) => {
+    const newCenter = circle.getCenter();
+    setCircleCenter({ lat: newCenter.lat(), lng: newCenter.lng() });
+  };
+
+  const handleCircleRadiusChange = (circle: { getRadius: () => any }) => {
+    const newRadius = circle.getRadius();
+    setCircleRadius(newRadius);
+  };
+
   const handleDeleteArea = (name: string) => {
     const companyName = user?.company?.name || "";
     const updatedAreas = areas.filter((area) => area.name !== name);
-    console.log("Área eliminada:", name);
     setAreas(updatedAreas);
     dispatch(removeArea({ providerName: companyName, areaName: name }));
   };
@@ -81,10 +92,21 @@ const ProviderAreas = () => {
     setSelectedArea(area);
     setCircleCenter({ lat: parseFloat(area.lat), lng: parseFloat(area.lng) });
     setCircleRadius(10000);
+
+    const circle = circleRef.current;
+    if (circle) {
+      circle.setCenter(
+        new window.google.maps.LatLng(
+          parseFloat(area.lat),
+          parseFloat(area.lng)
+        )
+      );
+      circle.setRadius(10000);
+    }
   };
 
   const maprender = (map: any, maps: any) => {
-    if (!circleRef.current || !map) return;
+    console.log("Centro del círculo:", circleCenter);
     const circle = new maps.Circle({
       strokeColor: "#FF0000",
       strokeOpacity: 0.8,
@@ -97,70 +119,147 @@ const ProviderAreas = () => {
       center: circleCenter,
       radius: circleRadius,
     });
-    circleRef.current = circle;
-    
-    const handleCircleDrag = () => {
-      const newCenter = circle.getCenter();
-      setCircleCenter({ lat: newCenter.lat(), lng: newCenter.lng() });
-      console.log("Nueva ubicación del círculo:", {
-        lat: newCenter.lat(),
-        lng: newCenter.lng(),
-      });
-      if (areaName) {
-        handleAddArea();
-      }
-    };
 
-    const handleCircleRadiusChange = () => {
-      const newRadius = circle.getRadius();
-      setCircleRadius(newRadius);
-    };
+    circle.addListener("drag", () => {
+      handleCircleDrag(circle);
+      console.log(JSON.stringify(circle.getCenter()));
+    });
 
-    circle.addListener("drag", handleCircleDrag);
-    maps.event.addListener(circle, "radius_changed", handleCircleRadiusChange);
-
-    maps.event.addDomListener(map, "click", () => {
-      window.alert("Map was clicked!");
+    maps.event.addListener(circle, "radius_changed", () => {
+      handleCircleRadiusChange(circle);
     });
 
     mapRef.current = map;
     circleRef.current = circle;
   };
 
-  useEffect(() => {
-    maprender(mapRef.current, null);
-  }, []);
-
   return (
-    <div>
-      <div className="row">
-        <div className="col-md-6">
-          <Card>
-            <CardContent>
-              <h2>Áreas de Cobertura</h2>
-              <TableContainer>
+    <Grid container justifyContent="center" spacing={2}>
+      <Grid item xs={12} md={6}>
+        <Card
+          sx={{
+            backgroundColor: "#242424",
+            margin: "10px auto",
+            borderRadius: "15px",
+            color: "white",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
+            marginTop: "30px",
+            width: "90%",
+          }}
+        >
+          <CardContent>
+            <Box p={2}>
+              <Typography
+                variant="h5"
+                sx={{
+                  backgroundColor: "#01FF72",
+                  color: "#242424",
+                  padding: "10px",
+                  borderTopLeftRadius: "15px",
+                  borderTopRightRadius: "15px",
+                  textAlign: "center",
+                }}
+                style={{
+                  fontFamily: "Quicksand, sans-serif",
+                  fontWeight: "bold",
+                }}
+              >
+                Áreas de Cobertura
+              </Typography>
+              <TableContainer component={Paper}>
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Nombre</TableCell>
-                      <TableCell>Lat</TableCell>
-                      <TableCell>Lng</TableCell>
-                      <TableCell>Eliminar</TableCell>
-                      <TableCell>Ver</TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="h5"
+                          sx={{ color: "#242424", textAlign: "center" }}
+                          style={{
+                            fontFamily: "Quicksand, sans-serif",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Nombre
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="h5"
+                          sx={{ color: "#242424", textAlign: "center" }}
+                          style={{
+                            fontFamily: "Quicksand, sans-serif",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Lat
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="h5"
+                          sx={{ color: "#242424", textAlign: "center" }}
+                          style={{
+                            fontFamily: "Quicksand, sans-serif",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Lng
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="h5"
+                          sx={{ color: "#242424", textAlign: "center" }}
+                          style={{
+                            fontFamily: "Quicksand, sans-serif",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Eliminar
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="h5"
+                          sx={{ color: "#242424", textAlign: "center" }}
+                          style={{
+                            fontFamily: "Quicksand, sans-serif",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          Ver
+                        </Typography>
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {areas.map((area) => (
-                      <TableRow key={area.name}>
-                        <TableCell>{area.name}</TableCell>
-                        <TableCell>{area.lat}</TableCell>
-                        <TableCell>{area.lng}</TableCell>
-                        <TableCell>
+                    {areas.map((area: Area, index: number) => (
+                      <TableRow key={index}>
+                        <TableCell
+                          sx={{ color: "#242424", textAlign: "center" }}
+                        >
+                          {area.name}
+                        </TableCell>
+                        <TableCell
+                          sx={{ color: "#242424", textAlign: "center" }}
+                        >
+                          {area.lat}
+                        </TableCell>
+                        <TableCell
+                          sx={{ color: "#242424", textAlign: "center" }}
+                        >
+                          {area.lng}
+                        </TableCell>
+                        <TableCell
+                          sx={{ color: "#242424", textAlign: "center" }}
+                        >
                           <HighlightOffIcon
                             onClick={() => handleDeleteArea(area.name)}
                           />
                         </TableCell>
-                        <TableCell>
+                        <TableCell
+                          sx={{ color: "#242424", textAlign: "center" }}
+                        >
                           <ArrowCircleRightIcon
                             onClick={() => handleShowArea(area)}
                           />
@@ -170,40 +269,114 @@ const ProviderAreas = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
-            </CardContent>
-          </Card>
-        </div>
-        <div className="col-md-6">
-          <Card>
-            <CardContent>
-              <div style={{ height: "500px", width: "100%" }}>
-                <GoogleMapReact
-                  bootstrapURLKeys={{
-                    key: "AIzaSyBfjO7sxd8P6HDrF1lmvLV151z7ocauPD0",
-                  }}
-                  defaultCenter={defaultCenter}
-                  defaultZoom={11}
-                  yesIWantToUseGoogleMapApiInternals={true}
-                  onGoogleApiLoaded={({ map, maps }) => maprender(map, maps)}
-                />
-              </div>
-            </CardContent>
+            </Box>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <Card
+          sx={{
+            backgroundColor: "#242424",
+            margin: "10px auto",
+            borderRadius: "15px",
+            color: "white",
+            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
+            marginTop: "30px",
+            width: "90%",
+          }}
+        >
+          <CardContent>
+            <div
+              style={{ height: "500px", width: "100%", borderRadius: "15px" }}
+            >
+              <GoogleMapReact
+                bootstrapURLKeys={{
+                  key: "AIzaSyBfjO7sxd8P6HDrF1lmvLV151z7ocauPD0",
+                }}
+                defaultCenter={defaultCenter}
+                defaultZoom={11}
+                yesIWantToUseGoogleMapApiInternals={true}
+                onGoogleApiLoaded={({ map, maps }) => maprender(map, maps)}
+              />
+            </div>
             <Divider />
-            <TextField
-              label="Nombre de la Nueva Área"
-              variant="outlined"
-              value={areaName}
-              onChange={(e) => {
-                const newValue = e.target.value;
-                console.log("Texto ingresado:", newValue);
-                setAreaName(newValue);
+            <Box
+              display="flex"
+              alignItems="center"
+              sx={{
+                "& label": {
+                  marginRight: "10px",
+                  color: "white",
+                  width: "70px",
+                },
               }}
-            />
-            <Button onClick={() => handleAddArea()}>Guardar Área</Button>
-          </Card>
-        </div>
-      </div>
-    </div>
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "white",
+                  marginRight: "10px",
+                  padding: "5px 10px",
+                  borderRadius: "7px",
+                  textAlign: "center",
+                }}
+              >
+                Nombre Área
+              </Typography>
+              <TextField
+                fullWidth
+                label=""
+                sx={{
+                  "& .MuiInputBase-root": {
+                    color: "#242424",
+                    backgroundColor: "white",
+                    borderRadius: "7px",
+                    border: "2px solid #01FF72",
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "white",
+                  },
+                  "& .MuiInputLabel-root.Mui-focused": {
+                    color: "#01FF72",
+                  },
+                  "& .MuiInputBase-root.Mui-focused": {
+                    borderColor: "#01FF72",
+                  },
+                  "& .MuiInput-underline:after": {
+                    borderBottom: "none",
+                  },
+                }}
+                InputLabelProps={{ shrink: true }}
+                variant="standard"
+                type="text"
+                value={areaName}
+                onChange={(e) => setAreaName(e.target.value)}
+              />
+            </Box>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleAddArea()}
+              sx={{
+                backgroundColor: "#01FF72",
+                fontFamily: "Nunito, sans-serif",
+                fontWeight: "bold",
+                marginTop: "15px",
+                "&:hover": {
+                  backgroundColor: "white",
+                  color: "#01FF72",
+                },
+                "& .MuiButton-endIcon": {
+                  marginLeft: "10px",
+                },
+              }}
+            >
+              Guardar Área
+            </Button>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
   );
 };
 

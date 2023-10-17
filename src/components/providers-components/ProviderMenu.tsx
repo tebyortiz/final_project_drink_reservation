@@ -105,15 +105,11 @@ const ProviderMenu = () => {
 
   return (
     <Grid container justifyContent="center" spacing={2}>
-      {user &&
-      user.service &&
-      (user.service.type === "Coctelería" || user.service.type === "Ambos") ? (
-        <Grid
-          item
-          xs={12}
-          md={6}
-          style={{ width: "100%", textAlign: "center" }}
-        >
+      <Grid item xs={12} md={6}>
+        {user &&
+        user.service &&
+        (user.service.type === "Coctelería" ||
+          user.service.type === "Ambos") ? (
           <Card
             sx={{
               backgroundColor: "#242424",
@@ -323,18 +319,13 @@ const ProviderMenu = () => {
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-      ) : null}
-
-      {user &&
-      user.service &&
-      (user.service.type === "Cervecería" || user.service.type === "Ambos") ? (
-        <Grid
-          item
-          xs={12}
-          md={6}
-          style={{ width: "100%", textAlign: "center" }}
-        >
+        ) : null}
+      </Grid>
+      <Grid item xs={12} md={6}>
+        {user &&
+        user.service &&
+        (user.service.type === "Cervecería" ||
+          user.service.type === "Ambos") ? (
           <Card
             sx={{
               backgroundColor: "#242424",
@@ -538,8 +529,8 @@ const ProviderMenu = () => {
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-      ) : null}
+        ) : null}
+      </Grid>
     </Grid>
   );
 };

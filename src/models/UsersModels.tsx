@@ -40,6 +40,7 @@ interface Client {
 export type { Client };
 
 interface UserState {
+  areas: any;
   user: {
     username: string;
     userType: string;
