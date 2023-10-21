@@ -40,7 +40,6 @@ interface Client {
 export type { Client };
 
 interface UserState {
-  areas: any;
   user: {
     username: string;
     userType: string;
@@ -62,6 +61,7 @@ interface UserState {
       type: "Coctelería" | "Cervecería" | "Ambos";
       cocktails?: Cocktail[];
       beers?: Beer[];
+      areas?: Area[];
     };
     responsibleCompany?: {
       name: string;
@@ -88,4 +88,5 @@ export type Area = {
   name: string;
   lat: string;
   lng: string;
+  radius: number;
 };

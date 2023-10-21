@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Autocomplete,
   TextField,
@@ -36,6 +36,14 @@ import {
 const ProviderMenu = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
+  const providers = useSelector(
+    (state: RootState) => state.providers.providers
+  );
+  const userCompanyName = user?.company?.name;
+  const selectedProvider = providers.find(
+    (provider) => provider.company.name === userCompanyName
+  );
+  const service = selectedProvider?.service;
   const [selectedCocktail, setSelectedCocktail] = useState<string | null>(null);
   const [selectedBeer, setSelectedBeer] = useState<string | null>(null);
   const [cocktailPrice, setCocktailPrice] = useState<number | null>(null);
@@ -43,13 +51,19 @@ const ProviderMenu = () => {
   const cocktailOptions = useFetchCocktailOptions();
   const beerOptions = useFetchBeerOptions();
   const [selectedCocktails, setSelectedCocktails] = useState<Cocktail[]>(
-    user?.service?.cocktails || []
+    service?.cocktails || []
   );
   const [selectedBeers, setSelectedBeers] = useState<Beer[]>(
-    user?.service?.beers || []
+    service?.beers || []
   );
+
+  useEffect(() => {
+    console.log("Cócteles seleccionados:", selectedCocktails);
+    console.log("Cervezas seleccionadas:", selectedBeers);
+  }, [selectedCocktails, selectedBeers]);
+
   const handleAddCocktail = () => {
-    const companyName = user?.company?.name || "";
+    const companyName = userCompanyName || "";
     if (companyName && selectedCocktail && cocktailPrice !== null) {
       if (!selectedCocktails.some((c) => c.name === selectedCocktail)) {
         const newCocktail: Cocktail = {
@@ -70,7 +84,7 @@ const ProviderMenu = () => {
   };
 
   const handleAddBeer = () => {
-    const companyName = user?.company?.name || "";
+    const companyName = userCompanyName || "";
     if (companyName && selectedBeer && beerPrice !== null) {
       if (!selectedBeers.some((b) => b.name === selectedBeer)) {
         const newBeer: Beer = {
@@ -86,7 +100,7 @@ const ProviderMenu = () => {
   };
 
   const handleRemoveCocktail = (cocktail: string) => {
-    const companyName = user?.company?.name || "";
+    const companyName = userCompanyName || "";
     if (companyName) {
       dispatch(removeCocktail({ providerName: companyName, cocktail }));
       setSelectedCocktails(
@@ -96,7 +110,7 @@ const ProviderMenu = () => {
   };
 
   const handleRemoveBeer = (beer: string) => {
-    const companyName = user?.company?.name || "";
+    const companyName = userCompanyName || "";
     if (companyName) {
       dispatch(removeBeer({ providerName: companyName, beer }));
       setSelectedBeers(selectedBeers.filter((b) => b.name !== beer));
@@ -105,11 +119,15 @@ const ProviderMenu = () => {
 
   return (
     <Grid container justifyContent="center" spacing={2}>
-      <Grid item xs={12} md={6}>
-        {user &&
-        user.service &&
-        (user.service.type === "Coctelería" ||
-          user.service.type === "Ambos") ? (
+      {user &&
+      user.service &&
+      (user.service.type === "Coctelería" || user.service.type === "Ambos") ? (
+        <Grid
+          item
+          xs={12}
+          md={6}
+          style={{ width: "100%", textAlign: "center" }}
+        >
           <Card
             sx={{
               backgroundColor: "#242424",
@@ -253,8 +271,11 @@ const ProviderMenu = () => {
               </Box>
               <Box p={2} sx={{ marginTop: "15px" }}>
                 {" "}
-                <Typography variant="h5" sx={{ color: "#242424" }}>
-                  Cervezas Seleccionadas
+                <Typography
+                  variant="h5"
+                  sx={{ color: "white", marginBottom: "20px" }}
+                >
+                  Cocteles Seleccionados
                 </Typography>
                 <TableContainer component={Paper}>
                   <Table>
@@ -319,13 +340,18 @@ const ProviderMenu = () => {
               </Box>
             </CardContent>
           </Card>
-        ) : null}
-      </Grid>
-      <Grid item xs={12} md={6}>
-        {user &&
-        user.service &&
-        (user.service.type === "Cervecería" ||
-          user.service.type === "Ambos") ? (
+        </Grid>
+      ) : null}
+
+      {user &&
+      user.service &&
+      (user.service.type === "Cervecería" || user.service.type === "Ambos") ? (
+        <Grid
+          item
+          xs={12}
+          md={6}
+          style={{ width: "100%", textAlign: "center" }}
+        >
           <Card
             sx={{
               backgroundColor: "#242424",
@@ -467,7 +493,10 @@ const ProviderMenu = () => {
               </Box>
               <Box p={2} sx={{ marginTop: "15px" }}>
                 {" "}
-                <Typography variant="h5" sx={{ color: "#242424" }}>
+                <Typography
+                  variant="h5"
+                  sx={{ color: "white", marginBottom: "20px" }}
+                >
                   Cervezas Seleccionadas
                 </Typography>
                 <TableContainer component={Paper}>
@@ -529,8 +558,8 @@ const ProviderMenu = () => {
               </Box>
             </CardContent>
           </Card>
-        ) : null}
-      </Grid>
+        </Grid>
+      ) : null}
     </Grid>
   );
 };

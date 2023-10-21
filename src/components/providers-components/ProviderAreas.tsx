@@ -31,41 +31,38 @@ const defaultCenter = {
 
 const ProviderAreas = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => {
-    //console.log("User:", state.user.user);
-    return state.user.user;
-  });
+  const user = useSelector((state: RootState) => state.user.user);
+  const providers = useSelector(
+    (state: RootState) => state.providers.providers
+  );
+  const userCompanyName = user?.company?.name;
+  const selectedProvider = providers.find(
+    (provider) => provider.company.name === userCompanyName
+  );
+  const areas = selectedProvider?.service?.areas || [];
 
-  const [selectedArea, setSelectedArea] = useState<Area | null>(null);
+  const [_selectedArea, setSelectedArea] = useState<Area | null>(null);
   const [circleCenter, setCircleCenter] = useState(defaultCenter);
   const [circleRadius, setCircleRadius] = useState(10000);
   const [areaName, setAreaName] = useState("");
-  const [areas, setAreas] = useState<Area[]>([]);
 
   const mapRef = useRef(null);
-  const circleRef = useRef<google.maps.Circle | null>(null);
+  const circleRef = useRef<any | null>(null);
 
   const handleAddArea = () => {
     const companyName = user?.company?.name || "";
-    console.log("areaName:", areaName);
-    console.log("selectedArea:", selectedArea);
     const circle = circleRef.current;
     if (areaName && circle) {
       const newArea: Area = {
         name: areaName,
         lat: String(circle.getCenter().lat()),
         lng: String(circle.getCenter().lng()),
+        radius: circle.getRadius(),
       };
-      console.log("Nueva área:", newArea);
-      setAreas((prevAreas) => {
-        const updatedAreas = [...prevAreas, newArea];
-        console.log("Áreas actualizadas:", updatedAreas);
-        return updatedAreas;
-      });
-      setSelectedArea(null);
+
+      setSelectedArea(newArea);
       dispatch(addArea({ providerName: companyName, area: newArea }));
       handleShowArea(newArea);
-      console.log("Nombre de la nueva área:", areaName);
       setAreaName("");
     }
   };
@@ -82,31 +79,30 @@ const ProviderAreas = () => {
 
   const handleDeleteArea = (name: string) => {
     const companyName = user?.company?.name || "";
-    const updatedAreas = areas.filter((area) => area.name !== name);
-    setAreas(updatedAreas);
     dispatch(removeArea({ providerName: companyName, areaName: name }));
   };
 
   const handleShowArea = (area: Area) => {
-    console.log(area);
     setSelectedArea(area);
-    setCircleCenter({ lat: parseFloat(area.lat), lng: parseFloat(area.lng) });
-    setCircleRadius(10000);
+
+    const newLatLng = new (window as any).google.maps.LatLng(
+      parseFloat(area.lat),
+      parseFloat(area.lng)
+    );
+
+    setCircleCenter({
+      lat: parseFloat(area.lat),
+      lng: parseFloat(area.lng),
+    });
 
     const circle = circleRef.current;
     if (circle) {
-      circle.setCenter(
-        new window.google.maps.LatLng(
-          parseFloat(area.lat),
-          parseFloat(area.lng)
-        )
-      );
-      circle.setRadius(10000);
+      circle.setCenter(newLatLng);
+      circle.setRadius(area.radius);
     }
   };
 
   const maprender = (map: any, maps: any) => {
-    console.log("Centro del círculo:", circleCenter);
     const circle = new maps.Circle({
       strokeColor: "#FF0000",
       strokeOpacity: 0.8,
@@ -122,7 +118,6 @@ const ProviderAreas = () => {
 
     circle.addListener("drag", () => {
       handleCircleDrag(circle);
-      console.log(JSON.stringify(circle.getCenter()));
     });
 
     maps.event.addListener(circle, "radius_changed", () => {
@@ -295,6 +290,7 @@ const ProviderAreas = () => {
                 }}
                 defaultCenter={defaultCenter}
                 defaultZoom={11}
+                center={circleCenter}
                 yesIWantToUseGoogleMapApiInternals={true}
                 onGoogleApiLoaded={({ map, maps }) => maprender(map, maps)}
               />
