@@ -15,10 +15,13 @@ import {
   Box,
   Typography,
   TableHead,
+  Snackbar,
+  SnackbarContent,
 } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import LocalBarIcon from "@mui/icons-material/LocalBar";
 import SportsBarIcon from "@mui/icons-material/SportsBar";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../models/RootStateTypes";
 import {
@@ -56,6 +59,8 @@ const ProviderMenu = () => {
   const [selectedBeers, setSelectedBeers] = useState<Beer[]>(
     service?.beers || []
   );
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
     console.log("Cócteles seleccionados:", selectedCocktails);
@@ -77,6 +82,8 @@ const ProviderMenu = () => {
           })
         );
         setSelectedCocktails([...selectedCocktails, newCocktail]);
+        setSnackbarMessage(`Coctel "${selectedCocktail}" añadido`);
+        setSnackbarOpen(true);
       }
     }
     setSelectedCocktail(null);
@@ -93,6 +100,8 @@ const ProviderMenu = () => {
         };
         dispatch(addBeer({ providerName: companyName, beer: newBeer }));
         setSelectedBeers([...selectedBeers, newBeer]);
+        setSnackbarMessage(`Cerveza "${selectedBeer}" añadida`);
+        setSnackbarOpen(true);
       }
     }
     setSelectedBeer(null);
@@ -342,7 +351,42 @@ const ProviderMenu = () => {
           </Card>
         </Grid>
       ) : null}
-
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <SnackbarContent
+          message={
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "#242424",
+              }}
+            >
+              <CheckCircleIcon
+                style={{
+                  color: "#01FF72", // Color del ícono de éxito
+                  marginRight: "8px", // Espacio entre el ícono y el texto
+                }}
+              />
+              {snackbarMessage}
+            </div>
+          }
+          style={{
+            backgroundColor: "white", // Color de fondo
+            border: "2px solid #242424", // Borde de color #242424
+            fontFamily: "Quicksand, sans-serif", // Tipo de fuente
+            fontWeight: "bold", // Peso de la fuente
+            textAlign: "center", // Centra el texto horizontalmente
+          }}
+        />
+      </Snackbar>
       {user &&
       user.service &&
       (user.service.type === "Cervecería" || user.service.type === "Ambos") ? (

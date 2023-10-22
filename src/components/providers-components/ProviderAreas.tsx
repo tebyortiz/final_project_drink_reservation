@@ -16,9 +16,12 @@ import {
   Box,
   Typography,
   Paper,
+  Snackbar,
+  SnackbarContent,
 } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Area } from "../../models/UsersModels";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../models/RootStateTypes";
@@ -45,6 +48,8 @@ const ProviderAreas = () => {
   const [circleCenter, setCircleCenter] = useState(defaultCenter);
   const [circleRadius, setCircleRadius] = useState(10000);
   const [areaName, setAreaName] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const mapRef = useRef(null);
   const circleRef = useRef<any | null>(null);
@@ -64,7 +69,13 @@ const ProviderAreas = () => {
       dispatch(addArea({ providerName: companyName, area: newArea }));
       handleShowArea(newArea);
       setAreaName("");
+      setSnackbarMessage(`Área "${newArea.name}" añadida`);
+      setSnackbarOpen(true);
     }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   const handleCircleDrag = (circle: { getCenter: () => any }) => {
@@ -129,6 +140,7 @@ const ProviderAreas = () => {
   };
 
   return (
+    <div>
     <Grid container justifyContent="center" spacing={2}>
       <Grid item xs={12} md={6}>
         <Card
@@ -372,8 +384,45 @@ const ProviderAreas = () => {
           </CardContent>
         </Card>
       </Grid>
-    </Grid>
-  );
+      </Grid>
+    <Snackbar
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "center",
+      }}
+      open={snackbarOpen}
+      autoHideDuration={3000}
+      onClose={handleCloseSnackbar}
+    >
+      <SnackbarContent
+        message={
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              color: "#242424",
+            }}
+          >
+            <CheckCircleIcon
+              style={{
+                color: "#01FF72",
+                marginRight: "8px",
+              }}
+            />
+            {snackbarMessage}
+          </div>
+        }
+        style={{
+          backgroundColor: "white",
+          border: "2px solid #242424",
+          fontFamily: "Quicksand, sans-serif",
+          fontWeight: "bold",
+          textAlign: "center",
+        }}
+      />
+    </Snackbar>
+  </div>
+);
 };
 
 export default ProviderAreas;
