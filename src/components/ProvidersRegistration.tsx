@@ -37,6 +37,7 @@ const ProvidersRegistration = () => {
       type: "Ambos",
       cocktails: [],
       beers: [],
+      areas: [],
     },
     responsibleCompany: {
       name: "",
@@ -189,6 +190,7 @@ const ProvidersRegistration = () => {
         type: "Ambos",
         cocktails: [],
         beers: [],
+        areas: [],
       },
       responsibleCompany: {
         name: "",

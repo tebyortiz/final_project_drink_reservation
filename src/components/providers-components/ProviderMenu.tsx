@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Autocomplete,
   TextField,
@@ -15,10 +15,13 @@ import {
   Box,
   Typography,
   TableHead,
+  Snackbar,
+  SnackbarContent,
 } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import LocalBarIcon from "@mui/icons-material/LocalBar";
 import SportsBarIcon from "@mui/icons-material/SportsBar";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../models/RootStateTypes";
 import {
@@ -36,6 +39,14 @@ import {
 const ProviderMenu = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
+  const providers = useSelector(
+    (state: RootState) => state.providers.providers
+  );
+  const userCompanyName = user?.company?.name;
+  const selectedProvider = providers.find(
+    (provider) => provider.company.name === userCompanyName
+  );
+  const service = selectedProvider?.service;
   const [selectedCocktail, setSelectedCocktail] = useState<string | null>(null);
   const [selectedBeer, setSelectedBeer] = useState<string | null>(null);
   const [cocktailPrice, setCocktailPrice] = useState<number | null>(null);
@@ -43,13 +54,21 @@ const ProviderMenu = () => {
   const cocktailOptions = useFetchCocktailOptions();
   const beerOptions = useFetchBeerOptions();
   const [selectedCocktails, setSelectedCocktails] = useState<Cocktail[]>(
-    user?.service?.cocktails || []
+    service?.cocktails || []
   );
   const [selectedBeers, setSelectedBeers] = useState<Beer[]>(
-    user?.service?.beers || []
+    service?.beers || []
   );
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  useEffect(() => {
+    console.log("Cócteles seleccionados:", selectedCocktails);
+    console.log("Cervezas seleccionadas:", selectedBeers);
+  }, [selectedCocktails, selectedBeers]);
+
   const handleAddCocktail = () => {
-    const companyName = user?.company?.name || "";
+    const companyName = userCompanyName || "";
     if (companyName && selectedCocktail && cocktailPrice !== null) {
       if (!selectedCocktails.some((c) => c.name === selectedCocktail)) {
         const newCocktail: Cocktail = {
@@ -63,6 +82,8 @@ const ProviderMenu = () => {
           })
         );
         setSelectedCocktails([...selectedCocktails, newCocktail]);
+        setSnackbarMessage(`Coctel "${selectedCocktail}" añadido`);
+        setSnackbarOpen(true);
       }
     }
     setSelectedCocktail(null);
@@ -70,7 +91,7 @@ const ProviderMenu = () => {
   };
 
   const handleAddBeer = () => {
-    const companyName = user?.company?.name || "";
+    const companyName = userCompanyName || "";
     if (companyName && selectedBeer && beerPrice !== null) {
       if (!selectedBeers.some((b) => b.name === selectedBeer)) {
         const newBeer: Beer = {
@@ -79,6 +100,8 @@ const ProviderMenu = () => {
         };
         dispatch(addBeer({ providerName: companyName, beer: newBeer }));
         setSelectedBeers([...selectedBeers, newBeer]);
+        setSnackbarMessage(`Cerveza "${selectedBeer}" añadida`);
+        setSnackbarOpen(true);
       }
     }
     setSelectedBeer(null);
@@ -86,7 +109,7 @@ const ProviderMenu = () => {
   };
 
   const handleRemoveCocktail = (cocktail: string) => {
-    const companyName = user?.company?.name || "";
+    const companyName = userCompanyName || "";
     if (companyName) {
       dispatch(removeCocktail({ providerName: companyName, cocktail }));
       setSelectedCocktails(
@@ -96,7 +119,7 @@ const ProviderMenu = () => {
   };
 
   const handleRemoveBeer = (beer: string) => {
-    const companyName = user?.company?.name || "";
+    const companyName = userCompanyName || "";
     if (companyName) {
       dispatch(removeBeer({ providerName: companyName, beer }));
       setSelectedBeers(selectedBeers.filter((b) => b.name !== beer));
@@ -257,8 +280,11 @@ const ProviderMenu = () => {
               </Box>
               <Box p={2} sx={{ marginTop: "15px" }}>
                 {" "}
-                <Typography variant="h5" sx={{ color: "#242424" }}>
-                  Cervezas Seleccionadas
+                <Typography
+                  variant="h5"
+                  sx={{ color: "white", marginBottom: "20px" }}
+                >
+                  Cocteles Seleccionados
                 </Typography>
                 <TableContainer component={Paper}>
                   <Table>
@@ -325,7 +351,42 @@ const ProviderMenu = () => {
           </Card>
         </Grid>
       ) : null}
-
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <SnackbarContent
+          message={
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "#242424",
+              }}
+            >
+              <CheckCircleIcon
+                style={{
+                  color: "#01FF72", // Color del ícono de éxito
+                  marginRight: "8px", // Espacio entre el ícono y el texto
+                }}
+              />
+              {snackbarMessage}
+            </div>
+          }
+          style={{
+            backgroundColor: "white", // Color de fondo
+            border: "2px solid #242424", // Borde de color #242424
+            fontFamily: "Quicksand, sans-serif", // Tipo de fuente
+            fontWeight: "bold", // Peso de la fuente
+            textAlign: "center", // Centra el texto horizontalmente
+          }}
+        />
+      </Snackbar>
       {user &&
       user.service &&
       (user.service.type === "Cervecería" || user.service.type === "Ambos") ? (
@@ -476,7 +537,10 @@ const ProviderMenu = () => {
               </Box>
               <Box p={2} sx={{ marginTop: "15px" }}>
                 {" "}
-                <Typography variant="h5" sx={{ color: "#242424" }}>
+                <Typography
+                  variant="h5"
+                  sx={{ color: "white", marginBottom: "20px" }}
+                >
                   Cervezas Seleccionadas
                 </Typography>
                 <TableContainer component={Paper}>

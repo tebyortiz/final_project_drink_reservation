@@ -9,6 +9,7 @@ interface Provider {
     type: "Coctelería" | "Cervecería" | "Ambos";
     cocktails: Cocktail[];
     beers: Beer[];
+    areas: Area[];
   };
   responsibleCompany: {
     name: string;
@@ -60,6 +61,7 @@ interface UserState {
       type: "Coctelería" | "Cervecería" | "Ambos";
       cocktails?: Cocktail[];
       beers?: Beer[];
+      areas?: Area[];
     };
     responsibleCompany?: {
       name: string;
@@ -80,4 +82,11 @@ export type Cocktail = {
 export type Beer = {
   name: string;
   price: number;
+};
+
+export type Area = {
+  name: string;
+  lat: string;
+  lng: string;
+  radius: number;
 };

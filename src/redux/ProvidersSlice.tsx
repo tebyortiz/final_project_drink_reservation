@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Provider, Cocktail, Beer } from "../models/UsersModels";
+import { Provider, Cocktail, Beer, Area } from "../models/UsersModels";
 
 interface ProvidersState {
   providers: Provider[];
@@ -18,6 +18,7 @@ const initialState: ProvidersState = {
         type: "Cervecería",
         cocktails: [],
         beers: [],
+        areas: [],
       },
       responsibleCompany: {
         name: "Andres Rojo",
@@ -42,6 +43,7 @@ const initialState: ProvidersState = {
         type: "Coctelería",
         cocktails: [],
         beers: [],
+        areas: [],
       },
       responsibleCompany: {
         name: "Lucía Soul",
@@ -66,6 +68,7 @@ const initialState: ProvidersState = {
         type: "Ambos",
         cocktails: [],
         beers: [],
+        areas: [],
       },
       responsibleCompany: {
         name: "Juan Polo",
@@ -147,10 +150,46 @@ const providersSlice = createSlice({
         ).filter((b) => b.name !== beer);
       }
     },
+
+    addArea: (
+      state,
+      action: PayloadAction<{ providerName: string; area: Area }>
+    ) => {
+      const { providerName, area } = action.payload;
+      const providerIndex = state.providers.findIndex(
+        (provider) => provider.company.name === providerName
+      );
+
+      if (providerIndex !== -1) {
+        state.providers[providerIndex].service.areas.push(area);
+      }
+    },
+    removeArea: (
+      state,
+      action: PayloadAction<{ providerName: string; areaName: string }>
+    ) => {
+      const { providerName, areaName } = action.payload;
+      const providerIndex = state.providers.findIndex(
+        (provider) => provider.company.name === providerName
+      );
+
+      if (providerIndex !== -1) {
+        state.providers[providerIndex].service.areas = state.providers[
+          providerIndex
+        ].service.areas.filter((area) => area.name !== areaName);
+      }
+    },
   },
 });
 
-export const { addProvider, addCocktail, removeCocktail, addBeer, removeBeer } =
-  providersSlice.actions;
+export const {
+  addProvider,
+  addCocktail,
+  removeCocktail,
+  addBeer,
+  removeBeer,
+  addArea,
+  removeArea,
+} = providersSlice.actions;
 
 export default providersSlice.reducer;
