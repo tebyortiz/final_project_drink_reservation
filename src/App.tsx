@@ -7,6 +7,7 @@ import ClientWelcome from "./components/clients-components/ClientWelcome";
 import ProviderWelcome from "./components/providers-components/ProviderWelcome";
 import ProviderMenu from "./components/providers-components/ProviderMenu";
 import ProviderAreas from "./components/providers-components/ProviderAreas";
+import ProviderStock from "./components/providers-components/ProviderStock";
 
 function App() {
   const [loginSuccess, setLoginSuccess] = useState(false);
@@ -35,6 +36,7 @@ function App() {
         <Route path="/provider_home" element={<ProviderWelcome />} />
         <Route path="/provider_menu" element={<ProviderMenu />} />
         <Route path="/provider_areas" element={<ProviderAreas />} />
+        <Route path="/provider_stock" element={<ProviderStock />} />
       </Routes>
     </div>
   );

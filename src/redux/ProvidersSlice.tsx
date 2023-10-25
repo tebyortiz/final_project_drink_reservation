@@ -179,6 +179,33 @@ const providersSlice = createSlice({
         ].service.areas.filter((area) => area.name !== areaName);
       }
     },
+    updateCocktailStock: (
+      state,
+      action: PayloadAction<{
+        providerName: string;
+        updatedCocktails: Cocktail[];
+      }>
+    ) => {
+      const { providerName, updatedCocktails } = action.payload;
+      const providerIndex = state.providers.findIndex(
+        (provider) => provider.company.name === providerName
+      );
+      if (providerIndex !== -1) {
+        state.providers[providerIndex].service.cocktails = updatedCocktails;
+      }
+    },
+    updateBeerStock: (
+      state,
+      action: PayloadAction<{ providerName: string; updatedBeers: Beer[] }>
+    ) => {
+      const { providerName, updatedBeers } = action.payload;
+      const providerIndex = state.providers.findIndex(
+        (provider) => provider.company.name === providerName
+      );
+      if (providerIndex !== -1) {
+        state.providers[providerIndex].service.beers = updatedBeers;
+      }
+    },
   },
 });
 
@@ -190,6 +217,8 @@ export const {
   removeBeer,
   addArea,
   removeArea,
+  updateCocktailStock,
+  updateBeerStock,
 } = providersSlice.actions;
 
 export default providersSlice.reducer;

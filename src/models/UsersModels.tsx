@@ -77,11 +77,13 @@ export type { UserState };
 export type Cocktail = {
   name: string;
   price: number;
+  stock: number;
 };
 
 export type Beer = {
   name: string;
   price: number;
+  stock: number;
 };
 
 export type Area = {
