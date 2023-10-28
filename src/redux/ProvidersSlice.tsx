@@ -29,7 +29,7 @@ const initialState: ProvidersState = {
       },
       login: {
         username: "cervelandia1",
-        password: "12345678",
+        password: "asdasd",
       },
     },
     {
@@ -54,7 +54,7 @@ const initialState: ProvidersState = {
       },
       login: {
         username: "coctelandia1",
-        password: "12345678",
+        password: "asdasd",
       },
     },
     {
@@ -79,7 +79,7 @@ const initialState: ProvidersState = {
       },
       login: {
         username: "neonbar1",
-        password: "12345678",
+        password: "asdasd",
       },
     },
   ],

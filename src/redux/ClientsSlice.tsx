@@ -16,7 +16,7 @@ const initialState: ClientsState = {
       address: "Pellegrini 128 - Mendoza",
       login: {
         username: "anapaz1",
-        password: "12345678",
+        password: "asdasd",
       },
     },
     {
@@ -28,7 +28,7 @@ const initialState: ClientsState = {
       address: "San Martin 756 - Mendoza",
       login: {
         username: "luisgil1",
-        password: "12345678",
+        password: "asdasd",
       },
     },
   ],
