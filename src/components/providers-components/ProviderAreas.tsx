@@ -51,8 +51,10 @@ const ProviderAreas = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const mapRef = useRef(null);
+  const mapRef = useRef<any | null>(null);
   const circleRef = useRef<any | null>(null);
+  const lastCircleCenter = useRef(defaultCenter);
+  const lastCircleRadius = useRef(10000);
 
   const handleAddArea = () => {
     const companyName = user?.company?.name || "";
@@ -81,11 +83,13 @@ const ProviderAreas = () => {
   const handleCircleDrag = (circle: { getCenter: () => any }) => {
     const newCenter = circle.getCenter();
     setCircleCenter({ lat: newCenter.lat(), lng: newCenter.lng() });
+    lastCircleCenter.current = { lat: newCenter.lat(), lng: newCenter.lng() };
   };
 
   const handleCircleRadiusChange = (circle: { getRadius: () => any }) => {
     const newRadius = circle.getRadius();
     setCircleRadius(newRadius);
+    lastCircleRadius.current = newRadius;
   };
 
   const handleDeleteArea = (name: string) => {
@@ -114,29 +118,32 @@ const ProviderAreas = () => {
   };
 
   const maprender = (map: any, maps: any) => {
-    const circle = new maps.Circle({
-      strokeColor: "#FF0000",
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: "#FF0000",
-      fillOpacity: 0.35,
-      editable: true,
-      draggable: true,
-      map,
-      center: circleCenter,
-      radius: circleRadius,
-    });
+    if (!circleRef.current) {
+      const circle = new maps.Circle({
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#FF0000",
+        fillOpacity: 0.35,
+        editable: true,
+        draggable: true,
+        map,
+        center: circleCenter,
+        radius: circleRadius,
+      });
 
-    circle.addListener("drag", () => {
-      handleCircleDrag(circle);
-    });
+      circle.addListener("dragend", () => {
+        handleCircleDrag(circle);
+        console.log(JSON.stringify(circle.getCenter()));
+      });
 
-    maps.event.addListener(circle, "radius_changed", () => {
-      handleCircleRadiusChange(circle);
-    });
+      maps.event.addListener(circle, "radius_changed", () => {
+        handleCircleRadiusChange(circle);
+      });
 
-    mapRef.current = map;
-    circleRef.current = circle;
+      mapRef.current = map;
+      circleRef.current = circle;
+    }
   };
 
   return (

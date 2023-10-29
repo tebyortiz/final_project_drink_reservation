@@ -13,7 +13,7 @@ const ClientWelcome = () => {
       justifyContent="space-between"
       marginTop="50px"
     >
-      <Grid item xs={12}>
+      <Grid container item xs={12}>
         <Card
           sx={{
             backgroundColor: "#242424",
@@ -63,7 +63,7 @@ const ClientWelcome = () => {
         </Card>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid container item xs={12}>
         <Card
           sx={{
             backgroundColor: "#242424",

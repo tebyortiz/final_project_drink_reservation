@@ -145,7 +145,7 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
         return (
           <Toolbar disableGutters>
             <Grid container spacing={2} justifyContent="flex-end">
-              <Grid item sx={{ marginRight: 8 }}>
+              <Grid item>
                 <Hidden lgUp>
                   <Button color="inherit" onClick={handleMenuOpen}>
                     <MenuIcon />
@@ -153,30 +153,29 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                 </Hidden>
 
                 <Hidden mdDown>
-                  <Link to="/client_home" style={{ textDecoration: "none" }}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      sx={{
-                        position: "absolute",
-                        mt: "-18px",
-                        ml: 5,
-                        backgroundColor: "#EC299F",
-                        fontFamily: "Nunito, sans-serif",
-                        fontWeight: "bold",
-                        "&:hover": {
-                          backgroundColor: "white",
-                          color: "#EC299F",
-                        },
-                      }}
-                    >
-                      Inicio
-                    </Button>
-                  </Link>
+                  <Button
+                    onClick={() => navigate("/client_home")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 5,
+                      backgroundColor: "#EC299F",
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#EC299F",
+                      },
+                    }}
+                  >
+                    Inicio
+                  </Button>
                 </Hidden>
               </Grid>
             </Grid>
-            
+
             <Hidden lgUp>
               <Menu
                 anchorEl={anchorEl}
@@ -200,170 +199,142 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
           <Toolbar disableGutters>
             <Grid container spacing={2} justifyContent="flex-end">
               <Grid item>
-                <Grid container>
-                  <Hidden lgUp>
-                    <Button color="inherit" onClick={handleMenuOpen}>
-                      <MenuIcon />
-                    </Button>
-                  </Hidden>
-                </Grid>
+                <Hidden lgUp>
+                  <Button color="inherit" onClick={handleMenuOpen}>
+                    <MenuIcon />
+                  </Button>
+                </Hidden>
 
                 <Hidden mdDown>
-                  <Grid item>
-                    <Link
-                      to="/provider_home"
-                      style={{ textDecoration: "none", position: "absolute" }}
-                    >
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{
-                          position: "absolute",
-                          mt: "-18px",
-                          ml: 5,
-                          backgroundColor: "#01FF72",
-                          color: "#242424",
-                          fontFamily: "Quicksand, sans-serif",
-                          fontWeight: "bold",
-                          "&:hover": {
-                            backgroundColor: "white",
-                            color: "#01FF72",
-                          },
-                        }}
-                      >
-                        Inicio
-                      </Button>
-                    </Link>
-                  </Grid>
+                  <Button
+                    onClick={() => navigate("/provider_home")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 5,
+                      backgroundColor: "#01FF72",
+                      color: "#242424",
+                      fontFamily: "Quicksand, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#01FF72",
+                      },
+                    }}
+                  >
+                    Inicio
+                  </Button>
 
-                  <Grid item>
-                    <Link
-                      to="/provider_menu"
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{
-                          position: "absolute",
-                          mt: "-18px",
-                          ml: 18,
-                          backgroundColor: "#01FF72",
-                          color: "#242424",
-                          fontFamily: "Quicksand, sans-serif",
-                          fontWeight: "bold",
-                          "&:hover": {
-                            backgroundColor: "white",
-                            color: "#01FF72",
-                          },
-                        }}
-                      >
-                        Servicios
-                      </Button>
-                    </Link>
-                  </Grid>
+                  <Button
+                    onClick={() => navigate("/provider_menu")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 18,
+                      backgroundColor: "#01FF72",
+                      color: "#242424",
+                      fontFamily: "Quicksand, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#01FF72",
+                      },
+                    }}
+                  >
+                    Servicios
+                  </Button>
 
-                  <Grid item>
-                    <Link
-                      to="/provider_areas"
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{
-                          position: "absolute",
-                          mt: "-18px",
-                          ml: 35,
-                          backgroundColor: "#01FF72",
-                          color: "#242424",
-                          fontFamily: "Quicksand, sans-serif",
-                          fontWeight: "bold",
-                          "&:hover": {
-                            backgroundColor: "white",
-                            color: "#01FF72",
-                          },
-                        }}
-                      >
-                        Áreas
-                      </Button>
-                    </Link>
-                  </Grid>
+                  <Button
+                    onClick={() => navigate("/provider_areas")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 35,
+                      backgroundColor: "#01FF72",
+                      color: "#242424",
+                      fontFamily: "Quicksand, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#01FF72",
+                      },
+                    }}
+                  >
+                    Áreas
+                  </Button>
 
-                  <Grid item>
-                    <Link
-                      to="/provider_stock"
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{
-                          position: "absolute",
-                          mt: "-18px",
-                          ml: 48,
-                          backgroundColor: "#01FF72",
-                          color: "#242424",
-                          fontFamily: "Quicksand, sans-serif",
-                          fontWeight: "bold",
-                          "&:hover": {
-                            backgroundColor: "white",
-                            color: "#01FF72",
-                          },
-                        }}
-                      >
-                        Stock
-                      </Button>
-                    </Link>
-                  </Grid>
+                  <Button
+                    onClick={() => navigate("/provider_stock")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 48,
+                      backgroundColor: "#01FF72",
+                      color: "#242424",
+                      fontFamily: "Quicksand, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#01FF72",
+                      },
+                    }}
+                  >
+                    Stock
+                  </Button>
                 </Hidden>
               </Grid>
             </Grid>
 
             <Hidden lgUp>
-              <Grid container>
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleMenuClose}
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem
+                  onClick={() => {
+                    navigate("/provider_home");
+                    handleMenuClose();
+                  }}
                 >
-                  <MenuItem
-                    onClick={() => {
-                      navigate("/provider_home");
-                      handleMenuClose();
-                    }}
-                  >
-                    Inicio
-                  </MenuItem>
+                  Inicio
+                </MenuItem>
 
-                  <MenuItem
-                    onClick={() => {
-                      navigate("/provider_menu");
-                      handleMenuClose();
-                    }}
-                  >
-                    Servicios
-                  </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    navigate("/provider_menu");
+                    handleMenuClose();
+                  }}
+                >
+                  Servicios
+                </MenuItem>
 
-                  <MenuItem
-                    onClick={() => {
-                      navigate("/provider_areas");
-                      handleMenuClose();
-                    }}
-                  >
-                    Áreas
-                  </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    navigate("/provider_areas");
+                    handleMenuClose();
+                  }}
+                >
+                  Áreas
+                </MenuItem>
 
-                  <MenuItem
-                    onClick={() => {
-                      navigate("/provider_stock");
-                      handleMenuClose();
-                    }}
-                  >
-                    Stock
-                  </MenuItem>
-                </Menu>
-              </Grid>
+                <MenuItem
+                  onClick={() => {
+                    navigate("/provider_stock");
+                    handleMenuClose();
+                  }}
+                >
+                  Stock
+                </MenuItem>
+              </Menu>
             </Hidden>
           </Toolbar>
         );
@@ -383,7 +354,7 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
             }}
           >
             <Grid container alignItems="center" justifyContent="space-between">
-              <Grid>{renderButtons()}</Grid>
+              <Grid item>{renderButtons()}</Grid>
               <Grid item>{renderUserSection()}</Grid>
             </Grid>
           </Box>
