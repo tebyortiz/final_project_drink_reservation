@@ -115,7 +115,7 @@ const UsersLogin = ({
             style={{
               width: "250px",
               height: "250px",
-              marginBottom: "20px",
+              marginTop: "20px",
               boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
               borderRadius: "50%",
             }}
@@ -139,7 +139,7 @@ const UsersLogin = ({
 
         {/* Card para ingreso */}
 
-        <Grid item xs={12}>
+        <Grid container item xs={12}>
           <Card
             sx={{
               backgroundColor: "#242424",

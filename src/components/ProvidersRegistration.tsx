@@ -14,6 +14,7 @@ import {
   keyframes,
   Divider,
   Grid,
+  Box,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
@@ -75,6 +76,7 @@ const ProvidersRegistration = () => {
   const cardStyleProvider = {
     width: "400px",
     height: "500px",
+    margin: " auto",
     marginBottom: "20px",
     backgroundColor: "#242424",
     borderRadius: "15px",
@@ -92,6 +94,7 @@ const ProvidersRegistration = () => {
   const cardStyleClient = {
     width: "400px",
     height: "500px",
+    margin: "auto",
     marginBottom: "20px",
     backgroundColor: "#242424",
     borderRadius: "15px",
@@ -211,15 +214,12 @@ const ProvidersRegistration = () => {
 
   return (
     <Grid item xs={12}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          height: "100vh",
-          marginTop: "20px",
-        }}
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="space-between"
+        padding="20px"
       >
         <Grid item xs={12}>
           <img
@@ -228,101 +228,102 @@ const ProvidersRegistration = () => {
             style={{
               width: "250px",
               height: "250px",
+              marginTop: "20px",
               boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
               borderRadius: "50%",
             }}
           />
         </Grid>
         <Grid item xs={12}>
-          <div
+          <Typography
+            variant="h4"
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              margin: "20px",
+              marginTop: "10px",
+              marginBottom: "20px",
+              textAlign: "center",
+              fontFamily: "Quicksand, sans-serif",
+              fontWeight: "bold",
             }}
           >
-            <Grid item xs={6}>
-              <Typography
-                variant="h4"
-                style={{
-                  marginBottom: "20px",
-                  textAlign: "center",
-                  fontFamily: "Quicksand, sans-serif",
-                  fontWeight: "bold",
-                }}
-              >
-                Para Registrarte, selecciona tu tipo de Usuario.
-              </Typography>
-            </Grid>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-start",
-                gap: "120px",
+            Para Registrarte, selecciona tu tipo de Usuario.
+          </Typography>
+        </Grid>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "auto",
+            gap: "20px",
+          }}
+        >
+          {/* Cards de selección de tipo de Usuario */}
+
+          <Grid container item xs={12}>
+            <Card
+              sx={{
+                ...cardStyleProvider,
+                marginRight: "20px",
+                marginLeft: "20px",
               }}
             >
-              {/* Cards de selección de tipo de Usuario */}
+              <Button onClick={handleProviderDialogOpen}>
+                <CardContent
+                  style={{
+                    textAlign: "center",
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <img
+                    src="/images/proveedor.png"
+                    alt="Proveedor"
+                    style={{
+                      width: "auto",
+                      height: "auto",
+                      maxHeight: "350px",
+                    }}
+                  />
 
-              <Grid item xs={3}>
-                <Card sx={cardStyleProvider}>
-                  <Button onClick={handleProviderDialogOpen}>
-                    <CardContent
-                      style={{
-                        textAlign: "center",
-                        flex: "1",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-end",
-                      }}
-                    >
-                      <img
-                        src="/images/proveedor.png"
-                        alt="Proveedor"
-                        style={{
-                          width: "auto",
-                          height: "auto",
-                          maxHeight: "350px",
-                        }}
-                      />
+                  <Title1 variant="h4">PROVEEDOR</Title1>
+                </CardContent>
+              </Button>
+            </Card>
 
-                      <Title1 variant="h4">PROVEEDOR</Title1>
-                    </CardContent>
-                  </Button>
-                </Card>
-              </Grid>
-              <Grid item xs={3}>
-                <Card sx={cardStyleClient}>
-                  <Button onClick={openUserForm}>
-                    <CardContent
-                      style={{
-                        textAlign: "center",
-                        flex: "1",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-end",
-                      }}
-                    >
-                      <img
-                        src="/images/cliente.png"
-                        alt="Cliente"
-                        style={{
-                          width: "auto",
-                          height: "auto",
-                          maxHeight: "350px",
-                        }}
-                      />
+            <Card
+              sx={{
+                ...cardStyleClient,
+                marginRight: "20px",
+                marginLeft: "20px",
+              }}
+            >
+              <Button onClick={openUserForm}>
+                <CardContent
+                  style={{
+                    textAlign: "center",
+                    flex: "1",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <img
+                    src="/images/cliente.png"
+                    alt="Cliente"
+                    style={{
+                      width: "auto",
+                      height: "auto",
+                      maxHeight: "350px",
+                    }}
+                  />
 
-                      <Title2 variant="h4">CLIENTE</Title2>
-                    </CardContent>
-                  </Button>
-                </Card>
-              </Grid>
-            </div>
-          </div>
-        </Grid>
+                  <Title2 variant="h4">CLIENTE</Title2>
+                </CardContent>
+              </Button>
+            </Card>
+          </Grid>
+        </div>
 
         {/* Formulario de Registro Proveedores */}
         <Grid item xs={12}>
@@ -870,7 +871,7 @@ const ProvidersRegistration = () => {
           isUserDialogOpen={isUserDialogOpen}
           setIsUserDialogOpen={setIsUserDialogOpen}
         />
-      </div>
+      </Box>
     </Grid>
   );
 };

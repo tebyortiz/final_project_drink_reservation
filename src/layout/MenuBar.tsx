@@ -7,17 +7,31 @@ import {
   Typography,
   Avatar,
   IconButton,
+  Hidden,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import MenuIcon from "@mui/icons-material/Menu";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import RootState from "../models/RootStateTypes";
 import { clearUser } from "../redux/UserSlice";
+import { useState } from "react";
 
 const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
   const user = useSelector((state: RootState) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleLogout = () => {
     dispatch(clearUser());
@@ -42,7 +56,7 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
   const renderUserSection = () => {
     if (loginSuccess && user) {
       return (
-        <Grid container alignItems="center">
+        <Grid container justifyContent="flex-end">
           <Grid item>
             <Typography
               variant="subtitle1"
@@ -129,112 +143,200 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
     } else {
       if (user.userType === "Cliente") {
         return (
-          <Grid container spacing={2} justifyContent="flex-end">
-            <Grid item>
-              <Link to="/client_home" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    backgroundColor: "#EC299F",
-                    fontFamily: "Nunito, sans-serif",
-                    fontWeight: "bold",
-                    "&:hover": {
-                      backgroundColor: "white",
-                      color: "#EC299F",
-                    },
+          <Toolbar disableGutters>
+            <Grid container spacing={2} justifyContent="flex-end">
+              <Grid item>
+                <Hidden lgUp>
+                  <Button color="inherit" onClick={handleMenuOpen}>
+                    <MenuIcon />
+                  </Button>
+                </Hidden>
+
+                <Hidden mdDown>
+                  <Button
+                    onClick={() => navigate("/client_home")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 5,
+                      backgroundColor: "#EC299F",
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#EC299F",
+                      },
+                    }}
+                  >
+                    Inicio
+                  </Button>
+                </Hidden>
+              </Grid>
+            </Grid>
+
+            <Hidden lgUp>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem
+                  onClick={() => {
+                    navigate("/client_home");
+                    handleMenuClose();
                   }}
                 >
                   Inicio
-                </Button>
-              </Link>
-            </Grid>
-            <Grid item sx={{ marginRight: 8 }}>
-              <Link to="/provider_menu" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    backgroundColor: "#01FF72",
-                    color: "#242424",
-                    fontFamily: "Quicksand, sans-serif",
-                    fontWeight: "bold",
-                    "&:hover": {
-                      backgroundColor: "white",
-                      color: "#01FF72",
-                    },
-                  }}
-                >
-                  Servicios
-                </Button>
-              </Link>
-            </Grid>
-          </Grid>
+                </MenuItem>
+              </Menu>
+            </Hidden>
+          </Toolbar>
         );
       } else if (user.userType === "Proveedor") {
         return (
-          <Grid container spacing={2} justifyContent="flex-end">
-            <Grid item>
-              <Link to="/provider_home" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    backgroundColor: "#01FF72",
-                    color: "#242424",
-                    fontFamily: "Quicksand, sans-serif",
-                    fontWeight: "bold",
-                    "&:hover": {
-                      backgroundColor: "white",
-                      color: "#01FF72",
-                    },
+          <Toolbar disableGutters>
+            <Grid container spacing={2} justifyContent="flex-end">
+              <Grid item>
+                <Hidden lgUp>
+                  <Button color="inherit" onClick={handleMenuOpen}>
+                    <MenuIcon />
+                  </Button>
+                </Hidden>
+
+                <Hidden mdDown>
+                  <Button
+                    onClick={() => navigate("/provider_home")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 5,
+                      backgroundColor: "#01FF72",
+                      color: "#242424",
+                      fontFamily: "Quicksand, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#01FF72",
+                      },
+                    }}
+                  >
+                    Inicio
+                  </Button>
+
+                  <Button
+                    onClick={() => navigate("/provider_menu")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 18,
+                      backgroundColor: "#01FF72",
+                      color: "#242424",
+                      fontFamily: "Quicksand, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#01FF72",
+                      },
+                    }}
+                  >
+                    Servicios
+                  </Button>
+
+                  <Button
+                    onClick={() => navigate("/provider_areas")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 35,
+                      backgroundColor: "#01FF72",
+                      color: "#242424",
+                      fontFamily: "Quicksand, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#01FF72",
+                      },
+                    }}
+                  >
+                    Áreas
+                  </Button>
+
+                  <Button
+                    onClick={() => navigate("/provider_stock")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 48,
+                      backgroundColor: "#01FF72",
+                      color: "#242424",
+                      fontFamily: "Quicksand, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#01FF72",
+                      },
+                    }}
+                  >
+                    Stock
+                  </Button>
+                </Hidden>
+              </Grid>
+            </Grid>
+
+            <Hidden lgUp>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem
+                  onClick={() => {
+                    navigate("/provider_home");
+                    handleMenuClose();
                   }}
                 >
                   Inicio
-                </Button>
-              </Link>
-            </Grid>
-            <Grid item sx={{ marginRight: 8 }}>
-              <Link to="/provider_menu" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    backgroundColor: "#01FF72",
-                    color: "#242424",
-                    fontFamily: "Quicksand, sans-serif",
-                    fontWeight: "bold",
-                    "&:hover": {
-                      backgroundColor: "white",
-                      color: "#01FF72",
-                    },
+                </MenuItem>
+
+                <MenuItem
+                  onClick={() => {
+                    navigate("/provider_menu");
+                    handleMenuClose();
                   }}
                 >
                   Servicios
-                </Button>
-              </Link>
-            </Grid>
-            <Grid item sx={{ marginRight: 8 }}>
-              <Link to="/provider_areas" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    backgroundColor: "#01FF72",
-                    color: "#242424",
-                    fontFamily: "Quicksand, sans-serif",
-                    fontWeight: "bold",
-                    "&:hover": {
-                      backgroundColor: "white",
-                      color: "#01FF72",
-                    },
+                </MenuItem>
+
+                <MenuItem
+                  onClick={() => {
+                    navigate("/provider_areas");
+                    handleMenuClose();
                   }}
                 >
                   Áreas
-                </Button>
-              </Link>
-            </Grid>
-          </Grid>
+                </MenuItem>
+
+                <MenuItem
+                  onClick={() => {
+                    navigate("/provider_stock");
+                    handleMenuClose();
+                  }}
+                >
+                  Stock
+                </MenuItem>
+              </Menu>
+            </Hidden>
+          </Toolbar>
         );
       }
     }
@@ -244,7 +346,13 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
     <Grid item xs={12}>
       <AppBar position="static" sx={{ backgroundColor: "#242424" }}>
         <Toolbar>
-          <Box sx={{ flexGrow: 1 }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             <Grid container alignItems="center" justifyContent="space-between">
               <Grid item>{renderButtons()}</Grid>
               <Grid item>{renderUserSection()}</Grid>

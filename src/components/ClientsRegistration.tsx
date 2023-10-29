@@ -118,6 +118,7 @@ const ClientsRegistration = ({
             >
               Para registrarte, completa los siguientes campos:
             </DialogTitle>
+
             <div style={{ padding: "20px" }}>
               <TextField
                 fullWidth

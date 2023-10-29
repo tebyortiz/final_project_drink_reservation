@@ -74,6 +74,7 @@ const ProviderMenu = () => {
         const newCocktail: Cocktail = {
           name: selectedCocktail,
           price: cocktailPrice,
+          stock: 0,
         };
         dispatch(
           addCocktail({
@@ -97,6 +98,7 @@ const ProviderMenu = () => {
         const newBeer: Beer = {
           name: selectedBeer,
           price: beerPrice,
+          stock: 0,
         };
         dispatch(addBeer({ providerName: companyName, beer: newBeer }));
         setSelectedBeers([...selectedBeers, newBeer]);
@@ -371,19 +373,19 @@ const ProviderMenu = () => {
             >
               <CheckCircleIcon
                 style={{
-                  color: "#01FF72", // Color del ícono de éxito
-                  marginRight: "8px", // Espacio entre el ícono y el texto
+                  color: "#01FF72",
+                  marginRight: "8px",
                 }}
               />
               {snackbarMessage}
             </div>
           }
           style={{
-            backgroundColor: "white", // Color de fondo
-            border: "2px solid #242424", // Borde de color #242424
-            fontFamily: "Quicksand, sans-serif", // Tipo de fuente
-            fontWeight: "bold", // Peso de la fuente
-            textAlign: "center", // Centra el texto horizontalmente
+            backgroundColor: "white",
+            border: "2px solid #242424",
+            fontFamily: "Quicksand, sans-serif",
+            fontWeight: "bold",
+            textAlign: "center",
           }}
         />
       </Snackbar>
