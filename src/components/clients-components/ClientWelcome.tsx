@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -16,25 +16,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../models/RootStateTypes";
 import { updatePosition } from "../../redux/ClientsSlice";
 import { MarkerPosition } from "../../models/UsersModels";
-import RoomTwoToneIcon from "@mui/icons-material/RoomTwoTone";
 
 const defaultCenter = {
   lat: -32.8897,
   lng: -68.844629,
 };
-
-const Marker = ({ position }: { position: MarkerPosition }) => (
-  <div className="marker" style={{ position: "relative", left: -15, top: -15 }}>
-    <RoomTwoToneIcon
-      style={{
-        width: 30,
-        height: 30,
-        color: "red",
-        transform: "translate(-50%, -100%)",
-      }}
-    />
-  </div>
-);
 
 const ClientWelcome = () => {
   const dispatch = useDispatch();
@@ -48,6 +34,12 @@ const ClientWelcome = () => {
   const [newPosition, setNewPosition] = useState<MarkerPosition | null>(
     selectedClient?.markerPosition || null
   );
+
+  const mapRef = useRef(null);
+
+  // Referencia al objeto del marcador
+  const markerRef = useRef<any | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   const handleMarkerPositionChange = (position: MarkerPosition) => {
     setNewPosition(position);
@@ -63,7 +55,49 @@ const ClientWelcome = () => {
   const handleMapClick = () => {
     setMapOpen(!isMapOpen);
   };
-  
+
+  const maprender = (map: any, maps: any) => {
+    // Evento que se ejecuta cuando se carga la API de Google Maps
+    mapRef.current = map; // Guardar referencia al objeto del mapa
+    // Crear un marcador en la posición inicial y hacerlo arrastrable
+    markerRef.current = new maps.Marker({
+      position: { lat: -32.912915, lng: -68.855614 },
+      map,
+      draggable: true,
+      title: "ENCONTRADO EN ",
+    });
+
+    // Evento que se ejecuta al arrastrar el marcador
+    markerRef.current.addListener("drag", () => {
+      console.log(
+        "Posición del marcador:",
+        JSON.stringify(markerRef.current.getPosition())
+      );
+    });
+
+    // Evento que se ejecuta al hacer clic en el mapa
+    map.addListener("click", (mapsMouseEvent: any) => {
+      handleSelectPublication(mapsMouseEvent);
+    });
+  };
+
+  //parametro que contiene la informacion del evento click
+  const handleSelectPublication = (mapsMouseEvent: any) => {
+    // Obtiene las coordenadas de la posición seleccionada
+    const clickedPosition: any = {
+      lat: mapsMouseEvent.latLng.lat(),
+      lng: mapsMouseEvent.latLng.lng(),
+    };
+
+    if (markerRef.current && mapRef.current) {
+      // Mueve el marcador a la posición seleccionada
+      markerRef.current.setPosition(clickedPosition);
+
+      // Establece la ubicación seleccionada en el estado
+      setSelectedLocation(clickedPosition);
+      console.log("Ubicación seleccionada:", clickedPosition);
+    }
+  };
 
   return (
     <Box
@@ -97,14 +131,14 @@ const ClientWelcome = () => {
                 defaultZoom={11}
                 onClick={(event) => {
                   const newPosition: MarkerPosition = {
-                    lat: (event.lat),
-                    lng: (event.lng),
+                    lat: event.lat,
+                    lng: event.lng,
                   };
                   handleMarkerPositionChange(newPosition);
                 }}
-              >
-                {newPosition && <Marker position={newPosition} />}
-              </GoogleMapReact>
+                yesIWantToUseGoogleMapApiInternals={true}
+                onGoogleApiLoaded={({ map, maps }) => maprender(map, maps)}
+              ></GoogleMapReact>
             </div>
           </AccordionDetails>
         </Accordion>
