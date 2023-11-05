@@ -19,8 +19,8 @@ const initialState: ClientsState = {
         password: "asdasd",
       },
       markerPosition: {
-        lat: "",
-        lng: "",
+        lat: 0,
+        lng: 0,
       },
     },
     {
@@ -35,8 +35,8 @@ const initialState: ClientsState = {
         password: "asdasd",
       },
       markerPosition: {
-        lat: "",
-        lng: "",
+        lat: 0,
+        lng: 0,
       },
     },
   ],
@@ -49,7 +49,10 @@ const clientsSlice = createSlice({
     addClient: (state, action: PayloadAction<Client>) => {
       state.clients = [...state.clients, action.payload];
     },
-    updatePosition: (state, action: PayloadAction<{ clientName: string, newPosition: MarkerPosition }>) => {
+    updatePosition: (
+      state,
+      action: PayloadAction<{ clientName: string; newPosition: MarkerPosition }>
+    ) => {
       const { clientName, newPosition } = action.payload;
       const client = state.clients.find((c) => c.name === clientName);
       if (client) {

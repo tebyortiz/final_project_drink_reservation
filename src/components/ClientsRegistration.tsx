@@ -37,6 +37,10 @@ const ClientsRegistration = ({
       username: "",
       password: "",
     },
+    markerPosition: {
+      lat: 0,
+      lng: 0,
+    },
   });
 
   const handleUserDialogClose = () => {
@@ -86,6 +90,10 @@ const ClientsRegistration = ({
       login: {
         username: "",
         password: "",
+      },
+      markerPosition: {
+        lat: 0,
+        lng: 0,
       },
     });
 

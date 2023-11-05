@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -11,30 +11,17 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import clienteBanner from "../../../public/images/clientebanner.png";
+import HouseIcon from "@mui/icons-material/House";
 import GoogleMapReact from "google-map-react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../models/RootStateTypes";
 import { updatePosition } from "../../redux/ClientsSlice";
 import { MarkerPosition } from "../../models/UsersModels";
-import RoomTwoToneIcon from "@mui/icons-material/RoomTwoTone";
 
 const defaultCenter = {
   lat: -32.8897,
   lng: -68.844629,
 };
-
-const Marker = ({ position }: { position: MarkerPosition }) => (
-  <div className="marker" style={{ position: "relative", left: -15, top: -15 }}>
-    <RoomTwoToneIcon
-      style={{
-        width: 30,
-        height: 30,
-        color: "red",
-        transform: "translate(-50%, -100%)",
-      }}
-    />
-  </div>
-);
 
 const ClientWelcome = () => {
   const dispatch = useDispatch();
@@ -46,24 +33,49 @@ const ClientWelcome = () => {
   const selectedClient = clients.find((client) => client.name === userName);
 
   const [newPosition, setNewPosition] = useState<MarkerPosition | null>(
-    selectedClient?.markerPosition || null
+    selectedClient?.markerPosition || defaultCenter
   );
 
-  const handleMarkerPositionChange = (position: MarkerPosition) => {
-    setNewPosition(position);
-  };
+  const mapRef = useRef<any | null>(null);
+  const markerRef = useRef<any | null>(null);
 
   const handleSaveLocation = () => {
     if (userName && newPosition) {
+      // Actualiza la posición del cliente
       dispatch(updatePosition({ clientName: userName, newPosition }));
-      setNewPosition({ ...newPosition });
     }
   };
 
   const handleMapClick = () => {
     setMapOpen(!isMapOpen);
   };
-  
+
+  const maprender = (map: any, maps: any) => {
+    mapRef.current = map;
+    markerRef.current = new maps.Marker({
+      position: newPosition || defaultCenter,
+      map,
+      draggable: true,
+      title: "Ubicación actual",
+    });
+
+    // Evento que se ejecuta al hacer clic en el mapa
+    map.addListener("click", (mapsMouseEvent: any) => {
+      handleSelectPublication(mapsMouseEvent);
+    });
+  };
+
+  const handleSelectPublication = (mapsMouseEvent: any) => {
+    const clickedPosition: MarkerPosition = {
+      lat: mapsMouseEvent.latLng.lat(),
+      lng: mapsMouseEvent.latLng.lng(),
+    };
+
+    if (markerRef.current && mapRef.current) {
+      markerRef.current.setPosition(clickedPosition);
+      setNewPosition(clickedPosition);
+    }
+  };
 
   return (
     <Box
@@ -76,38 +88,76 @@ const ClientWelcome = () => {
       marginTop="50px"
     >
       <Grid item xs={12}>
-        <Accordion expanded={isMapOpen} onChange={handleMapClick}>
-          <AccordionSummary>
-            <Typography variant="h4">Mi Ubicación</Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSaveLocation}
+        <div style={{ width: "100%", marginBottom: "30px" }}>
+          <Accordion
+            expanded={isMapOpen}
+            onChange={handleMapClick}
+            sx={{
+              width: "100%",
+              marginBottom: "20px",
+              padding: "5px",
+              borderRadius: "15px",
+              backgroundColor: "#242424",
+            }}
+          >
+            <AccordionSummary
+              sx={{ justifyContent: "space-between", color: "#fff" }}
             >
-              Guardar Ubicación
-            </Button>
-          </AccordionSummary>
-          <AccordionDetails>
-            <div style={{ height: "400px", width: "100%" }}>
-              <GoogleMapReact
-                bootstrapURLKeys={{
-                  key: "AIzaSyBfjO7sxd8P6HDrF1lmvLV151z7ocauPD0",
-                }}
-                defaultCenter={defaultCenter}
-                defaultZoom={11}
-                onClick={(event) => {
-                  const newPosition: MarkerPosition = {
-                    lat: (event.lat),
-                    lng: (event.lng),
-                  };
-                  handleMarkerPositionChange(newPosition);
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
                 }}
               >
-                {newPosition && <Marker position={newPosition} />}
-              </GoogleMapReact>
-            </div>
-          </AccordionDetails>
-        </Accordion>
+                <Typography
+                  variant="h5"
+                  style={{
+                    textAlign: "center",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                    lineHeight: "2",
+                  }}
+                >
+                  Mi Ubicación
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    backgroundColor: "#EC299F",
+                    fontFamily: "Nunito, sans-serif",
+                    fontWeight: "bold",
+                    "&:hover": {
+                      backgroundColor: "white",
+                      color: "#EC299F",
+                    },
+                  }}
+                  onClick={handleSaveLocation}
+                >
+                  Guardar Ubicación
+                  <HouseIcon
+                    fontSize="large"
+                    style={{ marginLeft: "3px", marginBottom: "5px" }}
+                  />
+                </Button>
+              </div>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div style={{ height: "400px", width: "100%" }}>
+                <GoogleMapReact
+                  bootstrapURLKeys={{
+                    key: "AIzaSyBfjO7sxd8P6HDrF1lmvLV151z7ocauPD0",
+                  }}
+                  defaultCenter={defaultCenter}
+                  defaultZoom={11}
+                  yesIWantToUseGoogleMapApiInternals
+                  onGoogleApiLoaded={({ map, maps }) => maprender(map, maps)}
+                />
+              </div>
+            </AccordionDetails>
+          </Accordion>
+        </div>
       </Grid>
 
       <Grid container item xs={12}>

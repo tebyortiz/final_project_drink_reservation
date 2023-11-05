@@ -31,9 +31,6 @@ const UsersLogin = ({
   );
 
   const handleLogin = () => {
-    console.log("Ingreso de usuario", clients);
-    console.log("Ingreso de proveedor", providers);
-
     const client =
       clients &&
       clients.find(
