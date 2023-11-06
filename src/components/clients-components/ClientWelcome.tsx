@@ -38,7 +38,7 @@ const ClientWelcome = () => {
 
   const initialCenter = newPosition || defaultCenter;
 
-  const mapRef = useRef<any | null>(defaultCenter);
+  const mapRef = useRef<any | null>(null);
   const markerRef = useRef<any | null>(null);
 
   useEffect(() => {
@@ -49,8 +49,8 @@ const ClientWelcome = () => {
 
   const handleSaveLocation = () => {
     if (userName && markerRef.current) {
-      const lat = markerRef.current.getPosition().lat();
-      const lng = markerRef.current.getPosition().lng();
+      const lat = markerRef.current?.getPosition()?.lat();
+      const lng = markerRef.current?.getPosition()?.lng();
       const updatedPosition: MarkerPosition = { lat, lng };
 
       dispatch(
