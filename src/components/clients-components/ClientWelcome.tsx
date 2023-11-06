@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -36,13 +36,30 @@ const ClientWelcome = () => {
     selectedClient?.markerPosition || defaultCenter
   );
 
+  const initialCenter = newPosition || defaultCenter;
+
   const mapRef = useRef<any | null>(null);
   const markerRef = useRef<any | null>(null);
 
+  useEffect(() => {
+    if (markerRef.current && newPosition) {
+      markerRef.current.setPosition(newPosition);
+    }
+  }, [newPosition]);
+
   const handleSaveLocation = () => {
-    if (userName && newPosition) {
-      // Actualiza la posición del cliente
-      dispatch(updatePosition({ clientName: userName, newPosition }));
+    if (userName && markerRef.current) {
+      const lat = markerRef.current.getPosition().lat();
+      const lng = markerRef.current.getPosition().lng();
+      const updatedPosition: MarkerPosition = { lat, lng };
+
+      dispatch(
+        updatePosition({ clientName: userName, newPosition: updatedPosition })
+      );
+      defaultCenter.lat = lat;
+      defaultCenter.lng = lng;
+    } else {
+      console.error("markerRef.current is null or userName is undefined");
     }
   };
 
@@ -53,13 +70,19 @@ const ClientWelcome = () => {
   const maprender = (map: any, maps: any) => {
     mapRef.current = map;
     markerRef.current = new maps.Marker({
-      position: newPosition || defaultCenter,
+      position: initialCenter,
       map,
       draggable: true,
       title: "Ubicación actual",
     });
 
-    // Evento que se ejecuta al hacer clic en el mapa
+    markerRef.current.addListener("drag", () => {
+      //console.log(
+      //"Posición del marcador:",
+      //JSON.stringify(markerRef.current.getPosition())
+      //);
+    });
+
     map.addListener("click", (mapsMouseEvent: any) => {
       handleSelectPublication(mapsMouseEvent);
     });

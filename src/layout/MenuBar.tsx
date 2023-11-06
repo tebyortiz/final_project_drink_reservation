@@ -172,6 +172,26 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                   >
                     Inicio
                   </Button>
+
+                  <Button
+                    onClick={() => navigate("/client_local_providers")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 18,
+                      backgroundColor: "#EC299F",
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#EC299F",
+                      },
+                    }}
+                  >
+                    Proveedores Cercanos
+                  </Button>
                 </Hidden>
               </Grid>
             </Grid>
@@ -189,6 +209,15 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                   }}
                 >
                   Inicio
+                </MenuItem>
+
+                <MenuItem
+                  onClick={() => {
+                    navigate("/client_local_providers");
+                    handleMenuClose();
+                  }}
+                >
+                  Proveedores Cercanos
                 </MenuItem>
               </Menu>
             </Hidden>
