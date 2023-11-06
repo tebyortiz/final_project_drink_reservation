@@ -134,7 +134,6 @@ const ProviderAreas = () => {
 
       circle.addListener("dragend", () => {
         handleCircleDrag(circle);
-        console.log(JSON.stringify(circle.getCenter()));
       });
 
       maps.event.addListener(circle, "radius_changed", () => {

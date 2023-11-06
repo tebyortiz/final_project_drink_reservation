@@ -1,6 +1,6 @@
 import { Card, Divider, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import proveedorbanner from "../../../public/images/proveedorbanner.png";
+import proveedorbanner from "/images/proveedorbanner.png";
 
 const ProviderWelcome = () => {
   return (

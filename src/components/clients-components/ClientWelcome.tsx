@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import clienteBanner from "../../../public/images/clientebanner.png";
+import clienteBanner from "/images/clientebanner.png";
 import HouseIcon from "@mui/icons-material/House";
 import GoogleMapReact from "google-map-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,7 +38,7 @@ const ClientWelcome = () => {
 
   const initialCenter = newPosition || defaultCenter;
 
-  const mapRef = useRef<any | null>(null);
+  const mapRef = useRef<any | null>(defaultCenter);
   const markerRef = useRef<any | null>(null);
 
   useEffect(() => {
@@ -77,10 +77,7 @@ const ClientWelcome = () => {
     });
 
     markerRef.current.addListener("drag", () => {
-      //console.log(
-      //"Posición del marcador:",
-      //JSON.stringify(markerRef.current.getPosition())
-      //);
+      JSON.stringify(markerRef.current.getPosition());
     });
 
     map.addListener("click", (mapsMouseEvent: any) => {

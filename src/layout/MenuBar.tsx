@@ -190,7 +190,7 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                       },
                     }}
                   >
-                    Proveedores Cercanos
+                    Proveedores
                   </Button>
                 </Hidden>
               </Grid>
