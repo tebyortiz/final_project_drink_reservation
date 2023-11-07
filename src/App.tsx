@@ -8,6 +8,7 @@ import ProviderWelcome from "./components/providers-components/ProviderWelcome";
 import ProviderMenu from "./components/providers-components/ProviderMenu";
 import ProviderAreas from "./components/providers-components/ProviderAreas";
 import ProviderStock from "./components/providers-components/ProviderStock";
+import ClientLocalProviders from "./components/clients-components/ClientLocalProviders";
 
 function App() {
   const [loginSuccess, setLoginSuccess] = useState(false);
@@ -33,6 +34,7 @@ function App() {
           }
         />
         <Route path="/client_home" element={<ClientWelcome />} />
+        <Route path="/client_local_providers" element={<ClientLocalProviders />} />
         <Route path="/provider_home" element={<ProviderWelcome />} />
         <Route path="/provider_menu" element={<ProviderMenu />} />
         <Route path="/provider_areas" element={<ProviderAreas />} />

@@ -63,8 +63,8 @@ const ProviderMenu = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   useEffect(() => {
-    console.log("Cócteles seleccionados:", selectedCocktails);
-    console.log("Cervezas seleccionadas:", selectedBeers);
+    //console.log("Cócteles seleccionados:", selectedCocktails);
+    //console.log("Cervezas seleccionadas:", selectedBeers);
   }, [selectedCocktails, selectedBeers]);
 
   const handleAddCocktail = () => {

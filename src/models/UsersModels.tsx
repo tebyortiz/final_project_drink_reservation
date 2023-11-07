@@ -35,6 +35,7 @@ interface Client {
     username: string;
     password: string;
   };
+  markerPosition: MarkerPosition;
 }
 
 export type { Client };
@@ -91,4 +92,9 @@ export type Area = {
   lat: string;
   lng: string;
   radius: number;
+};
+
+export type MarkerPosition = {
+  lat: number;
+  lng: number;
 };

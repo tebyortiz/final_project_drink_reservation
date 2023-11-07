@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Client } from "../models/UsersModels";
+import { Client, MarkerPosition } from "../models/UsersModels";
 
 interface ClientsState {
   clients: Client[];
@@ -18,6 +18,10 @@ const initialState: ClientsState = {
         username: "anapaz1",
         password: "asdasd",
       },
+      markerPosition: {
+        lat: 0,
+        lng: 0,
+      },
     },
     {
       name: "Luis Gil",
@@ -30,6 +34,10 @@ const initialState: ClientsState = {
         username: "luisgil1",
         password: "asdasd",
       },
+      markerPosition: {
+        lat: 0,
+        lng: 0,
+      },
     },
   ],
 };
@@ -41,9 +49,19 @@ const clientsSlice = createSlice({
     addClient: (state, action: PayloadAction<Client>) => {
       state.clients = [...state.clients, action.payload];
     },
+    updatePosition: (
+      state,
+      action: PayloadAction<{ clientName: string; newPosition: MarkerPosition }>
+    ) => {
+      const { clientName, newPosition } = action.payload;
+      const client = state.clients.find((c) => c.name === clientName);
+      if (client) {
+        client.markerPosition = newPosition;
+      }
+    },
   },
 });
 
-export const { addClient } = clientsSlice.actions;
+export const { addClient, updatePosition } = clientsSlice.actions;
 
 export default clientsSlice.reducer;

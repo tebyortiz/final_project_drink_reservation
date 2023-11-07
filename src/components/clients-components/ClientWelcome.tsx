@@ -1,8 +1,104 @@
-import { Card, Divider, Grid, Typography } from "@mui/material";
+import { useState, useRef, useEffect } from "react";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Button,
+  Card,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/system";
-import clienteBanner from "../../../public/images/clientebanner.png";
+import clienteBanner from "/images/clientebanner.png";
+import HouseIcon from "@mui/icons-material/House";
+import GoogleMapReact from "google-map-react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../models/RootStateTypes";
+import { updatePosition } from "../../redux/ClientsSlice";
+import { MarkerPosition } from "../../models/UsersModels";
+
+const defaultCenter = {
+  lat: -32.8897,
+  lng: -68.844629,
+};
 
 const ClientWelcome = () => {
+  const dispatch = useDispatch();
+  const [isMapOpen, setMapOpen] = useState(false);
+  const [isLocationSelected, setLocationSelected] = useState(false);
+
+  const user = useSelector((state: RootState) => state.user.user);
+  const clients = useSelector((state: RootState) => state.clients.clients);
+  const userName = user?.name;
+  const selectedClient = clients.find((client) => client.name === userName);
+
+  const [newPosition, setNewPosition] = useState<MarkerPosition | null>(
+    selectedClient?.markerPosition || defaultCenter
+  );
+
+  const initialCenter = newPosition || defaultCenter;
+
+  const mapRef = useRef<any | null>(null);
+  const markerRef = useRef<any | null>(null);
+
+  useEffect(() => {
+    if (markerRef.current && newPosition) {
+      markerRef.current.setPosition(newPosition);
+    }
+  }, [newPosition]);
+
+  const handleSaveLocation = () => {
+    if (userName && markerRef.current) {
+      const lat = markerRef.current?.getPosition()?.lat();
+      const lng = markerRef.current?.getPosition()?.lng();
+      const updatedPosition: MarkerPosition = { lat, lng };
+
+      dispatch(
+        updatePosition({ clientName: userName, newPosition: updatedPosition })
+      );
+      defaultCenter.lat = lat;
+      defaultCenter.lng = lng;
+    } else {
+      console.error("markerRef.current is null or userName is undefined");
+    }
+  };
+
+  const handleMapClick = () => {
+    setMapOpen(!isMapOpen);
+  };
+
+  const maprender = (map: any, maps: any) => {
+    mapRef.current = map;
+    markerRef.current = new maps.Marker({
+      position: initialCenter,
+      map,
+      draggable: true,
+      title: "Ubicación actual",
+    });
+
+    markerRef.current.addListener("drag", () => {
+      JSON.stringify(markerRef.current.getPosition());
+    });
+
+    map.addListener("click", (mapsMouseEvent: any) => {
+      handleSelectPublication(mapsMouseEvent);
+    });
+  };
+
+  const handleSelectPublication = (mapsMouseEvent: any) => {
+    const clickedPosition: MarkerPosition = {
+      lat: mapsMouseEvent.latLng.lat(),
+      lng: mapsMouseEvent.latLng.lng(),
+    };
+
+    if (markerRef.current && mapRef.current) {
+      markerRef.current.setPosition(clickedPosition);
+      setNewPosition(clickedPosition);
+      setLocationSelected(true);
+    }
+  };
+
   return (
     <Box
       display="flex"
@@ -13,6 +109,80 @@ const ClientWelcome = () => {
       justifyContent="space-between"
       marginTop="50px"
     >
+      <Grid item xs={12}>
+        <div style={{ width: "100%", marginBottom: "30px" }}>
+          <Accordion
+            expanded={isMapOpen}
+            onChange={handleMapClick}
+            sx={{
+              width: "100%",
+              marginBottom: "20px",
+              padding: "5px",
+              borderRadius: "15px",
+              backgroundColor: "#242424",
+            }}
+          >
+            <AccordionSummary
+              sx={{ justifyContent: "space-between", color: "#fff" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  style={{
+                    textAlign: "center",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                    lineHeight: "2",
+                  }}
+                >
+                  Mi Ubicación
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    backgroundColor: "#EC299F",
+                    fontFamily: "Nunito, sans-serif",
+                    fontWeight: "bold",
+                    "&:hover": {
+                      backgroundColor: "white",
+                      color: "#EC299F",
+                    },
+                  }}
+                  onClick={handleSaveLocation}
+                  disabled={!isLocationSelected}
+                >
+                  Guardar Ubicación
+                  <HouseIcon
+                    fontSize="large"
+                    style={{ marginLeft: "3px", marginBottom: "5px" }}
+                  />
+                </Button>
+              </div>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div style={{ height: "400px", width: "100%" }}>
+                <GoogleMapReact
+                  bootstrapURLKeys={{
+                    key: "AIzaSyBfjO7sxd8P6HDrF1lmvLV151z7ocauPD0",
+                  }}
+                  defaultCenter={defaultCenter}
+                  defaultZoom={11}
+                  yesIWantToUseGoogleMapApiInternals
+                  onGoogleApiLoaded={({ map, maps }) => maprender(map, maps)}
+                />
+              </div>
+            </AccordionDetails>
+          </Accordion>
+        </div>
+      </Grid>
+
       <Grid container item xs={12}>
         <Card
           sx={{
