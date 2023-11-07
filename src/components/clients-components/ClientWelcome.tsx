@@ -26,6 +26,7 @@ const defaultCenter = {
 const ClientWelcome = () => {
   const dispatch = useDispatch();
   const [isMapOpen, setMapOpen] = useState(false);
+  const [isLocationSelected, setLocationSelected] = useState(false);
 
   const user = useSelector((state: RootState) => state.user.user);
   const clients = useSelector((state: RootState) => state.clients.clients);
@@ -94,6 +95,7 @@ const ClientWelcome = () => {
     if (markerRef.current && mapRef.current) {
       markerRef.current.setPosition(clickedPosition);
       setNewPosition(clickedPosition);
+      setLocationSelected(true);
     }
   };
 
@@ -154,6 +156,7 @@ const ClientWelcome = () => {
                     },
                   }}
                   onClick={handleSaveLocation}
+                  disabled={!isLocationSelected}
                 >
                   Guardar Ubicación
                   <HouseIcon

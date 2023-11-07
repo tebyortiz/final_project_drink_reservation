@@ -21,6 +21,7 @@ const ClientLocalProviders = () => {
   );
 
   const [filteredProviders, setFilteredProviders] = useState<Provider[]>([]);
+  const [message, setMessage] = useState("");
 
   const providers = useSelector(
     (state: RootState) => state.providers.providers
@@ -38,7 +39,15 @@ const ClientLocalProviders = () => {
   };
 
   useEffect(() => {
-    if (!selectedClient || !selectedClient.markerPosition) {
+    if (
+      !selectedClient ||
+      (selectedClient.markerPosition &&
+        selectedClient.markerPosition.lat === 0 &&
+        selectedClient.markerPosition.lng === 0)
+    ) {
+      setMessage(
+        "Para conocer los proveedores cercanos, primero debes brindarnos tu ubicación."
+      );
       return;
     }
 
@@ -51,19 +60,16 @@ const ClientLocalProviders = () => {
     );
 
     setFilteredProviders(providersInClientArea);
+    if (providersInClientArea.length === 0) {
+      setMessage("No hay proveedores disponibles en tu área.");
+    } else if (providersInClientArea.length === 1) {
+      setMessage("Se ha encontrado 1 proveedor:");
+    } else {
+      setMessage(
+        `Se han encontrado ${providersInClientArea.length} proveedores:`
+      );
+    }
   }, [selectedClient, providers]);
-
-  let message = "";
-  if (!selectedClient || !selectedClient.markerPosition) {
-    message =
-      "Para conocer los proveedores cercanos, primero debes brindarnos tu ubicación.";
-  } else if (filteredProviders.length === 0) {
-    message = "No hay proveedores disponibles en tu área.";
-  } else if (filteredProviders.length === 1) {
-    message = "Se ha encontrado 1 proveedor:";
-  } else {
-    message = `Se han encontrado ${filteredProviders.length} proveedores:`;
-  }
 
   return (
     <Box
@@ -84,19 +90,17 @@ const ClientLocalProviders = () => {
           marginBottom: "50px",
         }}
       >
-        {message && (
-          <Typography
-            variant="h5"
-            style={{
-              marginBottom: "20px",
-              textAlign: "center",
-              fontFamily: "Quicksand, sans-serif",
-              fontWeight: "bold",
-            }}
-          >
-            {message}
-          </Typography>
-        )}
+        <Typography
+          variant="h5"
+          style={{
+            marginBottom: "20px",
+            textAlign: "center",
+            fontFamily: "Quicksand, sans-serif",
+            fontWeight: "bold",
+          }}
+        >
+          {message}
+        </Typography>
       </Card>
 
       {filteredProviders.length > 0 && (
