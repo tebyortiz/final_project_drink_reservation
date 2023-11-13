@@ -79,12 +79,22 @@ export type Cocktail = {
   name: string;
   price: number;
   stock: number;
+  image: string;
+  ingredients: string[];
 };
 
 export type Beer = {
   name: string;
   price: number;
   stock: number;
+  image: string;
+  abv: string;
+  ibu: string;
+  ingredients: {
+    malt: string[];
+    hops: string[];
+    yeast: string[];
+  };
 };
 
 export type Area = {

@@ -183,7 +183,7 @@ const ProviderStock = () => {
                               fontWeight: "bold",
                             }}
                           >
-                            Coctel
+                            Cóctel
                           </Typography>
                         </TableCell>
                         <TableCell>
