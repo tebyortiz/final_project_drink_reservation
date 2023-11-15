@@ -107,7 +107,7 @@ const ClientWelcome = () => {
       padding="20px"
       minHeight="80vh"
       justifyContent="space-between"
-      marginTop="50px"
+      marginTop="30px"
     >
       <Grid item xs={12}>
         <div style={{ width: "100%", marginBottom: "30px" }}>

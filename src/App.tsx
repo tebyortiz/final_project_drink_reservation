@@ -9,6 +9,7 @@ import ProviderMenu from "./components/providers-components/ProviderMenu";
 import ProviderAreas from "./components/providers-components/ProviderAreas";
 import ProviderStock from "./components/providers-components/ProviderStock";
 import ClientLocalProviders from "./components/clients-components/ClientLocalProviders";
+import ProviderDetails from "./components/clients-components/ProviderDetails";
 
 function App() {
   const [loginSuccess, setLoginSuccess] = useState(false);
@@ -34,7 +35,14 @@ function App() {
           }
         />
         <Route path="/client_home" element={<ClientWelcome />} />
-        <Route path="/client_local_providers" element={<ClientLocalProviders />} />
+        <Route
+          path="/client_local_providers"
+          element={<ClientLocalProviders />}
+        />
+        <Route
+          path="/provider-details/:providerName"
+          element={<ProviderDetails />}
+        />
         <Route path="/provider_home" element={<ProviderWelcome />} />
         <Route path="/provider_menu" element={<ProviderMenu />} />
         <Route path="/provider_areas" element={<ProviderAreas />} />

@@ -244,11 +244,12 @@ const UsersLogin = ({
         <br />
         <br />
 
-        <Grid item xs={12}>
+        <Grid item xs={12} textAlign="center">
           <Typography variant="h6" gutterBottom>
-            ¿Todavía no estás registrado? Regístrate Gratis
+            ¿Todavía no estás registrado? Regístrate Gratis.
           </Typography>
         </Grid>
+
         <Link to="/registration" style={{ textDecoration: "none" }}>
           {/* Botón para ir al Registro */}
 

@@ -10,8 +10,10 @@ import {
 } from "../../models/UsersModels";
 import { Box } from "@mui/system";
 import { Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const ClientLocalProviders = () => {
+  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
   const clients = useSelector((state: RootState) => state.clients.clients);
   const userName = user?.name;
@@ -71,6 +73,11 @@ const ClientLocalProviders = () => {
     }
   }, [selectedClient, providers]);
 
+  const handleProviderSelection = (provider: Provider) => {
+    const formattedProviderName = provider.company.name.replace(/\s/g, "-");
+    navigate(`/provider-details/${formattedProviderName}`);
+  };
+
   return (
     <Box
       display="flex"
@@ -78,7 +85,7 @@ const ClientLocalProviders = () => {
       alignItems="center"
       padding="20px"
       justifyContent="space-between"
-      marginTop="50px"
+      marginTop="30px"
     >
       <Card
         sx={{
@@ -108,6 +115,7 @@ const ClientLocalProviders = () => {
           {filteredProviders.map((provider: Provider) => (
             <Grid container item xs={12} key={provider.company.name}>
               <Card
+                onClick={() => handleProviderSelection(provider)}
                 sx={{
                   backgroundColor: "#242424",
                   width: 1200,

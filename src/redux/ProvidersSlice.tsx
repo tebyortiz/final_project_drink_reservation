@@ -100,13 +100,21 @@ const providersSlice = createSlice({
       const providerIndex = state.providers.findIndex(
         (provider) => provider.company.name === providerName
       );
+
       if (providerIndex !== -1) {
+        const cocktailWithDetails = {
+          ...cocktail,
+          image: cocktail.image,
+          ingredients: cocktail.ingredients,
+        };
+
         state.providers[providerIndex].service.cocktails = [
           ...(state.providers[providerIndex].service.cocktails || []),
-          cocktail,
+          cocktailWithDetails,
         ];
       }
     },
+
     removeCocktail: (
       state,
       action: PayloadAction<{ providerName: string; cocktail: string }>
@@ -129,11 +137,14 @@ const providersSlice = createSlice({
       const providerIndex = state.providers.findIndex(
         (provider) => provider.company.name === providerName
       );
+
       if (providerIndex !== -1) {
-        state.providers[providerIndex].service.beers = [
+        const updatedBeers = [
           ...(state.providers[providerIndex].service.beers || []),
           beer,
         ];
+
+        state.providers[providerIndex].service.beers = updatedBeers;
       }
     },
     removeBeer: (

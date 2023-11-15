@@ -51,8 +51,6 @@ const ProviderMenu = () => {
   const [selectedBeer, setSelectedBeer] = useState<string | null>(null);
   const [cocktailPrice, setCocktailPrice] = useState<number | null>(null);
   const [beerPrice, setBeerPrice] = useState<number | null>(null);
-  const cocktailOptions = useFetchCocktailOptions();
-  const beerOptions = useFetchBeerOptions();
   const [selectedCocktails, setSelectedCocktails] = useState<Cocktail[]>(
     service?.cocktails || []
   );
@@ -61,49 +59,61 @@ const ProviderMenu = () => {
   );
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const { cocktailOptions, fetchCocktailDetails } = useFetchCocktailOptions();
+  const { beerOptions, fetchBeerDetails } = useFetchBeerOptions();
 
-  useEffect(() => {
-    //console.log("Cócteles seleccionados:", selectedCocktails);
-    //console.log("Cervezas seleccionadas:", selectedBeers);
-  }, [selectedCocktails, selectedBeers]);
+  useEffect(() => {}, [selectedCocktails, selectedBeers]);
 
-  const handleAddCocktail = () => {
+  const handleAddCocktail = async () => {
     const companyName = userCompanyName || "";
     if (companyName && selectedCocktail && cocktailPrice !== null) {
       if (!selectedCocktails.some((c) => c.name === selectedCocktail)) {
-        const newCocktail: Cocktail = {
-          name: selectedCocktail,
-          price: cocktailPrice,
-          stock: 0,
-        };
-        dispatch(
-          addCocktail({
-            providerName: companyName,
-            cocktail: newCocktail,
-          })
-        );
-        setSelectedCocktails([...selectedCocktails, newCocktail]);
-        setSnackbarMessage(`Coctel "${selectedCocktail}" añadido`);
-        setSnackbarOpen(true);
+        const cocktailDetails = await fetchCocktailDetails(selectedCocktail);
+        if (cocktailDetails) {
+          const newCocktail: Cocktail = {
+            name: selectedCocktail,
+            price: cocktailPrice,
+            stock: 0,
+            image: cocktailDetails[0].image,
+            ingredients: cocktailDetails[0].ingredients,
+          };
+          dispatch(
+            addCocktail({
+              providerName: companyName,
+              cocktail: newCocktail,
+            })
+          );
+          setSelectedCocktails([...selectedCocktails, newCocktail]);
+          setSnackbarMessage(`Cóctel "${selectedCocktail}" añadido`);
+          setSnackbarOpen(true);
+        }
       }
     }
     setSelectedCocktail(null);
     setCocktailPrice(null);
   };
 
-  const handleAddBeer = () => {
+  const handleAddBeer = async () => {
     const companyName = userCompanyName || "";
     if (companyName && selectedBeer && beerPrice !== null) {
       if (!selectedBeers.some((b) => b.name === selectedBeer)) {
-        const newBeer: Beer = {
-          name: selectedBeer,
-          price: beerPrice,
-          stock: 0,
-        };
-        dispatch(addBeer({ providerName: companyName, beer: newBeer }));
-        setSelectedBeers([...selectedBeers, newBeer]);
-        setSnackbarMessage(`Cerveza "${selectedBeer}" añadida`);
-        setSnackbarOpen(true);
+        const beerDetails = await fetchBeerDetails(selectedBeer);
+        if (beerDetails) {
+          const newBeer: Beer = {
+            name: selectedBeer,
+            price: beerPrice,
+            stock: 0,
+            image: beerDetails[0].image,
+            abv: beerDetails[0].abv,
+            ibu: beerDetails[0].ibu,
+            ingredients: beerDetails[0].ingredients,
+          };
+
+          dispatch(addBeer({ providerName: companyName, beer: newBeer }));
+          setSelectedBeers([...selectedBeers, newBeer]);
+          setSnackbarMessage(`Cerveza "${selectedBeer}" añadida`);
+          setSnackbarOpen(true);
+        }
       }
     }
     setSelectedBeer(null);
@@ -167,7 +177,7 @@ const ProviderMenu = () => {
                     fontWeight: "bold",
                   }}
                 >
-                  Selecciona Cocteles
+                  Selecciona Cócteles
                 </Typography>
                 <Autocomplete
                   id="coctel-autocomplete"
@@ -277,7 +287,7 @@ const ProviderMenu = () => {
                   }}
                   endIcon={<LocalBarIcon />}
                 >
-                  Agregar Coctel
+                  Agregar Cóctel
                 </Button>
               </Box>
               <Box p={2} sx={{ marginTop: "15px" }}>
@@ -286,7 +296,7 @@ const ProviderMenu = () => {
                   variant="h5"
                   sx={{ color: "white", marginBottom: "20px" }}
                 >
-                  Cocteles Seleccionados
+                  Cócteles Seleccionados
                 </Typography>
                 <TableContainer component={Paper}>
                   <Table>
@@ -301,7 +311,7 @@ const ProviderMenu = () => {
                               fontWeight: "bold",
                             }}
                           >
-                            Coctel
+                            Cóctel
                           </Typography>
                         </TableCell>
                         <TableCell>
