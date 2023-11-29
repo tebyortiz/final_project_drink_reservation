@@ -12,6 +12,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import RootState from "../models/RootStateTypes";
 import { setUser } from "../redux/UserSlice";
+import { setClient } from "../redux/PurchaseListSlice";
 
 const UsersLogin = ({
   setLoginSuccess,
@@ -64,6 +65,7 @@ const UsersLogin = ({
           photo: client.photo,
           address: client.address,
         };
+        dispatch(setClient(userData));
       } else if (provider) {
         userData = {
           ...userData,

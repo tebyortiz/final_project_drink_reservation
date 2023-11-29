@@ -108,3 +108,19 @@ export type MarkerPosition = {
   lat: number;
   lng: number;
 };
+
+ interface Purchase {
+  provider: Provider | null;
+  cocktails: {
+    cocktail: Cocktail;
+    quantity: number;
+  }[];
+  beers: {
+    beer: Beer;
+    quantity: number;
+  }[];
+  client: Client | null;
+  totalPurchase: number;
+}
+
+export type { Purchase };

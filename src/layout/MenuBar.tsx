@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import MenuIcon from "@mui/icons-material/Menu";
+import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import RootState from "../models/RootStateTypes";
@@ -192,6 +193,23 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                   >
                     Proveedores
                   </Button>
+
+                  <IconButton
+                    onClick={() => navigate("/client_purchase")}
+                    color="inherit"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 39,
+                      backgroundColor: "#EC299F",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#EC299F",
+                      },
+                    }}
+                  >
+                    <LocalGroceryStoreIcon />
+                  </IconButton>
                 </Hidden>
               </Grid>
             </Grid>
@@ -220,7 +238,23 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                   Proveedores Cercanos
                 </MenuItem>
               </Menu>
+              <IconButton
+                    onClick={() => navigate("/client_purchase")}
+                    color="inherit"
+                    sx={{
+                      position: "absolute",
+                      ml: 8,
+                      backgroundColor: "#EC299F",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#EC299F",
+                      },
+                    }}
+                  >
+                    <LocalGroceryStoreIcon />
+                  </IconButton>
             </Hidden>
+            
           </Toolbar>
         );
       } else if (user.userType === "Proveedor") {

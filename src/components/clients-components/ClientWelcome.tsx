@@ -8,10 +8,13 @@ import {
   Divider,
   Grid,
   Typography,
+  Snackbar,
+  SnackbarContent,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import clienteBanner from "/images/clientebanner.png";
 import HouseIcon from "@mui/icons-material/House";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import GoogleMapReact from "google-map-react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../models/RootStateTypes";
@@ -27,8 +30,11 @@ const ClientWelcome = () => {
   const dispatch = useDispatch();
   const [isMapOpen, setMapOpen] = useState(false);
   const [isLocationSelected, setLocationSelected] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const user = useSelector((state: RootState) => state.user.user);
+
   const clients = useSelector((state: RootState) => state.clients.clients);
   const userName = user?.name;
   const selectedClient = clients.find((client) => client.name === userName);
@@ -59,6 +65,8 @@ const ClientWelcome = () => {
       );
       defaultCenter.lat = lat;
       defaultCenter.lng = lng;
+      setSnackbarMessage("Nueva Ubicación almacenada");
+      setSnackbarOpen(true);
     } else {
       console.error("markerRef.current is null or userName is undefined");
     }
@@ -182,6 +190,43 @@ const ClientWelcome = () => {
           </Accordion>
         </div>
       </Grid>
+
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <SnackbarContent
+          message={
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                color: "#242424",
+              }}
+            >
+              <CheckCircleIcon
+                style={{
+                  color: "#01FF72",
+                  marginRight: "8px",
+                }}
+              />
+              {snackbarMessage}
+            </div>
+          }
+          style={{
+            backgroundColor: "white",
+            border: "2px solid #242424",
+            fontFamily: "Quicksand, sans-serif",
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+        />
+      </Snackbar>
 
       <Grid container item xs={12}>
         <Card
