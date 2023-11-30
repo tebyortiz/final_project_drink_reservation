@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Client, MarkerPosition } from "../models/UsersModels";
+import { Client, MarkerPosition} from "../models/UsersModels";
 
 interface ClientsState {
   clients: Client[];
@@ -59,6 +59,7 @@ const clientsSlice = createSlice({
         client.markerPosition = newPosition;
       }
     },
+    
   },
 });
 

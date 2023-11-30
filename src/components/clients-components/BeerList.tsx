@@ -6,15 +6,19 @@ import {
   Chip,
   Divider,
   Grid,
+  IconButton,
 } from "@mui/material";
-import SportsBarIcon from '@mui/icons-material/SportsBar';
-import { Provider } from "../../models/UsersModels";
+import SportsBarIcon from "@mui/icons-material/SportsBar";
+import { Beer, Provider } from "../../models/UsersModels";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { alpha } from "@mui/material/styles";
 
 interface BeerListProps {
   provider: Provider;
+  onBeerClick: (beer: Beer) => void;
 }
 
-const BeerList: React.FC<BeerListProps> = ({ provider }) => {
+const BeerList: React.FC<BeerListProps> = ({ provider, onBeerClick }) => {
   const filterUniqueIngredients = (ingredients: string[]) => {
     const uniqueIngredients = new Set<string>();
     ingredients.forEach((ingredient) => {
@@ -22,6 +26,7 @@ const BeerList: React.FC<BeerListProps> = ({ provider }) => {
     });
     return [...uniqueIngredients];
   };
+
   return (
     <Grid container spacing={2}>
       <Card
@@ -38,7 +43,7 @@ const BeerList: React.FC<BeerListProps> = ({ provider }) => {
       >
         <Grid container alignItems="center" spacing={2}>
           <Grid item>
-            <SportsBarIcon style={{ color: "#EC299F" }} />
+            <SportsBarIcon style={{ color: "#01FF72" }} />
           </Grid>
           <Grid item>
             <Typography
@@ -47,7 +52,7 @@ const BeerList: React.FC<BeerListProps> = ({ provider }) => {
                 marginBottom: "8px",
                 fontFamily: "Quicksand, sans-serif",
                 fontWeight: "bold",
-                color: "#EC299F",
+                color: "#01FF72",
               }}
             >
               Listado de Cervezas
@@ -63,13 +68,15 @@ const BeerList: React.FC<BeerListProps> = ({ provider }) => {
               sx={{
                 backgroundColor: "white",
                 width: 800,
-                margin: "10px auto",
+                margin: " auto",
                 borderRadius: "15px",
                 color: "white",
                 boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
                 display: "flex",
                 height: "400px",
+                position: "relative",
               }}
+              onClick={() => onBeerClick(beer)}
             >
               <CardContent
                 sx={{
@@ -252,8 +259,29 @@ const BeerList: React.FC<BeerListProps> = ({ provider }) => {
                     height: "100%",
                     objectFit: "contain",
                     objectPosition: "center",
+                    marginLeft: "0px",
                   }}
                 />
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: 5,
+                    right: 5,
+                    zIndex: 1,
+                  }}
+                >
+                  <IconButton
+                    style={{
+                      bottom: 1,
+                      right: 1,
+                      color: "#FFFFFF",
+                      backgroundColor: alpha("#EC299F", 0.9),
+                      zIndex: 1,
+                    }}
+                  >
+                    <AddShoppingCartIcon />
+                  </IconButton>
+                </div>
               </Card>
             </Card>
           </Grid>
