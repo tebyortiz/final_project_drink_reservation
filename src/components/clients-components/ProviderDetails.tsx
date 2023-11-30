@@ -362,8 +362,8 @@ const ProviderDetails = () => {
                       style={{
                         bottom: 1,
                         right: 1,
-                        color: "#01FF72",
-                        backgroundColor: alpha("#242424", 0.9),
+                        color: "#FFFFFF",
+                        backgroundColor: alpha("#EC299F", 0.9),
                         zIndex: 1,
                       }}
                     >

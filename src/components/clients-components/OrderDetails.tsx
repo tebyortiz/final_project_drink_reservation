@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import PaidIcon from "@mui/icons-material/Paid";
 import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
-import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import LocalBarIcon from "@mui/icons-material/LocalBar";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import SportsBarIcon from "@mui/icons-material/SportsBar";
@@ -342,7 +342,7 @@ const OrderDetails = () => {
                                   handleRemoveItem(item.cocktail.name)
                                 }
                               >
-                                <RemoveShoppingCartIcon />
+                                <HighlightOffIcon />
                               </IconButton>
                             </TableCell>
                           </TableRow>
@@ -524,7 +524,7 @@ const OrderDetails = () => {
                               <IconButton
                                 onClick={() => handleRemoveItem(item.beer.name)}
                               >
-                                <RemoveShoppingCartIcon />
+                                <HighlightOffIcon />
                               </IconButton>
                             </TableCell>
                           </TableRow>
