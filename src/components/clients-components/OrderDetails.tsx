@@ -38,6 +38,7 @@ import ProviderCard from "./ProviderCard";
 import { RootState } from "../../models/RootStateTypes";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import proveedordelivery from "/images/proveedordelivery.png";
 
 const OrderDetails = () => {
   const dispatch = useDispatch();
@@ -137,8 +138,14 @@ const OrderDetails = () => {
             acc + (item.beer?.price || 0) * item.quantity,
           0
         );
+      const currentDate = new Date();
+      dispatch(
+        completePurchase({
+          date: currentDate.toISOString(),
+        })
+      );
+
       dispatch(updateTotalPurchase(totalPurchase));
-      dispatch(completePurchase());
       dispatch(resetPurchase());
       setDialogOpen(true);
     } else {
@@ -611,6 +618,7 @@ const OrderDetails = () => {
                   backgroundColor: "#EC299F",
                   fontFamily: "Nunito, sans-serif",
                   fontWeight: "bold",
+                  padding: "20px",
                   "&:hover": {
                     backgroundColor: "white",
                     color: "#EC299F",
@@ -629,6 +637,7 @@ const OrderDetails = () => {
                   backgroundColor: "#EC299F",
                   fontFamily: "Nunito, sans-serif",
                   fontWeight: "bold",
+                  padding: "20px",
                   "&:hover": {
                     backgroundColor: "white",
                     color: "#EC299F",
@@ -646,23 +655,37 @@ const OrderDetails = () => {
       <Dialog
         open={dialogOpen}
         onClose={handleCloseDialog}
-        sx={{ textAlign: "center" }}
+        sx={{ textAlign: "center", borderRadius: "15px" }}
       >
         <DialogContent>
-          <Typography
-            variant="h6"
-            style={{
-              fontFamily: "Quicksand, sans-serif",
-              fontWeight: "bold",
+          <Card
+            sx={{
+              backgroundColor: "#242424",
+              margin: "10px auto",
+              borderRadius: "15px",
+              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
+              marginTop: "5px",
             }}
           >
-            ¡Gracias por tu compra!
-          </Typography>
+            <Typography
+              variant="h5"
+              style={{
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+                color: "#01FF72",
+                marginBottom: "10px",
+                marginTop: "10px",
+              }}
+            >
+              ¡Gracias por tu compra!
+            </Typography>
+          </Card>
           <Typography
             variant="body1"
             style={{
               fontFamily: "Quicksand, sans-serif",
               fontWeight: "bold",
+              marginTop: "20px",
             }}
           >
             En instantes recibirás tu pedido.
@@ -677,6 +700,17 @@ const OrderDetails = () => {
             El repartidor te avisará mediante Whatsapp cuando se encuentre en tu
             ubicación.
           </Typography>
+
+          <img
+            src={proveedordelivery}
+            alt="Cliente Banner"
+            style={{
+              maxWidth: "100%",
+              marginTop: "20px",
+              boxShadow: "0px 0px 10px rgba(1, 255, 114, 0.9)",
+              borderRadius: "50%",
+            }}
+          />
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center" }}>
           <Button
@@ -684,11 +718,12 @@ const OrderDetails = () => {
             variant="contained"
             color="primary"
             sx={{
-              backgroundColor: "#EC299F",
+              backgroundColor: "#01FF72",
               fontFamily: "Nunito, sans-serif",
               fontWeight: "bold",
+              marginBottom: "15px",
               "&:hover": {
-                backgroundColor: "#EC299F",
+                backgroundColor: "#01FF72",
                 color: "#242424",
               },
             }}

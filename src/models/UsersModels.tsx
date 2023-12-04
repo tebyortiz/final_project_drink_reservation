@@ -26,6 +26,7 @@ interface Provider {
 export type { Provider };
 
 interface Client {
+  username: string;
   name: string;
   phone: string;
   email: string;
@@ -109,7 +110,7 @@ export type MarkerPosition = {
   lng: number;
 };
 
- interface Purchase {
+interface Purchase {
   provider: Provider | null;
   cocktails: {
     cocktail: Cocktail;
@@ -121,6 +122,7 @@ export type MarkerPosition = {
   }[];
   client: Client | null;
   totalPurchase: number;
+  date: string;
 }
 
 export type { Purchase };

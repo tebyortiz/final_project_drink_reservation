@@ -24,6 +24,7 @@ const initialState: PurchaseListState = {
     beers: [],
     client: null,
     totalPurchase: 0,
+    date: "",
   },
   purchases: [],
 };
@@ -184,17 +185,23 @@ const purchaseListSlice = createSlice({
       state.currentPurchase.totalPurchase = action.payload;
     },
 
-    completePurchase: (state) => {
+    completePurchase: (state, action: PayloadAction<{ date: string }>) => {
       const currentClient = state.currentPurchase.client;
-      state.purchases.push(state.currentPurchase);
+      state.purchases.push({
+        ...state.currentPurchase,
+        date: action.payload.date,
+      });
       state.currentPurchase = {
         provider: null,
         cocktails: [],
         beers: [],
         client: currentClient,
         totalPurchase: 0,
+        date: "",
       };
     },
+    
+    
   },
 });
 
