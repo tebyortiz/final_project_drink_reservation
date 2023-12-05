@@ -311,6 +311,18 @@ const ProviderMenu = () => {
                               fontWeight: "bold",
                             }}
                           >
+                            Imagen
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography
+                            variant="h5"
+                            sx={{ color: "#242424", textAlign: "center" }}
+                            style={{
+                              fontFamily: "Quicksand, sans-serif",
+                              fontWeight: "bold",
+                            }}
+                          >
                             Cóctel
                           </Typography>
                         </TableCell>
@@ -333,6 +345,13 @@ const ProviderMenu = () => {
                       {selectedCocktails.map(
                         (cocktail: Cocktail, index: number) => (
                           <TableRow key={index}>
+                            <TableCell sx={{ textAlign: "center" }}>
+                              <img
+                                src={cocktail.image}
+                                alt={cocktail.image}
+                                height="50"
+                              />
+                            </TableCell>
                             <TableCell
                               sx={{ color: "#242424", textAlign: "center" }}
                             >
@@ -568,6 +587,18 @@ const ProviderMenu = () => {
                               fontWeight: "bold",
                             }}
                           >
+                            Imagen
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography
+                            variant="h5"
+                            sx={{ color: "#242424", textAlign: "center" }}
+                            style={{
+                              fontFamily: "Quicksand, sans-serif",
+                              fontWeight: "bold",
+                            }}
+                          >
                             Cerveza
                           </Typography>
                         </TableCell>
@@ -589,6 +620,14 @@ const ProviderMenu = () => {
                     <TableBody>
                       {selectedBeers.map((beer: Beer, index: number) => (
                         <TableRow key={index}>
+                          <TableCell sx={{ textAlign: "center" }}>
+                            <img
+                              src={beer.image}
+                              alt={beer.image}
+                              height="50"
+                            />
+                          </TableCell>
+
                           <TableCell
                             sx={{ color: "#242424", textAlign: "center" }}
                           >

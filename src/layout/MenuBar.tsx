@@ -200,7 +200,7 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                     sx={{
                       position: "absolute",
                       mt: "-18px",
-                      ml: 39,
+                      ml: 54,
                       backgroundColor: "#EC299F",
                       "&:hover": {
                         backgroundColor: "white",
@@ -210,6 +210,26 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                   >
                     <LocalGroceryStoreIcon />
                   </IconButton>
+
+                  <Button
+                    onClick={() => navigate("/client_orders")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 39,
+                      backgroundColor: "#EC299F",
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#EC299F",
+                      },
+                    }}
+                  >
+                    Pedidos
+                  </Button>
                 </Hidden>
               </Grid>
             </Grid>
@@ -237,24 +257,32 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                 >
                   Proveedores Cercanos
                 </MenuItem>
+
+                <MenuItem
+                  onClick={() => {
+                    navigate("/client_orders");
+                    handleMenuClose();
+                  }}
+                >
+                  Pedidos
+                </MenuItem>
               </Menu>
               <IconButton
-                    onClick={() => navigate("/client_purchase")}
-                    color="inherit"
-                    sx={{
-                      position: "absolute",
-                      ml: 8,
-                      backgroundColor: "#EC299F",
-                      "&:hover": {
-                        backgroundColor: "white",
-                        color: "#EC299F",
-                      },
-                    }}
-                  >
-                    <LocalGroceryStoreIcon />
-                  </IconButton>
+                onClick={() => navigate("/client_purchase")}
+                color="inherit"
+                sx={{
+                  position: "absolute",
+                  ml: 8,
+                  backgroundColor: "#EC299F",
+                  "&:hover": {
+                    backgroundColor: "white",
+                    color: "#EC299F",
+                  },
+                }}
+              >
+                <LocalGroceryStoreIcon />
+              </IconButton>
             </Hidden>
-            
           </Toolbar>
         );
       } else if (user.userType === "Proveedor") {
@@ -352,6 +380,27 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                   >
                     Stock
                   </Button>
+
+                  <Button
+                    onClick={() => navigate("/provider_orders")}
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      position: "absolute",
+                      mt: "-18px",
+                      ml: 61,
+                      backgroundColor: "#01FF72",
+                      color: "#242424",
+                      fontFamily: "Quicksand, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#01FF72",
+                      },
+                    }}
+                  >
+                    Pedidos
+                  </Button>
                 </Hidden>
               </Grid>
             </Grid>
@@ -396,6 +445,15 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                   }}
                 >
                   Stock
+                </MenuItem>
+
+                <MenuItem
+                  onClick={() => {
+                    navigate("/provider_orders");
+                    handleMenuClose();
+                  }}
+                >
+                  Pedidos
                 </MenuItem>
               </Menu>
             </Hidden>

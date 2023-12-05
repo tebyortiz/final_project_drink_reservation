@@ -11,6 +11,8 @@ import ProviderStock from "./components/providers-components/ProviderStock";
 import ClientLocalProviders from "./components/clients-components/ClientLocalProviders";
 import ProviderDetails from "./components/clients-components/ProviderDetails";
 import OrderDetails from "./components/clients-components/OrderDetails";
+import ClientOrderHistory from "./components/clients-components/ClientOrderHistory";
+import ProviderOrderHistory from "./components/providers-components/ProviderOrderHistory";
 
 function App() {
   const [loginSuccess, setLoginSuccess] = useState(false);
@@ -45,10 +47,12 @@ function App() {
           element={<ProviderDetails />}
         />
         <Route path="/client_purchase" element={<OrderDetails />} />
+        <Route path="/client_orders" element={<ClientOrderHistory />} />
         <Route path="/provider_home" element={<ProviderWelcome />} />
         <Route path="/provider_menu" element={<ProviderMenu />} />
         <Route path="/provider_areas" element={<ProviderAreas />} />
         <Route path="/provider_stock" element={<ProviderStock />} />
+        <Route path="/provider_orders" element={<ProviderOrderHistory />} />
       </Routes>
     </div>
   );
