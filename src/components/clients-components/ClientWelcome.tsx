@@ -33,7 +33,8 @@ const ClientWelcome = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const user = useSelector((state: RootState) => state.user.user);
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
 
   const clients = useSelector((state: RootState) => state.clients.clients);
   const userName = user?.name;

@@ -7,6 +7,7 @@ import {
   Purchase,
 } from "../models/UsersModels";
 
+
 interface PurchaseListState {
   currentPurchaseProvider: Provider | null;
   currentPurchase: Purchase;
@@ -187,6 +188,7 @@ const purchaseListSlice = createSlice({
 
     completePurchase: (state, action: PayloadAction<{ date: string }>) => {
       const currentClient = state.currentPurchase.client;
+
       state.purchases.push({
         ...state.currentPurchase,
         date: action.payload.date,
@@ -200,8 +202,6 @@ const purchaseListSlice = createSlice({
         date: "",
       };
     },
-    
-    
   },
 });
 

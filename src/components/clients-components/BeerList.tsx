@@ -62,230 +62,234 @@ const BeerList: React.FC<BeerListProps> = ({ provider, onBeerClick }) => {
       </Card>
 
       <Grid container spacing={2}>
-        {provider.service.beers.map((beer) => (
-          <Grid container item xs={12} key={beer.name}>
-            <Card
-              sx={{
-                backgroundColor: "white",
-                width: 800,
-                margin: " auto",
-                borderRadius: "15px",
-                color: "white",
-                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
-                display: "flex",
-                height: "400px",
-                position: "relative",
-              }}
-              onClick={() => onBeerClick(beer)}
-            >
-              <CardContent
-                sx={{
-                  backgroundColor: "#EC299F",
-                  color: "#242424",
-                  padding: "5px",
-                  borderTopLeftRadius: "15px",
-                  borderBottomLeftRadius: "15px",
-                  flexDirection: "column",
-                  flex: "2",
-                  justifyContent: "center",
-                }}
-              >
-                <Grid
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      textAlign: "left",
-                      fontFamily: "Quicksand, sans-serif",
-                      fontWeight: "bold",
-                      marginTop: "1px",
-                      marginLeft: "15px",
-                      color: "white",
-                    }}
-                  >
-                    {beer.name}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      textAlign: "right",
-                      fontFamily: "Quicksand, sans-serif",
-                      fontWeight: "bold",
-                      marginTop: "10px",
-                      marginLeft: "15px",
-                    }}
-                  >
-                    Precio: ${beer.price}
-                  </Typography>
-                </Grid>
-                <Divider
+        {provider.service.beers
+          .filter((beer) => beer.stock > 0)
+          .map((beer) => (
+            <Grid container item xs={12} key={beer.name}>
+              {beer.stock > 0 && (
+                <Card
                   sx={{
-                    width: "100%",
-                    borderWidth: "1px",
-                    borderColor: "#242424",
+                    backgroundColor: "white",
+                    width: 800,
+                    margin: " auto",
+                    borderRadius: "15px",
+                    color: "white",
+                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
+                    display: "flex",
+                    height: "400px",
+                    position: "relative",
                   }}
-                ></Divider>
-
-                <Grid sx={{ marginLeft: "15px" }}>
-                  <Typography
-                    variant="body2"
+                  onClick={() => onBeerClick(beer)}
+                >
+                  <CardContent
                     sx={{
-                      fontFamily: "Quicksand, sans-serif",
-                      fontWeight: "bold",
+                      backgroundColor: "#EC299F",
+                      color: "#242424",
+                      padding: "5px",
+                      borderTopLeftRadius: "15px",
+                      borderBottomLeftRadius: "15px",
+                      flexDirection: "column",
+                      flex: "2",
+                      justifyContent: "center",
                     }}
                   >
-                    % Alcohol: {beer.abv}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontFamily: "Quicksand, sans-serif",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    % Amargor: {beer.ibu}
-                  </Typography>
-                </Grid>
-
-                <CardContent>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: "white",
-                      marginBottom: "5px",
-                      marginTop: "-12px",
-                      fontFamily: "Quicksand, sans-serif",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Ingredientes
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontFamily: "Quicksand, sans-serif",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Malta:
-                  </Typography>
-                  {filterUniqueIngredients(beer.ingredients.malt).map(
-                    (malt, index) => (
-                      <Chip
-                        key={index}
-                        label={String(malt)}
+                    <Grid
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography
+                        variant="h5"
                         sx={{
-                          fontSize: "0.60rem",
-                          marginBottom: "1px",
-                          marginRight: "2px",
-                          backgroundColor: "#242424",
-                          "& .MuiChip-label": { color: "white" },
+                          textAlign: "left",
+                          fontFamily: "Quicksand, sans-serif",
+                          fontWeight: "bold",
+                          marginTop: "1px",
+                          marginLeft: "15px",
+                          color: "white",
                         }}
-                      />
-                    )
-                  )}
-
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontFamily: "Quicksand, sans-serif",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Lúpulo:
-                  </Typography>
-                  {filterUniqueIngredients(beer.ingredients.hops).map(
-                    (hops, index) => (
-                      <Chip
-                        key={index}
-                        label={String(hops)}
+                      >
+                        {beer.name}
+                      </Typography>
+                      <Typography
+                        variant="body1"
                         sx={{
-                          fontSize: "0.60rem",
-                          marginBottom: "1px",
-                          marginRight: "2px",
-                          backgroundColor: "#242424",
-                          "& .MuiChip-label": { color: "white" },
+                          textAlign: "right",
+                          fontFamily: "Quicksand, sans-serif",
+                          fontWeight: "bold",
+                          marginTop: "10px",
+                          marginLeft: "15px",
                         }}
-                      />
-                    )
-                  )}
-
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontFamily: "Quicksand, sans-serif",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Levadura:
-                  </Typography>
-                  {beer.ingredients.yeast.map((yeast, index) => (
-                    <Chip
-                      key={index}
-                      label={yeast}
+                      >
+                        Precio: ${beer.price}
+                      </Typography>
+                    </Grid>
+                    <Divider
                       sx={{
-                        fontSize: "0.60rem",
-                        marginBottom: "1px",
-                        marginRight: "2px",
-                        backgroundColor: "#242424",
-                        "& .MuiChip-label": { color: "white" },
+                        width: "100%",
+                        borderWidth: "1px",
+                        borderColor: "#242424",
+                      }}
+                    ></Divider>
+
+                    <Grid sx={{ marginLeft: "15px" }}>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontFamily: "Quicksand, sans-serif",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        % Alcohol: {beer.abv}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontFamily: "Quicksand, sans-serif",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        % Amargor: {beer.ibu}
+                      </Typography>
+                    </Grid>
+
+                    <CardContent>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "white",
+                          marginBottom: "5px",
+                          marginTop: "-12px",
+                          fontFamily: "Quicksand, sans-serif",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Ingredientes
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontFamily: "Quicksand, sans-serif",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Malta:
+                      </Typography>
+                      {filterUniqueIngredients(beer.ingredients.malt).map(
+                        (malt, index) => (
+                          <Chip
+                            key={index}
+                            label={String(malt)}
+                            sx={{
+                              fontSize: "0.60rem",
+                              marginBottom: "1px",
+                              marginRight: "2px",
+                              backgroundColor: "#242424",
+                              "& .MuiChip-label": { color: "white" },
+                            }}
+                          />
+                        )
+                      )}
+
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontFamily: "Quicksand, sans-serif",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Lúpulo:
+                      </Typography>
+                      {filterUniqueIngredients(beer.ingredients.hops).map(
+                        (hops, index) => (
+                          <Chip
+                            key={index}
+                            label={String(hops)}
+                            sx={{
+                              fontSize: "0.60rem",
+                              marginBottom: "1px",
+                              marginRight: "2px",
+                              backgroundColor: "#242424",
+                              "& .MuiChip-label": { color: "white" },
+                            }}
+                          />
+                        )
+                      )}
+
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontFamily: "Quicksand, sans-serif",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Levadura:
+                      </Typography>
+                      {beer.ingredients.yeast.map((yeast, index) => (
+                        <Chip
+                          key={index}
+                          label={yeast}
+                          sx={{
+                            fontSize: "0.60rem",
+                            marginBottom: "1px",
+                            marginRight: "2px",
+                            backgroundColor: "#242424",
+                            "& .MuiChip-label": { color: "white" },
+                          }}
+                        />
+                      ))}
+                    </CardContent>
+                  </CardContent>
+                  <Card
+                    sx={{
+                      backgroundColor: "#F5F5F5",
+                      width: 140,
+                      height: 400,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="100%"
+                      image={beer.image}
+                      alt={beer.name}
+                      sx={{
+                        width: "auto",
+                        height: "100%",
+                        objectFit: "contain",
+                        objectPosition: "center",
+                        marginLeft: "0px",
                       }}
                     />
-                  ))}
-                </CardContent>
-              </CardContent>
-              <Card
-                sx={{
-                  backgroundColor: "#F5F5F5",
-                  width: 140,
-                  height: 400,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  overflow: "hidden",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  height="100%"
-                  image={beer.image}
-                  alt={beer.name}
-                  sx={{
-                    width: "auto",
-                    height: "100%",
-                    objectFit: "contain",
-                    objectPosition: "center",
-                    marginLeft: "0px",
-                  }}
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: 5,
-                    right: 5,
-                    zIndex: 1,
-                  }}
-                >
-                  <IconButton
-                    style={{
-                      bottom: 1,
-                      right: 1,
-                      color: "#FFFFFF",
-                      backgroundColor: alpha("#EC299F", 0.9),
-                      zIndex: 1,
-                    }}
-                  >
-                    <AddShoppingCartIcon />
-                  </IconButton>
-                </div>
-              </Card>
-            </Card>
-          </Grid>
-        ))}
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: 5,
+                        right: 5,
+                        zIndex: 1,
+                      }}
+                    >
+                      <IconButton
+                        style={{
+                          bottom: 1,
+                          right: 1,
+                          color: "#FFFFFF",
+                          backgroundColor: alpha("#EC299F", 0.9),
+                          zIndex: 1,
+                        }}
+                      >
+                        <AddShoppingCartIcon />
+                      </IconButton>
+                    </div>
+                  </Card>
+                </Card>
+              )}
+            </Grid>
+          ))}
       </Grid>
     </Grid>
   );

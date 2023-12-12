@@ -39,6 +39,10 @@ import { RootState } from "../../models/RootStateTypes";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import proveedordelivery from "/images/proveedordelivery.png";
+import {
+  updateBeerStockAfterPurchase,
+  updateCocktailStockAfterPurchase,
+} from "../../redux/ProvidersSlice";
 
 const OrderDetails = () => {
   const dispatch = useDispatch();
@@ -51,45 +55,51 @@ const OrderDetails = () => {
   const provider = currentPurchase.provider;
 
   const handleCocktailQuantityChange = (
-    cocktail: { name: string; image: string; price: number },
+    cocktail: { name: string; image: string; price: number; stock: number },
     quantity: number
   ) => {
-    dispatch(
-      updateCocktailQuantity({
-        cocktail: {
-          name: cocktail.name,
-          image: cocktail.image,
-          price: cocktail.price,
-          stock: 0,
-          ingredients: [],
-        },
-        quantity,
-      })
-    );
+    if (quantity <= cocktail.stock) {
+      dispatch(
+        updateCocktailQuantity({
+          cocktail: {
+            name: cocktail.name,
+            image: cocktail.image,
+            price: cocktail.price,
+            stock: cocktail.stock,
+            ingredients: [],
+          },
+          quantity,
+        })
+      );
+    } else {
+    }
   };
 
   const handleBeerQuantityChange = (
-    beer: { name: string; image: string; price: number },
+    beer: { name: string; image: string; price: number; stock: number },
     quantity: number
   ) => {
-    dispatch(
-      updateBeerQuantity({
-        beer: {
-          name: beer.name,
-          image: beer.image,
-          price: beer.price,
-          stock: 0,
-          abv: "",
-          ibu: "",
-          ingredients: {
-            malt: [],
-            hops: [],
-            yeast: [],
+    if (quantity <= beer.stock) {
+      dispatch(
+        updateBeerQuantity({
+          beer: {
+            name: beer.name,
+            image: beer.image,
+            price: beer.price,
+            stock: 0,
+            abv: "",
+            ibu: "",
+            ingredients: {
+              malt: [],
+              hops: [],
+              yeast: [],
+            },
           },
-        },
-        quantity,
-      })
-    );
+          quantity,
+        })
+      );
+    } else {
+    }
   };
 
   const handleRemoveItem = (name: string) => {
@@ -112,7 +122,13 @@ const OrderDetails = () => {
       );
 
     dispatch(updateTotalPurchase(totalPurchase));
-    dispatch(resetProviderIfEmpty());
+
+    if (
+      currentPurchase.cocktails.length === 0 &&
+      currentPurchase.beers.length === 0
+    ) {
+      dispatch(resetProviderIfEmpty());
+    }
   }, [currentPurchase.cocktails, currentPurchase.beers, dispatch]);
 
   const isPurchaseEmpty =
@@ -129,20 +145,53 @@ const OrderDetails = () => {
         currentPurchase.cocktails.reduce(
           (
             acc: number,
-            item: { cocktail: { price: number }; quantity: number }
+            item: {
+              cocktail: { price: number; stock: number };
+              quantity: number;
+            }
           ) => acc + (item.cocktail?.price || 0) * item.quantity,
           0
         ) +
         currentPurchase.beers.reduce(
-          (acc: number, item: { beer: { price: number }; quantity: number }) =>
-            acc + (item.beer?.price || 0) * item.quantity,
+          (
+            acc: number,
+            item: { beer: { price: number; stock: number }; quantity: number }
+          ) => acc + (item.beer?.price || 0) * item.quantity,
           0
         );
+
       const currentDate = new Date();
       dispatch(
         completePurchase({
           date: currentDate.toISOString(),
         })
+      );
+
+      currentPurchase.cocktails.forEach(
+        (item: {
+          cocktail: { name: string; stock: number };
+          quantity: number;
+        }) => {
+          dispatch(
+            updateCocktailStockAfterPurchase({
+              providerName: currentPurchase.provider?.company.name || "",
+              cocktailName: item.cocktail.name,
+              quantity: item.quantity,
+            })
+          );
+        }
+      );
+
+      currentPurchase.beers.forEach(
+        (item: { beer: { name: string; stock: number }; quantity: number }) => {
+          dispatch(
+            updateBeerStockAfterPurchase({
+              providerName: currentPurchase.provider?.company.name || "",
+              beerName: item.beer.name,
+              quantity: item.quantity,
+            })
+          );
+        }
       );
 
       dispatch(updateTotalPurchase(totalPurchase));
@@ -291,6 +340,7 @@ const OrderDetails = () => {
                             name: string;
                             image: string;
                             price: number;
+                            stock: number;
                           };
                           quantity: number;
                         }) => (
@@ -475,7 +525,12 @@ const OrderDetails = () => {
                     <TableBody>
                       {currentPurchase.beers.map(
                         (item: {
-                          beer: { name: string; image: string; price: number };
+                          beer: {
+                            name: string;
+                            image: string;
+                            price: number;
+                            stock: number;
+                          };
                           quantity: number;
                         }) => (
                           <TableRow key={item.beer.name}>

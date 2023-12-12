@@ -19,7 +19,8 @@ import {
 import ReceiptLongSharpIcon from "@mui/icons-material/ReceiptLongSharp";
 
 const ClientOrderHistory: React.FC = () => {
-  const user = useSelector((state: RootState) => state.user.user);
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
   const purchases = useSelector(
     (state: RootState) => state.purchaseList.purchases
   );
