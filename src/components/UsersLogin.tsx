@@ -109,7 +109,7 @@ const UsersLogin = ({
               fontWeight: "bold",
             }}
           >
-            Bienvenidos <br /> Para acceder a nuestro servicio, primero debes
+            Bienvenidos. <br /> Para acceder a nuestro servicio, primero debes
             loguearte.
           </Typography>
         </Grid>
