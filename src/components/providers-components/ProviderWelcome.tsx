@@ -102,11 +102,12 @@ const ProviderWelcome = () => {
               fontSize: "24px",
             }}
           >
-            Contactar con tus clientes de forma directa y ordenada.
+            Mantener la información de tu servicio siempre actualizado.
             <br />
             Mostrar detalles de tus distintos Cócteles y variedades de Cervezas.
             <br />
-            Coordinar la entrega a través del calendario Interactivo.
+            Visualizar los pedidos realizados por los clientes, y los productos
+            solicitados.
           </Typography>
         </Card>
       </Grid>

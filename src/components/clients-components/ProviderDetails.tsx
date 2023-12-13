@@ -27,6 +27,7 @@ import { Beer, Cocktail, Provider } from "../../models/UsersModels";
 import {
   addBeerToCart,
   addCocktailToCart,
+  setClient,
   setProvider,
 } from "../../redux/PurchaseListSlice";
 import { useState } from "react";
@@ -40,6 +41,8 @@ const ProviderDetails = () => {
   const pathParts = location.pathname.split("/");
 
   let provider: Provider | undefined;
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
 
   if (pathParts.length > 1) {
     const providerName = pathParts.pop()?.replace(/-/g, " ");
@@ -69,6 +72,7 @@ const ProviderDetails = () => {
     }
     if (!currentProvider) {
       dispatch(setProvider({ provider }));
+      dispatch(setClient(user));
       dispatch(addCocktailToCart({ cocktail, provider }));
       showSnackbar(`Producto "${cocktail.name}" añadido al carrito`, "check");
     } else if (currentProvider.company.name === provider.company.name) {
@@ -242,137 +246,141 @@ const ProviderDetails = () => {
           </Card>
 
           <Grid container spacing={2}>
-            {provider.service.cocktails.map((cocktail: Cocktail) => (
-              <Grid container item xs={12} key={cocktail.name}>
-                <Card
-                  sx={{
-                    backgroundColor: "white",
-                    width: 800,
-                    margin: "auto",
-                    borderRadius: "15px",
-                    color: "white",
-                    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
-                    display: "flex",
-                    height: "140px",
-                    position: "relative",
-                  }}
-                  onClick={() => handleCocktailClick(cocktail)}
-                >
-                  <CardContent
-                    sx={{
-                      backgroundColor: "#EC299F",
-                      color: "#242424",
-                      padding: "5px",
-                      borderTopLeftRadius: "15px",
-                      borderBottomLeftRadius: "15px",
-                      flexDirection: "column",
-                      flex: "2",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Grid
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography
-                        variant="h5"
-                        sx={{
-                          textAlign: "left",
-                          fontFamily: "Quicksand, sans-serif",
-                          fontWeight: "bold",
-                          marginTop: "1px",
-                          marginLeft: "15px",
-                          color: "white",
-                        }}
-                      >
-                        {cocktail.name}
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          textAlign: "right",
-                          fontFamily: "Quicksand, sans-serif",
-                          fontWeight: "bold",
-                          marginTop: "10px",
-                          marginLeft: "15px",
-                        }}
-                      >
-                        Precio: ${cocktail.price}
-                      </Typography>
-                    </Grid>
-                    <Divider
+            {provider.service.cocktails
+              .filter((cocktail) => cocktail.stock > 0)
+              .map((cocktail: Cocktail) => (
+                <Grid container item xs={12} key={cocktail.name}>
+                  {cocktail.stock > 0 && (
+                    <Card
                       sx={{
-                        width: "100%",
-                        borderWidth: "1px",
-                        borderColor: "#242424",
-                        marginBottom: "-10px",
+                        backgroundColor: "white",
+                        width: 800,
+                        margin: "auto",
+                        borderRadius: "15px",
+                        color: "white",
+                        boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
+                        display: "flex",
+                        height: "140px",
+                        position: "relative",
                       }}
-                    ></Divider>
-                    <CardContent>
-                      <Typography
-                        variant="body2"
+                      onClick={() => handleCocktailClick(cocktail)}
+                    >
+                      <CardContent
                         sx={{
-                          color: "white",
-                          marginBottom: "7px",
-                          fontFamily: "Quicksand, sans-serif",
-                          fontWeight: "bold",
+                          backgroundColor: "#EC299F",
+                          color: "#242424",
+                          padding: "5px",
+                          borderTopLeftRadius: "15px",
+                          borderBottomLeftRadius: "15px",
+                          flexDirection: "column",
+                          flex: "2",
+                          justifyContent: "center",
                         }}
                       >
-                        Ingredientes
-                      </Typography>
-                      {cocktail.ingredients.map((ingredient, index) => (
-                        <Chip
-                          key={index}
-                          label={ingredient}
-                          sx={{
-                            fontSize: "0.60rem",
-                            marginBottom: "1px",
-                            marginRight: "2px",
-                            backgroundColor: "#242424",
-                            "& .MuiChip-label": { color: "white" },
+                        <Grid
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
                           }}
-                        />
-                      ))}
-                    </CardContent>
-                  </CardContent>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={cocktail.image}
-                    alt={cocktail.name}
-                    sx={{
-                      width: "140px",
-                      height: "140px",
-                      objectFit: "cover",
-                      objectPosition: "center",
-                      marginLeft: "0px",
-                    }}
-                  />
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: 5,
-                      right: 5,
-                      zIndex: 1,
-                    }}
-                  >
-                    <IconButton
-                      style={{
-                        bottom: 1,
-                        right: 1,
-                        color: "#FFFFFF",
-                        backgroundColor: alpha("#EC299F", 0.9),
-                        zIndex: 1,
-                      }}
-                    >
-                      <AddShoppingCartIcon />
-                    </IconButton>
-                  </div>
-                </Card>
-              </Grid>
-            ))}
+                        >
+                          <Typography
+                            variant="h5"
+                            sx={{
+                              textAlign: "left",
+                              fontFamily: "Quicksand, sans-serif",
+                              fontWeight: "bold",
+                              marginTop: "1px",
+                              marginLeft: "15px",
+                              color: "white",
+                            }}
+                          >
+                            {cocktail.name}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            sx={{
+                              textAlign: "right",
+                              fontFamily: "Quicksand, sans-serif",
+                              fontWeight: "bold",
+                              marginTop: "10px",
+                              marginLeft: "15px",
+                            }}
+                          >
+                            Precio: ${cocktail.price}
+                          </Typography>
+                        </Grid>
+                        <Divider
+                          sx={{
+                            width: "100%",
+                            borderWidth: "1px",
+                            borderColor: "#242424",
+                            marginBottom: "-10px",
+                          }}
+                        ></Divider>
+                        <CardContent>
+                          <Typography
+                            variant="body2"
+                            sx={{
+                              color: "white",
+                              marginBottom: "7px",
+                              fontFamily: "Quicksand, sans-serif",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Ingredientes
+                          </Typography>
+                          {cocktail.ingredients.map((ingredient, index) => (
+                            <Chip
+                              key={index}
+                              label={ingredient}
+                              sx={{
+                                fontSize: "0.60rem",
+                                marginBottom: "1px",
+                                marginRight: "2px",
+                                backgroundColor: "#242424",
+                                "& .MuiChip-label": { color: "white" },
+                              }}
+                            />
+                          ))}
+                        </CardContent>
+                      </CardContent>
+                      <CardMedia
+                        component="img"
+                        height="140"
+                        image={cocktail.image}
+                        alt={cocktail.name}
+                        sx={{
+                          width: "140px",
+                          height: "140px",
+                          objectFit: "cover",
+                          objectPosition: "center",
+                          marginLeft: "0px",
+                        }}
+                      />
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: 5,
+                          right: 5,
+                          zIndex: 1,
+                        }}
+                      >
+                        <IconButton
+                          style={{
+                            bottom: 1,
+                            right: 1,
+                            color: "#FFFFFF",
+                            backgroundColor: alpha("#EC299F", 0.9),
+                            zIndex: 1,
+                          }}
+                        >
+                          <AddShoppingCartIcon />
+                        </IconButton>
+                      </div>
+                    </Card>
+                  )}
+                </Grid>
+              ))}
           </Grid>
         </Grid>
       )}

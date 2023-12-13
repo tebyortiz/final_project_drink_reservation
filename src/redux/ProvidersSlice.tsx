@@ -217,6 +217,44 @@ const providersSlice = createSlice({
         state.providers[providerIndex].service.beers = updatedBeers;
       }
     },
+    updateCocktailStockAfterPurchase: (
+      state,
+      action: PayloadAction<{ providerName: string; cocktailName: string; quantity: number }>
+    ) => {
+      const { providerName, cocktailName, quantity } = action.payload;
+      const providerIndex = state.providers.findIndex(
+        (provider) => provider.company.name === providerName
+      );
+    
+      if (providerIndex !== -1) {
+        const cocktailIndex = state.providers[providerIndex].service.cocktails.findIndex(
+          (c) => c.name === cocktailName
+        );
+    
+        if (cocktailIndex !== -1) {
+          state.providers[providerIndex].service.cocktails[cocktailIndex].stock -= quantity;
+        }
+      }
+    },
+    updateBeerStockAfterPurchase: (
+      state,
+      action: PayloadAction<{ providerName: string; beerName: string; quantity: number }>
+    ) => {
+      const { providerName, beerName, quantity } = action.payload;
+      const providerIndex = state.providers.findIndex(
+        (provider) => provider.company.name === providerName
+      );
+    
+      if (providerIndex !== -1) {
+        const beerIndex = state.providers[providerIndex].service.beers.findIndex(
+          (b) => b.name === beerName
+        );
+    
+        if (beerIndex !== -1) {
+          state.providers[providerIndex].service.beers[beerIndex].stock -= quantity;
+        }
+      }
+    },
   },
 });
 
@@ -230,6 +268,8 @@ export const {
   removeArea,
   updateCocktailStock,
   updateBeerStock,
+  updateCocktailStockAfterPurchase,
+  updateBeerStockAfterPurchase,
 } = providersSlice.actions;
 
 export default providersSlice.reducer;

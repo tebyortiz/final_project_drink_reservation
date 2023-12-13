@@ -2,19 +2,24 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Typography, Card, CardContent, CardMedia } from "@mui/material";
 import { RootState } from "../../models/RootStateTypes";
+import { Box } from "@mui/system";
+import { Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import {
   MarkerPosition,
   Area,
   Provider,
   Client,
 } from "../../models/UsersModels";
-import { Box } from "@mui/system";
-import { Grid } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+
+const getUserFromLocalStorage = () => {
+  const storedUser = localStorage.getItem("user");
+  return storedUser ? JSON.parse(storedUser) : null;
+};
 
 const ClientLocalProviders = () => {
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.user.user);
+  const user = getUserFromLocalStorage();
   const clients = useSelector((state: RootState) => state.clients.clients);
   const userName = user?.name;
 
@@ -61,14 +66,25 @@ const ClientLocalProviders = () => {
       )
     );
 
-    setFilteredProviders(providersInClientArea);
-    if (providersInClientArea.length === 0) {
+    const providersInClientAreaWithStock = providersInClientArea.filter(
+      (provider) => {
+        const allProducts = [
+          ...(provider.service?.cocktails || []),
+          ...(provider.service?.beers || []),
+        ];
+        return allProducts.some((product) => product.stock > 0);
+      }
+    );
+
+    setFilteredProviders(providersInClientAreaWithStock);
+
+    if (providersInClientAreaWithStock.length === 0) {
       setMessage("No hay proveedores disponibles en tu área.");
-    } else if (providersInClientArea.length === 1) {
+    } else if (providersInClientAreaWithStock.length === 1) {
       setMessage("Se ha encontrado 1 proveedor:");
     } else {
       setMessage(
-        `Se han encontrado ${providersInClientArea.length} proveedores:`
+        `Se han encontrado ${providersInClientAreaWithStock.length} proveedores:`
       );
     }
   }, [selectedClient, providers]);

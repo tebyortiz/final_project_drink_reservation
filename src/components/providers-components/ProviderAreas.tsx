@@ -34,7 +34,8 @@ const defaultCenter = {
 
 const ProviderAreas = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user.user);
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
   const providers = useSelector(
     (state: RootState) => state.providers.providers
   );

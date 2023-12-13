@@ -9,10 +9,8 @@ import {
   Grid,
 } from "@mui/material";
 import { Link, Navigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import RootState from "../models/RootStateTypes";
-import { setUser } from "../redux/UserSlice";
-import { setClient } from "../redux/PurchaseListSlice";
 
 const UsersLogin = ({
   setLoginSuccess,
@@ -24,63 +22,43 @@ const UsersLogin = ({
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [redirectTo, setRedirectTo] = useState("");
-  const dispatch = useDispatch();
-
   const clients = useSelector((state: RootState) => state.clients.clients);
   const providers = useSelector(
     (state: RootState) => state.providers.providers
   );
 
   const handleLogin = () => {
-    const client =
-      clients &&
-      clients.find(
-        (c) => c.login.username === username && c.login.password === password
-      );
-    const provider =
-      providers &&
-      providers.find(
-        (p) => p.login.username === username && p.login.password === password
-      );
+    const client = clients.find(
+      (c) => c.login.username === username && c.login.password === password
+    );
+    const provider = providers.find(
+      (p) => p.login.username === username && p.login.password === password
+    );
 
     if (client || provider) {
       const newUserType = client ? "Cliente" : "Proveedor";
       onUserTypeChange(newUserType);
 
-      let userData: any = {
-        username,
-        userType: newUserType,
-        name: "",
-        phone: "",
-        email: "",
-        photo: "",
-      };
+      let userData: any;
 
       if (client) {
         userData = {
-          ...userData,
-          name: client.name,
-          phone: client.phone,
-          email: client.email,
-          photo: client.photo,
-          address: client.address,
+          username,
+          userType: newUserType,
+          ...client,
         };
-        dispatch(setClient(userData));
       } else if (provider) {
         userData = {
-          ...userData,
-          name: provider.company.name,
-          phone: provider.company.phone,
-          email: provider.company.email,
-          photo: provider.responsibleCompany.photo,
-          company: provider.company,
-          service: provider.service,
-          responsibleCompany: provider.responsibleCompany,
+          username,
+          userType: newUserType,
+          ...provider,
         };
       }
 
-      dispatch(setUser(userData));
+      localStorage.setItem("user", JSON.stringify(userData));
+
       setLoginSuccess(true);
+
       if (newUserType === "Cliente") {
         setRedirectTo("/client_home");
       } else if (newUserType === "Proveedor") {
@@ -131,7 +109,7 @@ const UsersLogin = ({
               fontWeight: "bold",
             }}
           >
-            Bienvenidos <br /> Para acceder a nuestro servicio, primero debes
+            Bienvenidos. <br /> Para acceder a nuestro servicio, primero debes
             loguearte.
           </Typography>
         </Grid>

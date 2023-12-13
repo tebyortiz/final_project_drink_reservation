@@ -33,7 +33,8 @@ const ClientWelcome = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const user = useSelector((state: RootState) => state.user.user);
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
 
   const clients = useSelector((state: RootState) => state.clients.clients);
   const userName = user?.name;
@@ -270,8 +271,8 @@ const ClientWelcome = () => {
             Nos alegra poder ofrecerte el servicio más innovador de Delivery de
             Coctelería y Cervecería.
             <br />
-            Puedes hacer tus Pedidos y decidir qué días y horarios puedes
-            coordinar la entrega.
+            Podrás realizar pedidos a proveedores, y visualizar en la sección
+            "Pedidos" todos tus pedidos.
             <br />
             Recuerda que el servicio es GRATUITO.
           </Typography>
@@ -317,12 +318,13 @@ const ClientWelcome = () => {
               fontSize: "24px",
             }}
           >
-            Conocer Proveedores de Bebidas según el tipo de Servicio.
+            Conocer Proveedores de Bebidas y los tipos de servicios que ofrecen.
             <br />
             Conocer la cartilla de Productos y además la Info descriptiva de los
             mismos.
             <br />
-            Coordinar la entrega a través del calendario Interactivo.
+            Agregar los cócteles o cervezas al carrito de compras, para efectuar
+            tu pedido.
           </Typography>
         </Card>
       </Grid>

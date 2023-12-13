@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import MenuBar from "./layout/MenuBar";
 import ProvidersRegistration from "./components/ProvidersRegistration";
 import UsersLogin from "./components/UsersLogin";
@@ -26,7 +26,7 @@ function App() {
     <div className="App">
       <MenuBar loginSuccess={loginSuccess} />
       <Routes>
-        <Route path="/" element={<h1>Home</h1>} />
+        <Route index element={<Navigate to="/login" replace />} />
         <Route path="/registration" element={<ProvidersRegistration />} />
         <Route
           path="/login"

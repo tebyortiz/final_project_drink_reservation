@@ -15,14 +15,10 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import MenuIcon from "@mui/icons-material/Menu";
 import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import RootState from "../models/RootStateTypes";
-import { clearUser } from "../redux/UserSlice";
 import { useState } from "react";
 
 const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
-  const user = useSelector((state: RootState) => state.user.user);
-  const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -35,7 +31,7 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
   };
 
   const handleLogout = () => {
-    dispatch(clearUser());
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
@@ -55,7 +51,7 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
   };
 
   const renderUserSection = () => {
-    if (loginSuccess && user) {
+    if (loginSuccess && user?.login) {
       return (
         <Grid container justifyContent="flex-end">
           <Grid item>
@@ -68,7 +64,7 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
                 fontSize: "24px",
               }}
             >
-              {user.name}
+              {user.userType === "Cliente" ? user.name : user.company?.name}
             </Typography>
           </Grid>
           <Grid item>
@@ -98,7 +94,7 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
   };
 
   const renderButtons = () => {
-    if (!loginSuccess || !user) {
+    if (!loginSuccess || !user.login) {
       return (
         <Grid container spacing={2} justifyContent="flex-end">
           <Grid item>

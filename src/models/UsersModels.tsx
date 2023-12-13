@@ -26,7 +26,7 @@ interface Provider {
 export type { Provider };
 
 interface Client {
-  username: string;
+  username?: string;
   name: string;
   phone: string;
   email: string;
