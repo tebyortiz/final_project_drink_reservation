@@ -13,12 +13,62 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { addClient } from "../redux/ClientsSlice";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import { Client } from "../models/UsersModels";
 
-export interface UsersRegistrationProps {
+const textFieldStyles = {
+  "& .MuiInputBase-root": {
+    height: "35px",
+    color: "#242424",
+    backgroundColor: "white",
+    borderRadius: "5px",
+    marginBottom: "20px",
+  },
+  "& .MuiInputLabel-root": {
+    color: "#EC299F",
+    transform: "none",
+    marginTop: "-5px",
+    fontFamily: "Nunito, sans-serif",
+    fontWeight: "bold",
+  },
+  "& .MuiInputLabel-root.Mui-focused": {
+    color: "#EC299F",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "#EC299F",
+  },
+  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+    borderColor: "#EC299F",
+  },
+  "&:hover .MuiOutlinedInput-notchedOutline": {
+    border: "1px solid #EC299F",
+    borderColor: "#EC299F",
+  },
+};
+
+interface UsersRegistrationProps {
   isUserDialogOpen: boolean;
   setIsUserDialogOpen: (isOpen: boolean) => void;
 }
+
+const validationSchema = Yup.object({
+  name: Yup.string().required("* Campo requerido"),
+  phone: Yup.number()
+    .typeError("* Solo se permiten números")
+    .required("* Campo requerido"),
+  email: Yup.string()
+    .email("* Correo electrónico no válido")
+    .required("* Campo requerido"),
+  photo: Yup.string().required("* Campo requerido"),
+  address: Yup.string().required("* Campo requerido"),
+  login: Yup.object({
+    username: Yup.string().required("* Campo requerido"),
+    password: Yup.string()
+      .min(8, "* La contraseña debe tener al menos 8 caracteres")
+      .required("* Campo requerido"),
+  }),
+});
 
 const ClientsRegistration = ({
   isUserDialogOpen,
@@ -27,21 +77,7 @@ const ClientsRegistration = ({
   const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(false);
   const [welcomeDialogUserName, setWelcomeDialogUserName] = useState("");
 
-  const [formValues, setFormValues] = useState<Client>({
-    name: "",
-    phone: "",
-    email: "",
-    photo: "",
-    address: "",
-    login: {
-      username: "",
-      password: "",
-    },
-    markerPosition: {
-      lat: 0,
-      lng: 0,
-    },
-  });
+  const dispatch = useDispatch();
 
   const handleUserDialogClose = () => {
     setIsUserDialogOpen(false);
@@ -51,59 +87,17 @@ const ClientsRegistration = ({
     setIsWelcomeDialogOpen(false);
   };
 
-  const dispatch = useDispatch();
-
-  const handleUserRegistration = () => {
-    if (
-      !formValues.name ||
-      !formValues.phone ||
-      !formValues.email ||
-      !formValues.photo ||
-      !formValues.address ||
-      !formValues.login.username ||
-      !formValues.login.password
-    ) {
-      alert("Por favor, complete todos los campos");
-      return;
-    }
-
-    if (formValues.login.password.length < 8) {
-      alert("Para la contraseña debe ingresar al menos 8 caracteres");
-      return;
-    }
-
-    const userName = formValues.name;
-    const newUser: Client = { ...formValues };
-
-    {
-      /* Action de Redux Toolkit para agregar un nuevo Cliente */
-    }
-    dispatch(addClient(newUser));
+  const handleUserRegistration = (values: Client) => {
+    dispatch(addClient(values));
 
     handleUserDialogClose();
-    setFormValues({
-      name: "",
-      phone: "",
-      email: "",
-      photo: "",
-      address: "",
-      login: {
-        username: "",
-        password: "",
-      },
-      markerPosition: {
-        lat: 0,
-        lng: 0,
-      },
-    });
 
-    setWelcomeDialogUserName(userName);
+    setWelcomeDialogUserName(values.name);
     setIsWelcomeDialogOpen(true);
   };
 
   return (
     <div>
-      {/* Formulario de Registro Clientes */}
       <Grid item xs={12}>
         <FormControl fullWidth style={{ marginBottom: "10px" }}>
           <Dialog
@@ -127,284 +121,229 @@ const ClientsRegistration = ({
               Para registrarte, completa los siguientes campos:
             </DialogTitle>
 
-            <div style={{ padding: "20px" }}>
-              <TextField
-                fullWidth
-                label="Nombre del Usuario"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#EC299F",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                value={formValues.name}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    name: e.target.value,
-                  }))
-                }
-              />
-              <TextField
-                fullWidth
-                label="Teléfono del Usuario"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#EC299F",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                type="number"
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                value={formValues.phone}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    phone: e.target.value,
-                  }))
-                }
-              />
-              <TextField
-                fullWidth
-                label="Email del Usuario"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#EC299F",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                value={formValues.email}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    email: e.target.value,
-                  }))
-                }
-              />
-              <TextField
-                fullWidth
-                label="Foto del Usuario"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#EC299F",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                value={formValues.photo}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    photo: e.target.value,
-                  }))
-                }
-              />
-              <TextField
-                fullWidth
-                label="Dirección del Usuario"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& input": {
-                    height: "15px",
-                    color: "#242424",
-                    backgroundColor: "white",
-                  },
-                  "& label": {
-                    color: "black",
-                  },
-                  "& label.Mui-focused": {
-                    color: "#242424",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottomColor: "#EC299F",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                value={formValues.address}
-                onChange={(e) =>
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    address: e.target.value,
-                  }))
-                }
-              />
-
-              {/* Card para definir Username y Contraseña */}
-              <Card
-                sx={{
-                  backgroundColor: "#242424",
-                  marginTop: "25px",
-                  borderRadius: "15px",
-                }}
-              >
-                <CardContent>
-                  <Typography
-                    variant="h6"
-                    gutterBottom
-                    sx={{
-                      color: "white",
-                      textAlign: "center",
+            <Formik
+              initialValues={{
+                name: "",
+                phone: "",
+                email: "",
+                photo: "",
+                address: "",
+                login: {
+                  username: "",
+                  password: "",
+                },
+                markerPosition: {
+                  lat: 0,
+                  lng: 0,
+                },
+              }}
+              validationSchema={validationSchema}
+              onSubmit={(values) => handleUserRegistration(values)}
+            >
+              <Form>
+                <div style={{ padding: "20px" }}>
+                  <Field
+                    type="text"
+                    name="name"
+                    label="Nombre del Usuario"
+                    fullWidth
+                    as={TextField}
+                    variant="standard"
+                    sx={textFieldStyles}
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <div
+                    style={{
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      color: "red",
+                      marginTop: "-25px",
                       marginBottom: "20px",
                     }}
                   >
-                    Ahora defina su Username y Contraseña para ingresar
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    label="Username"
-                    style={{ marginBottom: "10px" }}
-                    sx={{
-                      "& .MuiInputBase-root": {
-                        color: "#242424",
-                        backgroundColor: "white",
-                        borderRadius: "7px",
-                        border: "2px solid #EC299F",
-                      },
-                      "& .MuiInputLabel-root": {
-                        color: "white",
-                      },
-                      "& .MuiInputLabel-root.Mui-focused": {
-                        color: "#EC299F",
-                      },
-                      "& .MuiInputBase-root.Mui-focused": {
-                        borderColor: "#EC299F",
-                      },
-                      "& .MuiInput-underline:after": {
-                        borderBottom: "none",
-                      },
-                    }}
-                    InputLabelProps={{ shrink: true }}
-                    variant="standard"
-                    value={formValues.login.username}
-                    onChange={(e) =>
-                      setFormValues((prevFormValues) => ({
-                        ...prevFormValues,
-                        login: {
-                          ...prevFormValues.login,
-                          username: e.target.value,
-                        },
-                      }))
-                    }
-                  />
-
-                  <TextField
-                    fullWidth
-                    label="Contraseña"
-                    type="password"
-                    style={{ marginBottom: "10px" }}
-                    sx={{
-                      "& .MuiInputBase-root": {
-                        color: "#242424",
-                        backgroundColor: "white",
-                        borderRadius: "7px",
-                        border: "2px solid #EC299F",
-                      },
-                      "& .MuiInputLabel-root": {
-                        color: "white",
-                      },
-                      "& .MuiInputLabel-root.Mui-focused": {
-                        color: "#EC299F",
-                      },
-                      "& .MuiInputBase-root.Mui-focused": {
-                        borderColor: "#EC299F",
-                      },
-                      "& .MuiInput-underline:after": {
-                        borderBottom: "none",
-                      },
-                    }}
-                    InputLabelProps={{ shrink: true }}
-                    variant="standard"
-                    value={formValues.login.password}
-                    onChange={(e) =>
-                      setFormValues((prevFormValues) => ({
-                        ...prevFormValues,
-                        login: {
-                          ...prevFormValues.login,
-                          password: e.target.value,
-                        },
-                      }))
-                    }
-                  />
-                  {/* Botón de Registro + Evento */}
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      sx={{
-                        backgroundColor: "#EC299F",
-                        fontFamily: "Nunito, sans-serif",
-                        fontWeight: "bold",
-                        marginTop: "15px",
-                        "&:hover": {
-                          backgroundColor: "white",
-                          color: "#EC299F",
-                        },
-                      }}
-                      onClick={handleUserRegistration}
-                    >
-                      Registrarse
-                    </Button>
+                    <ErrorMessage name="name" component="div" />
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+
+                  <Field
+                    type="text"
+                    name="phone"
+                    label="Teléfono del Usuario"
+                    fullWidth
+                    as={TextField}
+                    variant="standard"
+                    sx={textFieldStyles}
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <div
+                    style={{
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      color: "red",
+                      marginTop: "-25px",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    <ErrorMessage name="phone" component="div" />
+                  </div>
+
+                  <Field
+                    type="text"
+                    name="email"
+                    label="Email del Usuario"
+                    fullWidth
+                    as={TextField}
+                    variant="standard"
+                    sx={textFieldStyles}
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <div
+                    style={{
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      color: "red",
+                      marginTop: "-25px",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    <ErrorMessage name="email" component="div" />
+                  </div>
+
+                  <Field
+                    type="text"
+                    name="photo"
+                    label="Foto del Usuario"
+                    fullWidth
+                    as={TextField}
+                    variant="standard"
+                    sx={textFieldStyles}
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <div
+                    style={{
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      color: "red",
+                      marginTop: "-25px",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    <ErrorMessage name="photo" component="div" />
+                  </div>
+
+                  <Field
+                    type="text"
+                    name="address"
+                    label="Dirección del Usuario"
+                    fullWidth
+                    as={TextField}
+                    variant="standard"
+                    sx={textFieldStyles}
+                    style={{ marginBottom: "10px" }}
+                  />
+                  <div
+                    style={{
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      color: "red",
+                      marginTop: "-25px",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    <ErrorMessage name="address" component="div" />
+                  </div>
+
+                  <Card
+                    sx={{
+                      backgroundColor: "#242424",
+                      marginTop: "25px",
+                      borderRadius: "15px",
+                    }}
+                  >
+                    <CardContent>
+                      <Typography
+                        variant="h6"
+                        gutterBottom
+                        sx={{
+                          color: "white",
+                          textAlign: "center",
+                          marginBottom: "20px",
+                        }}
+                      >
+                        Ahora defina su Username y Contraseña para ingresar
+                      </Typography>
+
+                      <Field
+                        type="text"
+                        name="login.username"
+                        label="Username"
+                        fullWidth
+                        as={TextField}
+                        variant="standard"
+                        sx={textFieldStyles}
+                      />
+                      <div
+                        style={{
+                          fontFamily: "Nunito, sans-serif",
+                          fontWeight: "bold",
+                          color: "red",
+                          marginTop: "-10px",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <ErrorMessage name="login.username" component="div" />
+                      </div>
+
+                      <Field
+                        type="password"
+                        name="login.password"
+                        label="Contraseña"
+                        fullWidth
+                        as={TextField}
+                        variant="standard"
+                        sx={textFieldStyles}
+                      />
+                      <div
+                        style={{
+                          fontFamily: "Nunito, sans-serif",
+                          fontWeight: "bold",
+                          color: "red",
+                          marginTop: "-5px",
+                          marginBottom: "10px",
+                        }}
+                      >
+                        <ErrorMessage name="login.password" component="div" />
+                      </div>
+
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          sx={{
+                            backgroundColor: "#EC299F",
+                            fontFamily: "Nunito, sans-serif",
+                            fontWeight: "bold",
+                            marginTop: "15px",
+                            "&:hover": {
+                              backgroundColor: "white",
+                              color: "#EC299F",
+                            },
+                          }}
+                        >
+                          Registrarse
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </Form>
+            </Formik>
           </Dialog>
         </FormControl>
       </Grid>
 
-      {/* Cuadro de Diálogo de Bienvenida */}
       <Grid item xs={12}>
         <Dialog open={isWelcomeDialogOpen} onClose={handleWelcomeDialogClose}>
           <DialogTitle
