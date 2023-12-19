@@ -11,6 +11,8 @@ import {
 import { Link, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import RootState from "../models/RootStateTypes";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const UsersLogin = ({
   setLoginSuccess,
@@ -19,15 +21,33 @@ const UsersLogin = ({
   setLoginSuccess: (value: boolean) => void;
   onUserTypeChange: (type: string) => void;
 }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [redirectTo, setRedirectTo] = useState("");
   const clients = useSelector((state: RootState) => state.clients.clients);
   const providers = useSelector(
     (state: RootState) => state.providers.providers
   );
 
-  const handleLogin = () => {
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      username: Yup.string().required("* Campo requerido"),
+      password: Yup.string().required("* Campo requerido"),
+    }),
+    onSubmit: (values) => {
+      handleLogin(values);
+    },
+  });
+
+  const handleLogin = ({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }) => {
     const client = clients.find(
       (c) => c.login.username === username && c.login.password === password
     );
@@ -132,91 +152,142 @@ const UsersLogin = ({
                 sx={{
                   color: "white",
                   textAlign: "center",
-                  marginBottom: "20px",
+                  marginBottom: "30px",
                 }}
               >
                 Ingresa tu Username y Contraseña para ingresar
               </Typography>
-              <TextField
-                fullWidth
-                label="Username"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& .MuiInputBase-root": {
-                    color: "#242424",
-                    backgroundColor: "white",
-                    borderRadius: "7px",
-                    border: "2px solid #01FF72",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#01FF72",
-                  },
-                  "& .MuiInputBase-root.Mui-focused": {
-                    borderColor: "#01FF72",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottom: "none",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-
-              <TextField
-                fullWidth
-                label="Contraseña"
-                type="password"
-                style={{ marginBottom: "10px" }}
-                sx={{
-                  "& .MuiInputBase-root": {
-                    color: "#242424",
-                    backgroundColor: "white",
-                    borderRadius: "7px",
-                    border: "2px solid #01FF72",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "white",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#01FF72",
-                  },
-                  "& .MuiInputBase-root.Mui-focused": {
-                    borderColor: "#01FF72",
-                  },
-                  "& .MuiInput-underline:after": {
-                    borderBottom: "none",
-                  },
-                }}
-                InputLabelProps={{ shrink: true }}
-                variant="standard"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <Button
-                  variant="contained"
-                  color="primary"
+              <form onSubmit={formik.handleSubmit}>
+                <TextField
+                  type="text"
+                  name="username"
+                  fullWidth
+                  label="Username"
+                  variant="standard"
+                  style={{ marginBottom: "10px" }}
                   sx={{
-                    backgroundColor: "#01FF72",
-                    fontFamily: "Nunito, sans-serif",
-                    fontWeight: "bold",
-                    marginTop: "15px",
-                    "&:hover": {
+                    "& .MuiInputBase-root": {
+                      height: "40px",
+                      color: "#242424",
                       backgroundColor: "white",
+                      borderRadius: "5px",
+                      marginBottom: "20px",
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#01FF72",
+                      transform: "none",
+                      marginTop: "-10px",
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
                       color: "#01FF72",
                     },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "#01FF72",
+                    },
+                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "#01FF72",
+                      },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      border: "1px solid #01FF72",
+                      borderColor: "#01FF72",
+                    },
                   }}
-                  onClick={handleLogin}
-                >
-                  Ingresar
-                </Button>
-              </div>
+                  value={formik.values.username}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.username && formik.errors.username ? (
+                  <div
+                    style={{
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      color: "red",
+                      marginTop: "-25px",
+                      marginBottom: "30px",
+                    }}
+                  >
+                    {formik.errors.username}
+                  </div>
+                ) : null}
+
+                <TextField
+                  type="password"
+                  name="password"
+                  fullWidth
+                  label="Contraseña"
+                  variant="standard"
+                  style={{ marginBottom: "10px" }}
+                  sx={{
+                    "& .MuiInputBase-root": {
+                      height: "40px",
+                      color: "#242424",
+                      backgroundColor: "white",
+                      borderRadius: "5px",
+                      marginBottom: "20px",
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#01FF72",
+                      transform: "none",
+                      marginTop: "-10px",
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#01FF72",
+                    },
+                    "& .MuiInput-underline:after": {
+                      borderBottomColor: "#01FF72",
+                    },
+                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "#01FF72",
+                      },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      border: "1px solid #01FF72",
+                      borderColor: "#01FF72",
+                    },
+                  }}
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.password && formik.errors.password ? (
+                  <div
+                    style={{
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      color: "red",
+                      marginTop: "-25px",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    {formik.errors.password}
+                  </div>
+                ) : null}
+
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      backgroundColor: "#01FF72",
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      marginTop: "15px",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#01FF72",
+                      },
+                    }}
+                  >
+                    Ingresar
+                  </Button>
+                </div>
+              </form>
             </CardContent>
           </Card>
         </Grid>
