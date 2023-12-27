@@ -7,6 +7,7 @@ import {
   Button,
   Box,
   Grid,
+  Drawer,
 } from "@mui/material";
 import { Link, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -22,6 +23,7 @@ const UsersLogin = ({
   onUserTypeChange: (type: string) => void;
 }) => {
   const [redirectTo, setRedirectTo] = useState("");
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const clients = useSelector((state: RootState) => state.clients.clients);
   const providers = useSelector(
     (state: RootState) => state.providers.providers
@@ -92,6 +94,285 @@ const UsersLogin = ({
     }
   };
 
+  const toggleDrawer =
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+      setIsDrawerOpen(open);
+    };
+
+  const drawerContent = (
+    <Box
+      sx={{ width: 300, height: "100%" }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <Card
+        sx={{
+          marginTop: "50px",
+          maxWidth: 280,
+          mx: "auto",
+          backgroundColor: "#242424",
+          borderRadius: "15px",
+        }}
+      >
+        <Typography
+          variant="h6"
+          gutterBottom
+          textAlign="center"
+          sx={{
+            color: "#01FF72",
+            fontFamily: "Quicksand, sans-serif",
+            fontWeight: "bold",
+            marginTop: "10px",
+          }}
+        >
+          CLIENTES
+        </Typography>
+        <Card
+          sx={{
+            marginTop: "10px",
+            maxWidth: 260,
+            marginBottom: "10px",
+            mx: "auto",
+            backgroundColor: "white",
+            borderRadius: "10px",
+          }}
+        >
+          <CardContent>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Cliente n°1
+            </Typography>
+            <Typography
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Username: anapaz1
+            </Typography>
+            <Typography
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Contraseña: asdasd
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card
+          sx={{
+            marginTop: "10px",
+            maxWidth: 260,
+            marginBottom: "10px",
+            mx: "auto",
+            backgroundColor: "white",
+            borderRadius: "10px",
+          }}
+        >
+          <CardContent>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Cliente n°2
+            </Typography>
+            <Typography
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Username: luisgil1
+            </Typography>
+            <Typography
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Contraseña: asdasd
+            </Typography>
+          </CardContent>
+        </Card>
+      </Card>
+
+      <Card
+        sx={{
+          marginTop: "50px",
+          maxWidth: 280,
+          mx: "auto",
+          backgroundColor: "#242424",
+          borderRadius: "15px",
+        }}
+      >
+        <Typography
+          variant="h6"
+          gutterBottom
+          textAlign="center"
+          sx={{
+            color: "#01FF72",
+            fontFamily: "Quicksand, sans-serif",
+            fontWeight: "bold",
+            marginTop: "10px",
+          }}
+        >
+          PROVEEDORES
+        </Typography>
+        <Card
+          sx={{
+            marginTop: "10px",
+            maxWidth: 260,
+            marginBottom: "10px",
+            mx: "auto",
+            backgroundColor: "white",
+            borderRadius: "10px",
+          }}
+        >
+          <CardContent>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Proveedor n°1
+            </Typography>
+            <Typography
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Username: cervelandia1
+            </Typography>
+            <Typography
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Contraseña: asdasd
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card
+          sx={{
+            marginTop: "10px",
+            maxWidth: 260,
+            marginBottom: "10px",
+            mx: "auto",
+            backgroundColor: "white",
+            borderRadius: "10px",
+          }}
+        >
+          <CardContent>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Proveedor n°2
+            </Typography>
+            <Typography
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Username: coctelandia1
+            </Typography>
+            <Typography
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Contraseña: asdasd
+            </Typography>
+          </CardContent>
+        </Card>
+        <Card
+          sx={{
+            marginTop: "10px",
+            maxWidth: 260,
+            marginBottom: "10px",
+            mx: "auto",
+            backgroundColor: "white",
+            borderRadius: "10px",
+          }}
+        >
+          <CardContent>
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Proveedor n°3
+            </Typography>
+            <Typography
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Username: neonbar1
+            </Typography>
+            <Typography
+              sx={{
+                color: "#242424",
+                fontFamily: "Quicksand, sans-serif",
+                fontWeight: "bold",
+              }}
+            >
+              Contraseña: asdasd
+            </Typography>
+          </CardContent>
+        </Card>
+      </Card>
+    </Box>
+  );
+
   if (redirectTo) {
     return <Navigate to={redirectTo} />;
   }
@@ -112,7 +393,7 @@ const UsersLogin = ({
             style={{
               width: "250px",
               height: "250px",
-              marginTop: "20px",
+              marginTop: "10px",
               boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
               borderRadius: "50%",
             }}
@@ -277,7 +558,6 @@ const UsersLogin = ({
                       backgroundColor: "#01FF72",
                       fontFamily: "Nunito, sans-serif",
                       fontWeight: "bold",
-                      marginTop: "15px",
                       "&:hover": {
                         backgroundColor: "white",
                         color: "#01FF72",
@@ -291,8 +571,6 @@ const UsersLogin = ({
             </CardContent>
           </Card>
         </Grid>
-        <br />
-        <br />
         <br />
 
         <Grid item xs={12} textAlign="center">
@@ -323,6 +601,34 @@ const UsersLogin = ({
             </Button>
           </Grid>
         </Link>
+
+        <Grid item xs={12}>
+          <Button
+            onClick={toggleDrawer(true)}
+            variant="contained"
+            color="primary"
+            sx={{
+              backgroundColor: "#242424",
+              fontFamily: "Nunito, sans-serif",
+              fontWeight: "bold",
+              marginTop: "10px",
+              "&:hover": {
+                backgroundColor: "#242424",
+                color: "#01FF72",
+              },
+            }}
+          >
+            Credenciales Usuarios de Ejemplo
+          </Button>
+        </Grid>
+
+        <Drawer
+          anchor="right"
+          open={isDrawerOpen}
+          onClose={toggleDrawer(false)}
+        >
+          {drawerContent}
+        </Drawer>
       </Box>
     </Grid>
   );
