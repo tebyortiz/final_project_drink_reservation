@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import RootState from "../models/RootStateTypes";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const UsersLogin = ({
   setLoginSuccess,
@@ -24,6 +25,7 @@ const UsersLogin = ({
 }) => {
   const [redirectTo, setRedirectTo] = useState("");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const clients = useSelector((state: RootState) => state.clients.clients);
   const providers = useSelector(
     (state: RootState) => state.providers.providers
@@ -106,6 +108,12 @@ const UsersLogin = ({
       setIsDrawerOpen(open);
     };
 
+  const handleCardClick = (username: string, password: string) => {
+    formik.setValues({ username, password });
+    toggleDrawer(false);
+    setSelectedCard(null);
+  };
+
   const drawerContent = (
     <Box
       sx={{ width: 300, height: "100%" }}
@@ -113,13 +121,27 @@ const UsersLogin = ({
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
+      <Typography
+        variant="h6"
+        textAlign="center"
+        sx={{
+          color: "#242424",
+          fontFamily: "Quicksand, sans-serif",
+          fontWeight: "bold",
+          marginTop: "30px",
+        }}
+      >
+        Selecciona un Usuario:
+      </Typography>
       <Card
         sx={{
-          marginTop: "50px",
-          maxWidth: 280,
+          marginTop: "30px",
+          maxWidth: 290,
           mx: "auto",
           backgroundColor: "#242424",
           borderRadius: "15px",
+          paddingBottom: "5px",
+          overflow: "visible",
         }}
       >
         <Typography
@@ -136,98 +158,130 @@ const UsersLogin = ({
           CLIENTES
         </Typography>
         <Card
+          onClick={() => handleCardClick("anapaz1", "asdasd")}
+          onMouseEnter={() => setSelectedCard("anapaz1")}
+          onMouseLeave={() => setSelectedCard(null)}
           sx={{
             marginTop: "10px",
             maxWidth: 260,
             marginBottom: "10px",
             mx: "auto",
-            backgroundColor: "white",
+            backgroundColor: selectedCard === "anapaz1" ? "white" : "white",
             borderRadius: "10px",
+            transform: selectedCard === "anapaz1" ? "scale(1.05)" : "scale(1)",
+            transition: "transform 0.3s ease-in-out",
+            border: `2px solid ${
+              selectedCard === "anapaz1" ? "#01FF72" : "transparent"
+            }`,
           }}
         >
           <CardContent>
-            <Typography
-              variant="h6"
-              gutterBottom
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Cliente n°1
-            </Typography>
-            <Typography
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Username: anapaz1
-            </Typography>
-            <Typography
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Contraseña: asdasd
-            </Typography>
+            <Grid container >
+              <Grid item>
+                <AccountCircleIcon fontSize="large" />
+              </Grid>
+              <Grid item sx={{ marginLeft: "3px" }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Cliente n°1
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Username: anapaz1
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Contraseña: asdasd
+                </Typography>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
         <Card
+          onClick={() => handleCardClick("luisgil1", "asdasd")}
+          onMouseEnter={() => setSelectedCard("luisgil1")}
+          onMouseLeave={() => setSelectedCard(null)}
           sx={{
             marginTop: "10px",
             maxWidth: 260,
             marginBottom: "10px",
             mx: "auto",
-            backgroundColor: "white",
+            backgroundColor: selectedCard === "luisgil1" ? "white" : "white",
             borderRadius: "10px",
+            transform: selectedCard === "luisgil1" ? "scale(1.05)" : "scale(1)",
+            transition: "transform 0.3s ease-in-out",
+            border: `2px solid ${
+              selectedCard === "luisgil1" ? "#01FF72" : "transparent"
+            }`,
           }}
         >
           <CardContent>
-            <Typography
-              variant="h6"
-              gutterBottom
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Cliente n°2
-            </Typography>
-            <Typography
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Username: luisgil1
-            </Typography>
-            <Typography
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Contraseña: asdasd
-            </Typography>
+            <Grid container >
+              <Grid item>
+                <AccountCircleIcon fontSize="large" />
+              </Grid>
+              <Grid item sx={{ marginLeft: "3px" }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Cliente n°2
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Username: luisgil1
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Contraseña: asdasd
+                </Typography>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
       </Card>
 
       <Card
         sx={{
-          marginTop: "50px",
-          maxWidth: 280,
+          marginTop: "30px",
+          maxWidth: 290,
           mx: "auto",
           backgroundColor: "#242424",
           borderRadius: "15px",
+          paddingBottom: "5px",
+          overflow: "visible",
         }}
       >
         <Typography
@@ -244,129 +298,178 @@ const UsersLogin = ({
           PROVEEDORES
         </Typography>
         <Card
+          onClick={() => handleCardClick("cervelandia1", "asdasd")}
+          onMouseEnter={() => setSelectedCard("cervelandia1")}
+          onMouseLeave={() => setSelectedCard(null)}
           sx={{
             marginTop: "10px",
             maxWidth: 260,
             marginBottom: "10px",
             mx: "auto",
-            backgroundColor: "white",
+            backgroundColor:
+              selectedCard === "cervelandia1" ? "white" : "white",
             borderRadius: "10px",
+            transform:
+              selectedCard === "cervelandia1" ? "scale(1.05)" : "scale(1)",
+            transition: "transform 0.3s ease-in-out",
+            border: `2px solid ${
+              selectedCard === "cervelandia1" ? "#01FF72" : "transparent"
+            }`,
           }}
         >
           <CardContent>
-            <Typography
-              variant="h6"
-              gutterBottom
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Proveedor n°1
-            </Typography>
-            <Typography
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Username: cervelandia1
-            </Typography>
-            <Typography
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Contraseña: asdasd
-            </Typography>
+            <Grid container >
+              <Grid item>
+                <AccountCircleIcon fontSize="large" />
+              </Grid>
+              <Grid item sx={{ marginLeft: "3px" }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Proveedor n°1
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Username: cervelandia1
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Contraseña: asdasd
+                </Typography>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
         <Card
+          onClick={() => handleCardClick("coctelandia1", "asdasd")}
+          onMouseEnter={() => setSelectedCard("coctelandia1")}
+          onMouseLeave={() => setSelectedCard(null)}
           sx={{
             marginTop: "10px",
             maxWidth: 260,
             marginBottom: "10px",
             mx: "auto",
-            backgroundColor: "white",
+            backgroundColor:
+              selectedCard === "coctelandia1" ? "white" : "white",
             borderRadius: "10px",
+            transform:
+              selectedCard === "coctelandia1" ? "scale(1.05)" : "scale(1)",
+            transition: "transform 0.3s ease-in-out",
+            border: `2px solid ${
+              selectedCard === "coctelandia1" ? "#01FF72" : "transparent"
+            }`,
           }}
         >
           <CardContent>
-            <Typography
-              variant="h6"
-              gutterBottom
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Proveedor n°2
-            </Typography>
-            <Typography
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Username: coctelandia1
-            </Typography>
-            <Typography
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Contraseña: asdasd
-            </Typography>
+            <Grid container >
+              <Grid item>
+                <AccountCircleIcon fontSize="large" />
+              </Grid>
+              <Grid item sx={{ marginLeft: "3px" }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Proveedor n°2
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Username: coctelandia1
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Contraseña: asdasd
+                </Typography>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
         <Card
+          onClick={() => handleCardClick("neonbar1", "asdasd")}
+          onMouseEnter={() => setSelectedCard("neonbar1")}
+          onMouseLeave={() => setSelectedCard(null)}
           sx={{
             marginTop: "10px",
             maxWidth: 260,
             marginBottom: "10px",
             mx: "auto",
-            backgroundColor: "white",
+            backgroundColor: selectedCard === "neonbar1" ? "white" : "white",
             borderRadius: "10px",
+            transform: selectedCard === "neonbar1" ? "scale(1.05)" : "scale(1)",
+            transition: "transform 0.3s ease-in-out",
+            border: `2px solid ${
+              selectedCard === "neonbar1" ? "#01FF72" : "transparent"
+            }`,
           }}
         >
           <CardContent>
-            <Typography
-              variant="h6"
-              gutterBottom
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Proveedor n°3
-            </Typography>
-            <Typography
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Username: neonbar1
-            </Typography>
-            <Typography
-              sx={{
-                color: "#242424",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              Contraseña: asdasd
-            </Typography>
+            <Grid container >
+              <Grid item>
+                <AccountCircleIcon fontSize="large" />
+              </Grid>
+              <Grid item sx={{ marginLeft: "3px" }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Proveedor n°3
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Username: neonbar1
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#242424",
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Contraseña: asdasd
+                </Typography>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
       </Card>
