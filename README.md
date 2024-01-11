@@ -2,11 +2,11 @@
 
 | índice    |
 | --------- |
-| Descripción del Poyecto  |
-| Características    |
-| Funcionalidad    |
-| Tecnologías Utilizadas    |
-| Desarrolladores Contribuyentes     |
+| [Descripción del Poyecto](#descripción-del-proyecto)  |
+| [Características](#características)    |
+| [Funcionalidad](#funcionalidad)    |
+| [Tecnologías Utilizadas](#tecnologías-utilizadas)    |
+| [Desarrolladores Contribuyentes](#desarrolladores-contribuyentes)     |
 
 ### Descripción del Proyecto:
 El presente proyecto, se ha desarrollado con fines educativos y de práctica, para implementar todos los conocimientos y tecnologías aprendidos durante la mentoría en desarrollo de aplicaciones web.
@@ -79,6 +79,8 @@ Las tecnologías utilizadas para el desarrollo de esta web app fueron:
 - TypeScript
 ##### Enrutamiento de Componentes
 - React-Router
+##### Gestión de Formularios
+- Formik
 ##### Estilos
 - Material UI
 ##### Solicitudes HTTP a Apis
