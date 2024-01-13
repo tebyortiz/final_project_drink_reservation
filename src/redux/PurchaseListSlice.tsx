@@ -5,17 +5,9 @@ import {
   Provider,
   Client,
   Purchase,
+  PurchaseListState,
+  SetProviderPayload
 } from "../models/UsersModels";
-
-
-interface PurchaseListState {
-  currentPurchaseProvider: Provider | null;
-  currentPurchase: Purchase;
-  purchases: Purchase[];
-}
-type SetProviderPayload = {
-  provider: Provider;
-};
 
 const initialState: PurchaseListState = {
   currentPurchaseProvider: null,
@@ -186,9 +178,9 @@ const purchaseListSlice = createSlice({
       state.currentPurchase.totalPurchase = action.payload;
     },
 
-    completePurchase: (state, action: PayloadAction<{ date: string }>) => {
+    completePurchase: (state, action: PayloadAction<{ date: string; purchase: Purchase }>) => {
       const currentClient = state.currentPurchase.client;
-
+    
       state.purchases.push({
         ...state.currentPurchase,
         date: action.payload.date,
@@ -201,7 +193,7 @@ const purchaseListSlice = createSlice({
         totalPurchase: 0,
         date: "",
       };
-    },
+    },    
   },
 });
 
