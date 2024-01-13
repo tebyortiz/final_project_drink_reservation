@@ -126,3 +126,15 @@ interface Purchase {
 }
 
 export type { Purchase };
+
+interface PurchaseListState {
+  currentPurchaseProvider: Provider | null;
+  currentPurchase: Purchase;
+  purchases: Purchase[];
+}
+
+type SetProviderPayload = {
+  provider: Provider;
+};
+
+export type { PurchaseListState, SetProviderPayload };
