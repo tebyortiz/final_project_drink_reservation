@@ -11,7 +11,7 @@ import {
 import { Provider } from "../../models/UsersModels";
 
 interface ProviderCardProps {
-  provider: Provider;
+  provider: Provider | null;
 }
 
 const ProviderCard: React.FC<ProviderCardProps> = ({ provider }) => {
