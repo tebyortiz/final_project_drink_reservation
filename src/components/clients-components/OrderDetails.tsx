@@ -164,6 +164,7 @@ const OrderDetails = () => {
       dispatch(
         completePurchase({
           date: currentDate.toISOString(),
+          purchase: currentPurchase
         })
       );
 
