@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 export const useFetchCocktailOptions = () => {
   const [cocktailOptions, setCocktailOptions] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("https://www.thecocktaildb.com/api/json/v1/1/search.php?s=")
-      .then((response) => response.json())
-      .then((data) => {
-        const cocktailNames = data.drinks.map((drink: any) => drink.strDrink);
+    axios
+      .get("https://www.thecocktaildb.com/api/json/v1/1/search.php?s=")
+      .then((response) => {
+        const cocktailNames = response.data.drinks.map(
+          (drink: any) => drink.strDrink
+        );
         setCocktailOptions(cocktailNames);
       })
       .catch((error) => {
@@ -17,10 +20,10 @@ export const useFetchCocktailOptions = () => {
 
   const fetchCocktailDetails = async (cocktailName: string) => {
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${cocktailName}`
       );
-      const data = await response.json();
+      const data = response.data;
 
       const cocktailDetails = data.drinks.map((drink: any) => {
         const ingredients: string[] = [];
@@ -55,10 +58,10 @@ export const useFetchBeerOptions = () => {
   const [beerOptions, setBeerOptions] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch("https://api.punkapi.com/v2/beers")
-      .then((response) => response.json())
-      .then((data) => {
-        const beerNames = data.map((beer: any) => beer.name);
+    axios
+      .get("https://api.punkapi.com/v2/beers")
+      .then((response) => {
+        const beerNames = response.data.map((beer: any) => beer.name);
         setBeerOptions(beerNames);
       })
       .catch((error) => {
@@ -68,10 +71,10 @@ export const useFetchBeerOptions = () => {
 
   const fetchBeerDetails = async (beerName: string) => {
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `https://api.punkapi.com/v2/beers?beer_name=${beerName}`
       );
-      const data = await response.json();
+      const data = response.data;
 
       const beerDetails = data.map((beer: any) => {
         const ingredients = {
