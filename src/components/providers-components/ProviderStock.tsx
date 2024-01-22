@@ -53,6 +53,14 @@ const ProviderStock = () => {
     beerStock.map((beer) => beer.stock)
   );
 
+  const [isCocktailUpdateDisabled, setIsCocktailUpdateDisabled] = useState(
+    Array(cocktailStock.length).fill(true)
+  );
+
+  const [isBeerUpdateDisabled, setIsBeerUpdateDisabled] = useState(
+    Array(beerStock.length).fill(true)
+  );
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
@@ -65,12 +73,26 @@ const ProviderStock = () => {
     const updatedStock = [...updatedCocktailStock];
     updatedStock[index] = newStock;
     setUpdatedCocktailStock(updatedStock);
+
+    const originalStock = cocktailStock[index].stock;
+    setIsCocktailUpdateDisabled((prev) => {
+      const newDisabled = [...prev];
+      newDisabled[index] = newStock === originalStock;
+      return newDisabled;
+    });
   };
 
   const handleBeerStockChange = (index: number, newStock: number) => {
     const updatedStock = [...updatedBeerStock];
     updatedStock[index] = newStock;
     setUpdatedBeerStock(updatedStock);
+
+    const originalStock = beerStock[index].stock;
+    setIsBeerUpdateDisabled((prev) => {
+      const newDisabled = [...prev];
+      newDisabled[index] = newStock === originalStock;
+      return newDisabled;
+    });
   };
 
   const handleUpdateCocktailStock = (index: number) => {
@@ -92,6 +114,12 @@ const ProviderStock = () => {
       );
       setCocktailStock(updatedCocktailStockProvider);
       openSnackbar(updatedCocktail.name, updatedStockValue);
+
+      setIsCocktailUpdateDisabled((prev) => {
+        const newDisabled = [...prev];
+        newDisabled[index] = true;
+        return newDisabled;
+      });
     }
   };
 
@@ -114,6 +142,12 @@ const ProviderStock = () => {
       );
       setBeerStock(updatedBeerStockProvider);
       openSnackbar(updatedBeer.name, updatedStockValue);
+
+      setIsBeerUpdateDisabled((prev) => {
+        const newDisabled = [...prev];
+        newDisabled[index] = true;
+        return newDisabled;
+      });
     }
   };
 
@@ -259,7 +293,7 @@ const ProviderStock = () => {
                               }
                             />
                           </TableCell>
-                          <TableCell>
+                          <TableCell sx={{ textAlign: "center" }}>
                             <Button
                               variant="contained"
                               color="primary"
@@ -273,6 +307,7 @@ const ProviderStock = () => {
                                   color: "#01FF72",
                                 },
                               }}
+                              disabled={isCocktailUpdateDisabled[index]}
                             >
                               Actualizar Stock
                             </Button>
@@ -458,7 +493,7 @@ const ProviderStock = () => {
                               }
                             />
                           </TableCell>
-                          <TableCell>
+                          <TableCell sx={{ textAlign: "center" }}>
                             <Button
                               variant="contained"
                               color="primary"
@@ -472,6 +507,7 @@ const ProviderStock = () => {
                                   color: "#01FF72",
                                 },
                               }}
+                              disabled={isBeerUpdateDisabled[index]}
                             >
                               Actualizar Stock
                             </Button>
