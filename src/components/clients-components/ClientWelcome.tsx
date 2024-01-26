@@ -10,6 +10,7 @@ import {
   Typography,
   Snackbar,
   SnackbarContent,
+  Switch,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import clienteBanner from "/images/clientebanner.png";
@@ -32,6 +33,11 @@ const ClientWelcome = () => {
   const [isLocationSelected, setLocationSelected] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [isAutoDetectEnabled, setAutoDetectEnabled] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState<MarkerPosition | null>(
+    null
+  );
+  
 
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
@@ -85,16 +91,21 @@ const ClientWelcome = () => {
       draggable: true,
       title: "Ubicación actual",
     });
-
+  
     markerRef.current.addListener("drag", () => {
       JSON.stringify(markerRef.current.getPosition());
     });
-
+  
+    if (currentLocation) {
+      map.setCenter(new maps.LatLng(currentLocation.lat, currentLocation.lng));
+      markerRef.current.setPosition(currentLocation);
+    }
+  
     map.addListener("click", (mapsMouseEvent: any) => {
       handleSelectPublication(mapsMouseEvent);
     });
   };
-
+  
   const handleSelectPublication = (mapsMouseEvent: any) => {
     const clickedPosition: MarkerPosition = {
       lat: mapsMouseEvent.latLng.lat(),
@@ -107,6 +118,43 @@ const ClientWelcome = () => {
       setLocationSelected(true);
     }
   };
+
+  const handleAutoDetectChange = () => {
+  if (!isAutoDetectEnabled) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const autoDetectedPosition: MarkerPosition = {
+          lat: latitude,
+          lng: longitude,
+        };
+
+        if (markerRef.current) {
+          markerRef.current.setPosition(autoDetectedPosition);
+          setNewPosition(autoDetectedPosition);
+          setLocationSelected(true);
+          setCurrentLocation(autoDetectedPosition);
+
+          if (mapRef.current) {
+            mapRef.current.setCenter(
+              new (window as any).google.maps.LatLng(
+                autoDetectedPosition.lat,
+                autoDetectedPosition.lng
+              )
+            );
+          }
+        }
+      },
+      (error) => {
+        console.error("Error al obtener la ubicación:", error);
+        setAutoDetectEnabled(false);
+      }
+    );
+  } else {
+    setCurrentLocation(null);
+  }
+  setAutoDetectEnabled(!isAutoDetectEnabled);
+};
 
   return (
     <Box
@@ -137,49 +185,110 @@ const ClientWelcome = () => {
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  flexDirection: "column",
+                  alignItems: "center",
                   width: "100%",
                 }}
               >
-                <Typography
-                  variant="h5"
-                  style={{
-                    textAlign: "center",
-                    fontFamily: "Quicksand, sans-serif",
-                    fontWeight: "bold",
-                    lineHeight: "2",
-                  }}
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  Mi Ubicación
-                </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
+                  <Typography
+                    variant="h5"
+                    style={{
+                      textAlign: "center",
+                      fontFamily: "Quicksand, sans-serif",
+                      fontWeight: "bold",
+                      lineHeight: "2",
+                      marginRight: "10px",
+                    }}
+                  >
+                    Mi Ubicación
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      backgroundColor: "#EC299F",
+                      fontFamily: "Nunito, sans-serif",
+                      fontWeight: "bold",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "#EC299F",
+                      },
+                    }}
+                    onClick={handleSaveLocation}
+                    disabled={!isLocationSelected}
+                  >
+                    Guardar Ubicación
+                    <HouseIcon
+                      fontSize="large"
+                      style={{ marginLeft: "3px", marginBottom: "5px" }}
+                    />
+                  </Button>
+                </div>
+                <Card
                   sx={{
-                    backgroundColor: "#EC299F",
-                    fontFamily: "Nunito, sans-serif",
-                    fontWeight: "bold",
-                    "&:hover": {
-                      backgroundColor: "white",
-                      color: "#EC299F",
-                    },
+                    marginTop: "10px",
+                    borderRadius: "10px",
                   }}
-                  onClick={handleSaveLocation}
-                  disabled={!isLocationSelected}
                 >
-                  Guardar Ubicación
-                  <HouseIcon
-                    fontSize="large"
-                    style={{ marginLeft: "3px", marginBottom: "5px" }}
-                  />
-                </Button>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <Typography
+                      variant="h5"
+                      style={{
+                        textAlign: "center",
+                        fontFamily: "Quicksand, sans-serif",
+                        fontWeight: "bold",
+                        lineHeight: "2",
+                        marginRight: "10px",
+                        marginLeft: "30px",
+                      }}
+                    >
+                      Ubicación Aprox.
+                    </Typography>
+                    <div onClick={(e) => e.stopPropagation()}>
+                      <Switch
+                        checked={isAutoDetectEnabled}
+                        onChange={handleAutoDetectChange}
+                        color="primary"
+                        sx={{
+                          marginRight: "30px",
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: "10px",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        marginBottom: "10px",
+                        textAlign: "center",
+                      }}
+                    >
+                      puedes mover el marcador hasta tu ubicación exacta
+                    </Typography>
+                  </div>
+                </Card>
               </div>
             </AccordionSummary>
             <AccordionDetails>
               <div style={{ height: "400px", width: "100%" }}>
                 <GoogleMapReact
                   bootstrapURLKeys={{
-                    key: "AIzaSyBfjO7sxd8P6HDrF1lmvLV151z7ocauPD0",
+                    key: "AIzaSyDIdTqLzVyDVxfFB9rkYCq_X6SoXqS680w",
                   }}
                   defaultCenter={defaultCenter}
                   defaultZoom={11}
