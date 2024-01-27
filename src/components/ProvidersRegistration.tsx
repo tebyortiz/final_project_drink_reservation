@@ -15,40 +15,117 @@ import {
   Divider,
   Grid,
   Box,
+  FormHelperText,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
 import { addProvider } from "../redux/ProvidersSlice";
 import { Provider } from "../models/UsersModels";
 import ClientsRegistration from "./ClientsRegistration";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+const textFieldStyles = {
+  "& .MuiInputBase-root": {
+    height: "35px",
+    color: "#242424",
+    backgroundColor: "white",
+    borderRadius: "5px",
+    marginBottom: "20px",
+  },
+  "& .MuiInputLabel-root": {
+    color: "#01FF72",
+    transform: "none",
+    marginTop: "-5px",
+    fontFamily: "Nunito, sans-serif",
+    fontWeight: "bold",
+  },
+  "& .MuiInputLabel-root.Mui-focused": {
+    color: "#01FF72",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "#01FF72",
+  },
+  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+    borderColor: "#01FF72",
+  },
+  "&:hover .MuiOutlinedInput-notchedOutline": {
+    border: "1px solid #01FF72",
+    borderColor: "#01FF72",
+  },
+};
 
 const ProvidersRegistration = () => {
   const [isProviderDialogOpen, setIsProviderDialogOpen] = useState(false);
   const [isWelcomeDialogOpen, setIsWelcomeDialogOpen] = useState(false);
   const [welcomeDialogCompanyName, setWelcomeDialogCompanyName] = useState("");
   const [isUserDialogOpen, setIsUserDialogOpen] = useState(false);
-  const [formValues, setFormValues] = useState<Provider>({
-    company: {
-      name: "",
-      logo: "",
-      phone: "",
-      email: "",
+  const formik = useFormik({
+    initialValues: {
+      company: {
+        name: "",
+        logo: "",
+        phone: "",
+        email: "",
+      },
+      service: {
+        type: "Ambos",
+        cocktails: [],
+        beers: [],
+        areas: [],
+      },
+      responsibleCompany: {
+        name: "",
+        phone: "",
+        email: "",
+        photo: "",
+      },
+      login: {
+        username: "",
+        password: "",
+      },
     },
-    service: {
-      type: "Ambos",
-      cocktails: [],
-      beers: [],
-      areas: [],
-    },
-    responsibleCompany: {
-      name: "",
-      phone: "",
-      email: "",
-      photo: "",
-    },
-    login: {
-      username: "",
-      password: "",
+    validationSchema: Yup.object({
+      company: Yup.object({
+        name: Yup.string().required("Nombre de la empresa es requerido"),
+        logo: Yup.string().required("Logo de la empresa es requerido"),
+        phone: Yup.number()
+          .typeError("* Solo se permiten números")
+          .required("* Campo requerido"),
+        email: Yup.string()
+          .email("Ingrese un correo electrónico válido")
+          .required("Email de la empresa es requerido"),
+      }),
+      service: Yup.object({
+        type: Yup.string().required("Seleccione un tipo de servicio"),
+      }),
+      responsibleCompany: Yup.object({
+        name: Yup.string().required("Nombre del responsable es requerido"),
+        phone: Yup.number()
+          .typeError("* Solo se permiten números")
+          .required("* Campo requerido"),
+        email: Yup.string()
+          .email("Ingrese un correo electrónico válido")
+          .required("Email del responsable es requerido"),
+        photo: Yup.string().required("Foto del responsable es requerida"),
+      }),
+      login: Yup.object({
+        username: Yup.string().required("Nombre de usuario es requerido"),
+        password: Yup.string()
+          .min(8, "La contraseña debe tener al menos 8 caracteres")
+          .required("Contraseña es requerida"),
+      }),
+    }),
+    onSubmit: async (values) => {
+      console.log("Enviando formulario...");
+
+      dispatch(addProvider(values as Provider));
+
+      handleProviderDialogClose();
+
+      setIsWelcomeDialogOpen(true);
+      setWelcomeDialogCompanyName(values.company.name);
+      formik.resetForm();
     },
   });
 
@@ -155,62 +232,6 @@ const ProvidersRegistration = () => {
             transform: translateX(-8px) translateY(-8px);
     }
   `;
-
-  const handleProviderRegistration = () => {
-    const isAnyFieldEmpty = Object.values(formValues).some(
-      (value) =>
-        typeof value === "object" &&
-        Object.values(value).some((innerValue) => innerValue === "")
-    );
-
-    if (isAnyFieldEmpty) {
-      alert("Por favor, complete todos los campos");
-      return;
-    }
-
-    if (formValues.login.password.length < 8) {
-      alert("Para la contraseña debe ingresar al menos 8 caracteres");
-      return;
-    }
-
-    const companyName = formValues.company.name;
-    const newProvider: Provider = { ...formValues };
-
-    {
-      /* Action de Redux Toolkit para agregar un nuevo Proveedor */
-    }
-    dispatch(addProvider(newProvider));
-
-    handleProviderDialogClose();
-    setFormValues({
-      company: {
-        name: "",
-        logo: "",
-        phone: "",
-        email: "",
-      },
-      service: {
-        type: "Ambos",
-        cocktails: [],
-        beers: [],
-        areas: [],
-      },
-      responsibleCompany: {
-        name: "",
-        phone: "",
-        email: "",
-        photo: "",
-      },
-      login: {
-        username: "",
-        password: "",
-      },
-    });
-
-    setWelcomeDialogCompanyName(companyName);
-    setIsWelcomeDialogOpen(true);
-    setIsUserDialogOpen(false);
-  };
 
   return (
     <Grid item xs={12}>
@@ -331,13 +352,6 @@ const ProvidersRegistration = () => {
             <Dialog
               open={isProviderDialogOpen}
               onClose={handleProviderDialogClose}
-              sx={{
-                "& .MuiDialog-paper": {
-                  width: "80%",
-                  maxWidth: "700px",
-                  borderRadius: "15px",
-                },
-              }}
             >
               <DialogTitle
                 sx={{
@@ -349,143 +363,106 @@ const ProvidersRegistration = () => {
                 Para ofrecer sus servicios, complete los siguientes campos:
               </DialogTitle>
               <div style={{ padding: "20px" }}>
+                {/* Campos del formulario con Formik */}
                 <TextField
                   fullWidth
                   label="Nombre de la Empresa"
                   style={{ marginBottom: "10px" }}
-                  sx={{
-                    "& input": {
-                      height: "15px",
-                      color: "#242424",
-                      backgroundColor: "white",
-                    },
-                    "& label": {
-                      color: "black",
-                    },
-                    "& label.Mui-focused": {
-                      color: "#242424",
-                    },
-                    "& .MuiInput-underline:after": {
-                      borderBottomColor: "#01FF72",
-                    },
-                  }}
+                  sx={textFieldStyles}
                   InputLabelProps={{ shrink: true }}
                   variant="standard"
-                  value={formValues.company.name}
-                  onChange={(e) =>
-                    setFormValues((prevFormValues) => ({
-                      ...prevFormValues,
-                      company: {
-                        ...prevFormValues.company,
-                        name: e.target.value,
-                      },
-                    }))
+                  value={formik.values.company.name}
+                  onChange={formik.handleChange}
+                  name="company.name"
+                  error={
+                    formik.touched.company?.name &&
+                    Boolean(formik.errors.company?.name)
+                  }
+                  helperText={
+                    formik.touched.company?.name && formik.errors.company?.name
                   }
                 />
+
                 <TextField
                   fullWidth
                   label="Logo de la Empresa"
                   style={{ marginBottom: "10px" }}
-                  sx={{
-                    "& input": {
-                      height: "15px",
-                      color: "#242424",
-                      backgroundColor: "white",
-                    },
-                    "& label": {
-                      color: "black",
-                    },
-                    "& label.Mui-focused": {
-                      color: "#242424",
-                    },
-                    "& .MuiInput-underline:after": {
-                      borderBottomColor: "#01FF72",
-                    },
-                  }}
+                  sx={textFieldStyles}
                   InputLabelProps={{ shrink: true }}
                   variant="standard"
-                  value={formValues.company.logo}
-                  onChange={(e) =>
-                    setFormValues((prevFormValues) => ({
-                      ...prevFormValues,
-                      company: {
-                        ...prevFormValues.company,
-                        logo: e.target.value,
-                      },
-                    }))
+                  value={formik.values.company.logo}
+                  onChange={formik.handleChange}
+                  name="company.logo"
+                  error={
+                    formik.touched.company?.logo &&
+                    Boolean(formik.errors.company?.logo)
+                  }
+                  helperText={
+                    formik.touched.company?.logo && formik.errors.company?.logo
                   }
                 />
+
                 <TextField
                   fullWidth
                   label="Teléfono de la Empresa"
                   style={{ marginBottom: "10px" }}
-                  sx={{
-                    "& input": {
-                      height: "15px",
-                      color: "#242424",
-                      backgroundColor: "white",
-                    },
-                    "& label": {
-                      color: "black",
-                    },
-                    "& label.Mui-focused": {
-                      color: "#242424",
-                    },
-                    "& .MuiInput-underline:after": {
-                      borderBottomColor: "#01FF72",
-                    },
-                  }}
+                  sx={textFieldStyles}
                   InputLabelProps={{ shrink: true }}
                   variant="standard"
                   type="number"
                   inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                  value={formValues.company.phone}
-                  onChange={(e) =>
-                    setFormValues((prevFormValues) => ({
-                      ...prevFormValues,
-                      company: {
-                        ...prevFormValues.company,
-                        phone: e.target.value,
-                      },
-                    }))
+                  value={formik.values.company.phone}
+                  onChange={formik.handleChange}
+                  name="company.phone"
+                  error={
+                    formik.touched.company?.phone &&
+                    Boolean(formik.errors.company?.phone)
+                  }
+                  helperText={
+                    formik.touched.company?.phone &&
+                    formik.errors.company?.phone
                   }
                 />
+
                 <TextField
                   fullWidth
                   label="Email de la Empresa"
                   style={{ marginBottom: "10px" }}
+                  sx={textFieldStyles}
+                  InputLabelProps={{ shrink: true }}
+                  variant="standard"
+                  value={formik.values.company.email}
+                  onChange={formik.handleChange}
+                  name="company.email"
+                  error={
+                    formik.touched.company?.email &&
+                    Boolean(formik.errors.company?.email)
+                  }
+                  helperText={
+                    formik.touched.company?.email &&
+                    formik.errors.company?.email
+                  }
+                />
+
+                <FormControl
+                  fullWidth
+                  style={{ marginBottom: "10px", marginTop: "10px" }}
                   sx={{
-                    "& input": {
-                      height: "15px",
+                    "& .MuiInputBase-root": {
+                      height: "50px",
                       color: "#242424",
                       backgroundColor: "white",
                     },
                     "& label": {
-                      color: "black",
+                      color: "#242424",
                     },
                     "& label.Mui-focused": {
                       color: "#242424",
                     },
-                    "& .MuiInput-underline:after": {
-                      borderBottomColor: "#01FF72",
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#01FF72",
                     },
                   }}
-                  InputLabelProps={{ shrink: true }}
-                  variant="standard"
-                  value={formValues.company.email}
-                  onChange={(e) =>
-                    setFormValues((prevFormValues) => ({
-                      ...prevFormValues,
-                      company: {
-                        ...prevFormValues.company,
-                        email: e.target.value,
-                      },
-                    }))
-                  }
-                />
-                <FormControl
-                  fullWidth
-                  style={{ marginBottom: "10px", marginTop: "10px" }}
                 >
                   <InputLabel
                     sx={{
@@ -498,7 +475,6 @@ const ProvidersRegistration = () => {
                     Servicio de
                   </InputLabel>
                   <Select
-                    label="Servicio de"
                     sx={{
                       "& select": {
                         height: "15px",
@@ -514,158 +490,104 @@ const ProvidersRegistration = () => {
                         },
                       },
                     }}
-                    value={formValues.service.type}
-                    onChange={(e) =>
-                      setFormValues((prevFormValues) => ({
-                        ...prevFormValues,
-                        service: {
-                          ...prevFormValues.service,
-                          type: e.target.value as
-                            | "Coctelería"
-                            | "Cervecería"
-                            | "Ambos",
-                        },
-                      }))
+                    label="Servicio de"
+                    value={formik.values.service.type}
+                    onChange={formik.handleChange}
+                    name="service.type"
+                    error={
+                      formik.touched.service?.type &&
+                      Boolean(formik.errors.service?.type)
                     }
                   >
                     <MenuItem value="Coctelería">Coctelería</MenuItem>
                     <MenuItem value="Cervecería">Cervecería</MenuItem>
                     <MenuItem value="Ambos">Ambos</MenuItem>
                   </Select>
+                  <FormHelperText>
+                    {formik.touched.service?.type &&
+                      formik.errors.service?.type}
+                  </FormHelperText>
                 </FormControl>
 
                 <TextField
                   fullWidth
                   label="Responsable de la Empresa"
                   style={{ marginBottom: "10px" }}
-                  sx={{
-                    "& input": {
-                      height: "15px",
-                      color: "#242424",
-                      backgroundColor: "white",
-                    },
-                    "& label": {
-                      color: "black",
-                    },
-                    "& label.Mui-focused": {
-                      color: "#242424",
-                    },
-                    "& .MuiInput-underline:after": {
-                      borderBottomColor: "#01FF72",
-                    },
-                  }}
+                  sx={textFieldStyles}
                   InputLabelProps={{ shrink: true }}
                   variant="standard"
-                  value={formValues.responsibleCompany.name}
-                  onChange={(e) =>
-                    setFormValues((prevFormValues) => ({
-                      ...prevFormValues,
-                      responsibleCompany: {
-                        ...prevFormValues.responsibleCompany,
-                        name: e.target.value,
-                      },
-                    }))
+                  value={formik.values.responsibleCompany.name}
+                  onChange={formik.handleChange}
+                  name="responsibleCompany.name"
+                  error={
+                    formik.touched.responsibleCompany?.name &&
+                    Boolean(formik.errors.responsibleCompany?.name)
+                  }
+                  helperText={
+                    formik.touched.responsibleCompany?.name &&
+                    formik.errors.responsibleCompany?.name
                   }
                 />
+
                 <TextField
                   fullWidth
                   label="Teléfono del Responsable"
                   style={{ marginBottom: "10px" }}
-                  sx={{
-                    "& input": {
-                      height: "15px",
-                      color: "#242424",
-                      backgroundColor: "white",
-                    },
-                    "& label": {
-                      color: "black",
-                    },
-                    "& label.Mui-focused": {
-                      color: "#242424",
-                    },
-                    "& .MuiInput-underline:after": {
-                      borderBottomColor: "#01FF72",
-                    },
-                  }}
+                  sx={textFieldStyles}
                   InputLabelProps={{ shrink: true }}
                   variant="standard"
                   type="number"
                   inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                  value={formValues.responsibleCompany.phone}
-                  onChange={(e) =>
-                    setFormValues((prevFormValues) => ({
-                      ...prevFormValues,
-                      responsibleCompany: {
-                        ...prevFormValues.responsibleCompany,
-                        phone: e.target.value,
-                      },
-                    }))
+                  value={formik.values.responsibleCompany.phone}
+                  onChange={formik.handleChange}
+                  name="responsibleCompany.phone"
+                  error={
+                    formik.touched.responsibleCompany?.phone &&
+                    Boolean(formik.errors.responsibleCompany?.phone)
+                  }
+                  helperText={
+                    formik.touched.responsibleCompany?.phone &&
+                    formik.errors.responsibleCompany?.phone
                   }
                 />
+
                 <TextField
                   fullWidth
                   label="Email del Responsable"
                   style={{ marginBottom: "10px" }}
-                  sx={{
-                    "& input": {
-                      height: "15px",
-                      color: "#242424",
-                      backgroundColor: "white",
-                    },
-                    "& label": {
-                      color: "black",
-                    },
-                    "& label.Mui-focused": {
-                      color: "#242424",
-                    },
-                    "& .MuiInput-underline:after": {
-                      borderBottomColor: "#01FF72",
-                    },
-                  }}
+                  sx={textFieldStyles}
                   InputLabelProps={{ shrink: true }}
                   variant="standard"
-                  value={formValues.responsibleCompany.email}
-                  onChange={(e) =>
-                    setFormValues((prevFormValues) => ({
-                      ...prevFormValues,
-                      responsibleCompany: {
-                        ...prevFormValues.responsibleCompany,
-                        email: e.target.value,
-                      },
-                    }))
+                  value={formik.values.responsibleCompany.email}
+                  onChange={formik.handleChange}
+                  name="responsibleCompany.email"
+                  error={
+                    formik.touched.responsibleCompany?.email &&
+                    Boolean(formik.errors.responsibleCompany?.email)
+                  }
+                  helperText={
+                    formik.touched.responsibleCompany?.email &&
+                    formik.errors.responsibleCompany?.email
                   }
                 />
+
                 <TextField
                   fullWidth
-                  label="foto del Responsable"
-                  style={{ marginBottom: "25px" }}
-                  sx={{
-                    "& input": {
-                      height: "15px",
-                      color: "#242424",
-                      backgroundColor: "white",
-                    },
-                    "& label": {
-                      color: "black",
-                    },
-                    "& label.Mui-focused": {
-                      color: "#242424",
-                    },
-                    "& .MuiInput-underline:after": {
-                      borderBottomColor: "#01FF72",
-                    },
-                  }}
+                  label="Foto del Responsable"
+                  style={{ marginBottom: "10px" }}
+                  sx={textFieldStyles}
                   InputLabelProps={{ shrink: true }}
                   variant="standard"
-                  value={formValues.responsibleCompany.photo}
-                  onChange={(e) =>
-                    setFormValues((prevFormValues) => ({
-                      ...prevFormValues,
-                      responsibleCompany: {
-                        ...prevFormValues.responsibleCompany,
-                        photo: e.target.value,
-                      },
-                    }))
+                  value={formik.values.responsibleCompany.photo}
+                  onChange={formik.handleChange}
+                  name="responsibleCompany.photo"
+                  error={
+                    formik.touched.responsibleCompany?.photo &&
+                    Boolean(formik.errors.responsibleCompany?.photo)
+                  }
+                  helperText={
+                    formik.touched.responsibleCompany?.photo &&
+                    formik.errors.responsibleCompany?.photo
                   }
                 />
 
@@ -693,37 +615,19 @@ const ProvidersRegistration = () => {
                       fullWidth
                       label="Username"
                       style={{ marginBottom: "10px" }}
-                      sx={{
-                        "& .MuiInputBase-root": {
-                          color: "#242424",
-                          backgroundColor: "white",
-                          borderRadius: "7px",
-                          border: "2px solid #01FF72",
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "white",
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "#01FF72",
-                        },
-                        "& .MuiInputBase-root.Mui-focused": {
-                          borderColor: "#01FF72",
-                        },
-                        "& .MuiInput-underline:after": {
-                          borderBottom: "none",
-                        },
-                      }}
+                      sx={textFieldStyles}
                       InputLabelProps={{ shrink: true }}
                       variant="standard"
-                      value={formValues.login.username}
-                      onChange={(e) =>
-                        setFormValues((prevFormValues) => ({
-                          ...prevFormValues,
-                          login: {
-                            ...prevFormValues.login,
-                            username: e.target.value,
-                          },
-                        }))
+                      value={formik.values.login.username}
+                      onChange={formik.handleChange}
+                      name="login.username"
+                      error={
+                        formik.touched.login?.username &&
+                        Boolean(formik.errors.login?.username)
+                      }
+                      helperText={
+                        formik.touched.login?.username &&
+                        formik.errors.login?.username
                       }
                     />
 
@@ -732,37 +636,19 @@ const ProvidersRegistration = () => {
                       label="Contraseña"
                       type="password"
                       style={{ marginBottom: "10px" }}
-                      sx={{
-                        "& .MuiInputBase-root": {
-                          color: "#242424",
-                          backgroundColor: "white",
-                          borderRadius: "7px",
-                          border: "2px solid #01FF72",
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "white",
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "#01FF72",
-                        },
-                        "& .MuiInputBase-root.Mui-focused": {
-                          borderColor: "#01FF72",
-                        },
-                        "& .MuiInput-underline:after": {
-                          borderBottom: "none",
-                        },
-                      }}
+                      sx={textFieldStyles}
                       InputLabelProps={{ shrink: true }}
                       variant="standard"
-                      value={formValues.login.password}
-                      onChange={(e) =>
-                        setFormValues((prevFormValues) => ({
-                          ...prevFormValues,
-                          login: {
-                            ...prevFormValues.login,
-                            password: e.target.value,
-                          },
-                        }))
+                      value={formik.values.login.password}
+                      onChange={formik.handleChange}
+                      name="login.password"
+                      error={
+                        formik.touched.login?.password &&
+                        Boolean(formik.errors.login?.password)
+                      }
+                      helperText={
+                        formik.touched.login?.password &&
+                        formik.errors.login?.password
                       }
                     />
 
@@ -781,7 +667,10 @@ const ProvidersRegistration = () => {
                             color: "#01FF72",
                           },
                         }}
-                        onClick={handleProviderRegistration}
+                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                          e.preventDefault();
+                          formik.handleSubmit();
+                        }}
                       >
                         Registrarse
                       </Button>
