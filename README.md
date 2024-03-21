@@ -86,7 +86,7 @@ Aquí se muestran en cards individuales, las compras realizadas a los proveedore
 [![client-purchases.png](https://i.postimg.cc/Qtzvx2rm/client-purchases.png)](https://postimg.cc/N91ddPF2)
 ### Diseño Responsive
 Se han diseñado y configurado todas las pantallas, para que puedan adaptarse a pantallas de dispositivos móviles, mejorando el User Experience (UX) y User Interface (UI).
-[![Responsive-Screens.png](https://i.postimg.cc/LXy9hdh9/Responsive-Screens.png)](https://postimg.cc/njDbwPvg)
+[![Responsive-Screens-A.png](https://i.postimg.cc/WbgzHTGJ/Responsive-Screens-A.png)](https://postimg.cc/kBM7Vrhn)
 ### Tecnologías Utilizadas
 Las tecnologías utilizadas para el desarrollo de esta web app fueron:
 ##### Lenguaje de Programación Base
