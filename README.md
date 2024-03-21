@@ -2,14 +2,26 @@
 
 | índice    |
 | --------- |
+| [Tutorial de Uso](#tutorial-de-uso)    |
 | [Descripción del Poyecto](#descripción-del-proyecto)  |
 | [Características](#características)    |
 | [Funcionalidad](#funcionalidad)    |
+[Diseño Responsive](#diseño-responsive)    |
 | [Tecnologías Utilizadas](#tecnologías-utilizadas)    |
 | [Desarrolladores Contribuyentes](#desarrolladores-contribuyentes)     |
 
-### Sitio Web: https://spiffy-fenglisu-10c3b8.netlify.app
+<div align="center">
+    <h3>LIVE PREVIEW:</h3>
+    <h3>https://spiffy-fenglisu-10c3b8.netlify.app</h3>
+</div>
 
+
+### Tutorial de Uso:
+Para aprovechar al máximo todas las funcionalidades de "Drink Reservation", se recomienda seguir los pasos del siguiente tutorial: 
+| Pasos a seguir | Indicaciones  |
+| ---------| --------- |
+| Login como "Proveedor" | 1. En la sección "Servicios", seleccionar los productos del Select, indicar su precio, y luego pulsar "Agregar Cóctel"  2. En la sección "Áreas", añadir las áreas de cobertura, por ejemplo "Mendoza"  3. En la Sección "Stock" indicar el stock de cada producto, para que luego pueda ser visualizado como "disponible"  4. Cuando el proveedor tenga "pedidos", se visualizarán en la sección "Pedidos".   |
+| Login como "Cliente" | 1. Una vez logueado el cliente, debe indicar en el mapa su ubicación actual  2. En la sección "Proveedores" se visualizarán los proveedores que ofrecen cobertura (realizan envíos) en la ubicación del cliente, y deberá seleccionar uno  3. Aparecerán los datos del proveedor seleccionado, y los productos en una cartilla informativa, para que pueda añadir al carrito de compras  4. Sección "Carrito de Compras" aquí se mostrarán los productos añadidos al carrito, y podrá realizar el pedido 5. En la sección "Pedidos" podrá visualizar los pedidos de forma detallada.   |
 ### Descripción del Proyecto:
 El presente proyecto, se ha desarrollado con fines educativos y de práctica, para implementar todos los conocimientos y tecnologías aprendidos durante la mentoría en desarrollo de aplicaciones web.
 Con este proyecto concluye la mentoría, dando como aprendidos y aplicados los requerimientos mínimos necesarios para el desarrollo de este tipo de aplicaciones.
@@ -72,6 +84,9 @@ Aquí se muestran en cards individuales, las compras realizadas a los proveedore
 - Tabla con los cócteles y/o cervezas, y las cantidades solicitadas
 - Total de Compra.
 [![client-purchases.png](https://i.postimg.cc/Qtzvx2rm/client-purchases.png)](https://postimg.cc/N91ddPF2)
+### Diseño Responsive
+Se han diseñado y configurado todas las pantallas, para que puedan adaptarse a pantallas de dispositivos móviles, mejorando el User Experience (UX) y User Interface (UI).
+[![Responsive-Screens.png](https://i.postimg.cc/LXy9hdh9/Responsive-Screens.png)](https://postimg.cc/njDbwPvg)
 ### Tecnologías Utilizadas
 Las tecnologías utilizadas para el desarrollo de esta web app fueron:
 ##### Lenguaje de Programación Base
