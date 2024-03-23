@@ -29,7 +29,7 @@ const defaultCenter = {
 
 const ClientWelcome = () => {
   const dispatch = useDispatch();
-  const [isMapOpen, setMapOpen] = useState(false);
+  const [isMapOpen, setMapOpen] = useState(true);
   const [isLocationSelected, setLocationSelected] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -80,7 +80,7 @@ const ClientWelcome = () => {
   };
 
   const handleMapClick = () => {
-    setMapOpen(!isMapOpen);
+    setMapOpen(true);
   };
 
   const maprender = (map: any, maps: any) => {
@@ -171,11 +171,12 @@ const ClientWelcome = () => {
           <Accordion
             expanded={isMapOpen}
             onChange={handleMapClick}
+            style={{ borderRadius: "30px" }}
             sx={{
               width: "100%",
               marginBottom: "20px",
               padding: "5px",
-              borderRadius: "15px",
+              borderRadius: "30px",
               backgroundColor: "#242424",
             }}
           >
@@ -285,10 +286,10 @@ const ClientWelcome = () => {
               </div>
             </AccordionSummary>
             <AccordionDetails>
-              <div style={{ height: "400px", width: "100%" }}>
+            <div style={{ height: "400px", width: "100%", borderRadius: "20px", overflow: "hidden" }}>
                 <GoogleMapReact
                   bootstrapURLKeys={{
-                    key: "AIzaSyDIdTqLzVyDVxfFB9rkYCq_X6SoXqS680w",
+                    key: "AIzaSyCSd0sJy7AR6CZx_-0Yh-GnEE8ERHFUDEM",
                   }}
                   defaultCenter={defaultCenter}
                   defaultZoom={11}

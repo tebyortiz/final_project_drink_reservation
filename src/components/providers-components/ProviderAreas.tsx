@@ -305,7 +305,7 @@ const ProviderAreas = () => {
               >
                 <GoogleMapReact
                   bootstrapURLKeys={{
-                    key: "AIzaSyBfjO7sxd8P6HDrF1lmvLV151z7ocauPD0",
+                    key: "AIzaSyCSd0sJy7AR6CZx_-0Yh-GnEE8ERHFUDEM",
                   }}
                   defaultCenter={defaultCenter}
                   defaultZoom={11}
