@@ -15,12 +15,23 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import MenuIcon from "@mui/icons-material/Menu";
 import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+const MenuBar = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const storedUser = localStorage.getItem("user");
+
+  useEffect(() => {
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      setLoginSuccess(true);
+    } else {
+      setLoginSuccess(false);
+    }
+  }, [storedUser]);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -32,6 +43,8 @@ const MenuBar = ({ loginSuccess }: { loginSuccess?: boolean }) => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
+    setUser(null);
+    setLoginSuccess(false);
     navigate("/login");
   };
 

@@ -37,7 +37,6 @@ const ClientWelcome = () => {
   const [currentLocation, setCurrentLocation] = useState<MarkerPosition | null>(
     null
   );
-  
 
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
@@ -91,21 +90,21 @@ const ClientWelcome = () => {
       draggable: true,
       title: "Ubicación actual",
     });
-  
+
     markerRef.current.addListener("drag", () => {
       JSON.stringify(markerRef.current.getPosition());
     });
-  
+
     if (currentLocation) {
       map.setCenter(new maps.LatLng(currentLocation.lat, currentLocation.lng));
       markerRef.current.setPosition(currentLocation);
     }
-  
+
     map.addListener("click", (mapsMouseEvent: any) => {
       handleSelectPublication(mapsMouseEvent);
     });
   };
-  
+
   const handleSelectPublication = (mapsMouseEvent: any) => {
     const clickedPosition: MarkerPosition = {
       lat: mapsMouseEvent.latLng.lat(),
@@ -120,41 +119,41 @@ const ClientWelcome = () => {
   };
 
   const handleAutoDetectChange = () => {
-  if (!isAutoDetectEnabled) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        const autoDetectedPosition: MarkerPosition = {
-          lat: latitude,
-          lng: longitude,
-        };
+    if (!isAutoDetectEnabled) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const autoDetectedPosition: MarkerPosition = {
+            lat: latitude,
+            lng: longitude,
+          };
 
-        if (markerRef.current) {
-          markerRef.current.setPosition(autoDetectedPosition);
-          setNewPosition(autoDetectedPosition);
-          setLocationSelected(true);
-          setCurrentLocation(autoDetectedPosition);
+          if (markerRef.current) {
+            markerRef.current.setPosition(autoDetectedPosition);
+            setNewPosition(autoDetectedPosition);
+            setLocationSelected(true);
+            setCurrentLocation(autoDetectedPosition);
 
-          if (mapRef.current) {
-            mapRef.current.setCenter(
-              new (window as any).google.maps.LatLng(
-                autoDetectedPosition.lat,
-                autoDetectedPosition.lng
-              )
-            );
+            if (mapRef.current) {
+              mapRef.current.setCenter(
+                new (window as any).google.maps.LatLng(
+                  autoDetectedPosition.lat,
+                  autoDetectedPosition.lng
+                )
+              );
+            }
           }
+        },
+        (error) => {
+          console.error("Error al obtener la ubicación:", error);
+          setAutoDetectEnabled(false);
         }
-      },
-      (error) => {
-        console.error("Error al obtener la ubicación:", error);
-        setAutoDetectEnabled(false);
-      }
-    );
-  } else {
-    setCurrentLocation(null);
-  }
-  setAutoDetectEnabled(!isAutoDetectEnabled);
-};
+      );
+    } else {
+      setCurrentLocation(null);
+    }
+    setAutoDetectEnabled(!isAutoDetectEnabled);
+  };
 
   return (
     <Box
@@ -286,7 +285,14 @@ const ClientWelcome = () => {
               </div>
             </AccordionSummary>
             <AccordionDetails>
-            <div style={{ height: "400px", width: "100%", borderRadius: "20px", overflow: "hidden" }}>
+              <div
+                style={{
+                  height: "400px",
+                  width: "100%",
+                  borderRadius: "20px",
+                  overflow: "hidden",
+                }}
+              >
                 <GoogleMapReact
                   bootstrapURLKeys={{
                     key: "AIzaSyCSd0sJy7AR6CZx_-0Yh-GnEE8ERHFUDEM",
