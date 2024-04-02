@@ -17,7 +17,7 @@ import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const MenuBar = () => {
+const MenuBar = ({}: { isLoginSuccess?: boolean }) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [loginSuccess, setLoginSuccess] = useState(false);
