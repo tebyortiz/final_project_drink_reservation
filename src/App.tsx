@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className="App">
-      <MenuBar loginSuccess={loginSuccess} />
+      <MenuBar isLoginSuccess={loginSuccess} />
       <Routes>
         <Route index element={<Navigate to="/login" replace />} />
         <Route path="/registration" element={<ProvidersRegistration />} />
