@@ -164,7 +164,7 @@ const OrderDetails = () => {
       dispatch(
         completePurchase({
           date: currentDate.toISOString(),
-          purchase: currentPurchase
+          purchase: currentPurchase,
         })
       );
 
@@ -350,7 +350,12 @@ const OrderDetails = () => {
                               <img
                                 src={item.cocktail.image}
                                 alt={item.cocktail.name}
-                                height="50"
+                                style={{
+                                  height: "50px",
+                                  width: "50px",
+                                  objectFit: "contain",
+                                  objectPosition: "center",
+                                }}
                               />
                             </TableCell>
                             <TableCell style={{ textAlign: "center" }}>
@@ -539,7 +544,12 @@ const OrderDetails = () => {
                               <img
                                 src={item.beer.image}
                                 alt={item.beer.name}
-                                height="50"
+                                style={{
+                                  height: "50px",
+                                  width: "50px",
+                                  objectFit: "contain",
+                                  objectPosition: "center",
+                                }}
                               />
                             </TableCell>
                             <TableCell style={{ textAlign: "center" }}>
@@ -757,16 +767,18 @@ const OrderDetails = () => {
             ubicación.
           </Typography>
 
-          <img
-            src={proveedordelivery}
-            alt="Cliente Banner"
-            style={{
-              maxWidth: "100%",
-              marginTop: "20px",
-              boxShadow: "0px 0px 10px rgba(1, 255, 114, 0.9)",
-              borderRadius: "50%",
-            }}
-          />
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <img
+              src={proveedordelivery}
+              alt="Cliente Banner"
+              style={{
+                maxWidth: "100%",
+                marginTop: "20px",
+                boxShadow: "0px 0px 10px rgba(1, 255, 114, 0.9)",
+                borderRadius: "50%",
+              }}
+            />
+          </div>
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center" }}>
           <Button
