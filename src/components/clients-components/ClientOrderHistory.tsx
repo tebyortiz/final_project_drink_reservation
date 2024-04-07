@@ -1,22 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import {
-  Card,
-  CardContent,
-  Typography,
-  Table,
-  Paper,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Box,
-  Grid,
-  Avatar,
-} from "@mui/material";
 import ReceiptLongSharpIcon from "@mui/icons-material/ReceiptLongSharp";
+import "tailwindcss/tailwind.css";
 
 const ClientOrderHistory: React.FC = () => {
   const storedUser = localStorage.getItem("user");
@@ -33,242 +19,137 @@ const ClientOrderHistory: React.FC = () => {
     : [];
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      padding="20px"
-      justifyContent="space-between"
-      marginTop="30px"
-    >
-      <Card
-        sx={{
-          backgroundColor: "#242424",
-          borderRadius: "15px",
-          color: "white",
-          maxWidth: 490,
-          padding: "20px",
-          marginBottom: "50px",
-          textAlign: "center",
-        }}
-      >
-        <Grid container alignItems="center" spacing={2}>
-          <Grid item>
-            <ReceiptLongSharpIcon style={{ marginBottom: "15px" }} />
-          </Grid>
-          <Grid item>
-            <Typography
-              variant="h5"
-              style={{
-                marginBottom: "20px",
-                fontFamily: "Quicksand, sans-serif",
-                fontWeight: "bold",
-              }}
-            >
-              MIS PEDIDOS
-            </Typography>
-          </Grid>
-        </Grid>
-      </Card>
+    <div className="flex flex-col items-center p-4 space-y-8 mt-16">
+      <div className="bg-[#242424] rounded-lg text-white max-w-screen-sm p-4 mb-8 text-center">
+        <div className="flex items-center space-x-2">
+          <ReceiptLongSharpIcon className="text-gray-300" />
+          <h1
+            className="text-2xl font-semibold"
+            style={{ fontFamily: "Quicksand, sans-serif", fontWeight: "bold" }}
+          >
+            MIS PEDIDOS
+          </h1>
+        </div>
+      </div>
 
       {userPurchases.length === 0 ? (
-        <Typography
-          variant="h6"
-          style={{
-            fontFamily: "Quicksand, sans-serif",
-            fontWeight: "bold",
-            color: "#242424",
-            textAlign: "center",
-          }}
+        <p
+          className="text-lg font-semibold text-gray-800 text-center"
+          style={{ fontFamily: "Quicksand, sans-serif", fontWeight: "bold" }}
         >
           Todavía no tienes pedidos realizados.
-        </Typography>
+        </p>
       ) : (
-        <Grid container spacing={2}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {userPurchases.map((purchase, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <Card
-                key={`card-${index}`}
-                sx={{
-                  backgroundColor: "#242424",
-                  borderRadius: "15px",
-                  color: "white",
-                  maxWidth: 480,
-                  width: "100%",
-                  margin: "0 auto",
-                  padding: "10px",
-                  marginBottom: "20px",
-                  textAlign: "center",
-                }}
-              >
-                <CardContent>
-                  <Card
-                    sx={{
-                      backgroundColor: "#01FF72",
-                      margin: "10px auto",
-                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
-                      marginTop: "2px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      marginBottom="10px"
-                      marginTop="10px"
-                    >
-                      {purchase.provider && purchase.provider.company.logo && (
-                        <Avatar
-                          alt={purchase.provider.company.name}
-                          src={purchase.provider.company.logo}
-                        />
-                      )}
-                    </Box>
-                    <Typography
-                      variant="h6"
+            <div
+              key={index}
+              className="bg-white rounded-2xl shadow-md border border-gray-300 border-2 p-4 mx-auto mb-8 transition-transform transform hover:scale-105"
+              style={{ height: "fit-content" }}
+            >
+              <div className="flex items-center space-x-4 mb-6">
+                {purchase.provider && purchase.provider.company.logo && (
+                  <div className="relative w-16 h-16">
+                    <img
+                      src={purchase.provider.company.logo}
+                      alt={purchase.provider.company.name}
+                      className="absolute inset-0 w-full h-full rounded-full object-cover shadow-md"
                       style={{
-                        fontFamily: "Quicksand, sans-serif",
-                        fontWeight: "bold",
-                        marginTop: "-5px",
+                        boxShadow: "0px 0px 10px rgba(1, 255, 114, 0.9)",
                       }}
-                    >
-                      Pedido realizado a {purchase.provider?.company.name}
-                    </Typography>
+                    />
+                  </div>
+                )}
+                <div>
+                  <h2 className="text-xl font-semibold">
+                    Pedido realizado a {purchase.provider?.company.name}
+                  </h2>
+                  <p className="text-sm font-semibold text-center">
+                    {new Date(purchase.date)
+                      .toLocaleString("es-ES", {
+                        day: "numeric",
+                        month: "numeric",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: true,
+                      })
+                      .split(",")
+                      .join("")}
+                  </p>
+                </div>
+              </div>
 
-                    <Typography
-                      variant="subtitle2"
-                      style={{
-                        fontFamily: "Quicksand, sans-serif",
-                        fontWeight: "bold",
-                        marginBottom: "10px",
-                      }}
-                    >
-                      {new Date(purchase.date)
-                        .toLocaleString("es-ES", {
-                          day: "numeric",
-                          month: "numeric",
-                          year: "numeric",
-                          hour: "numeric",
-                          minute: "numeric",
-                          hour12: true,
-                        })
-                        .split(",")
-                        .join("")}
-                    </Typography>
-                  </Card>
+              <hr className="border-b border-gray-300 my-6 w-full" />
 
-                  <TableContainer component={Paper}>
-                    <Table>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>
-                            <Typography
-                              variant="h6"
-                              sx={{ color: "#242424", textAlign: "center" }}
-                              style={{
-                                fontFamily: "Quicksand, sans-serif",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              Imagen
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography
-                              variant="h6"
-                              sx={{ color: "#242424", textAlign: "center" }}
-                              style={{
-                                fontFamily: "Quicksand, sans-serif",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              Nombre
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography
-                              variant="h6"
-                              sx={{ color: "#242424", textAlign: "center" }}
-                              style={{
-                                fontFamily: "Quicksand, sans-serif",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              Cantidad
-                            </Typography>
-                          </TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {purchase.cocktails.map((cocktail) => (
-                          <TableRow key={cocktail.cocktail.name}>
-                            <TableCell style={{ textAlign: "center" }}>
-                              <img
-                                src={cocktail.cocktail.image}
-                                alt={cocktail.cocktail.name}
-                                style={{ width: "50px", height: "50px" }}
-                              />
-                            </TableCell>
-                            <TableCell style={{ textAlign: "center" }}>
-                              {cocktail.cocktail.name}
-                            </TableCell>
-                            <TableCell style={{ textAlign: "center" }}>
-                              {cocktail.quantity}
-                            </TableCell>
-                          </TableRow>
-                        ))}
+              <table className="w-full mb-6 bg-gray-100">
+                <thead>
+                  <tr>
+                    <th className="text-lg font-semibold text-gray-800 text-center mb-2">
+                      Imagen
+                    </th>
+                    <th className="text-lg font-semibold text-gray-800 text-center mb-2">
+                      Nombre
+                    </th>
+                    <th className="text-lg font-semibold text-gray-800 text-center mb-2">
+                      Cantidad
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {purchase.cocktails.map((cocktail) => (
+                    <tr key={cocktail.cocktail.name} className="text-center">
+                      <td>
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <img
+                            src={cocktail.cocktail.image}
+                            alt={cocktail.cocktail.name}
+                            className="w-12 h-12"
+                          />
+                        </div>
+                      </td>
+                      <td>{cocktail.cocktail.name}</td>
+                      <td>{cocktail.quantity}</td>
+                    </tr>
+                  ))}
+                  {purchase.beers.map((beer) => (
+                    <tr key={beer.beer.name} className="text-center">
+                      <td>
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <img
+                            src={beer.beer.image}
+                            alt={beer.beer.name}
+                            className="w-12 h-12"
+                          />
+                        </div>
+                      </td>
+                      <td>{beer.beer.name}</td>
+                      <td>{beer.quantity}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
 
-                        {purchase.beers.map((beer) => (
-                          <TableRow key={beer.beer.name}>
-                            <TableCell style={{ textAlign: "center" }}>
-                              <img
-                                src={beer.beer.image}
-                                alt={beer.beer.name}
-                                style={{ height: "50px" }}
-                              />
-                            </TableCell>
-                            <TableCell style={{ textAlign: "center" }}>
-                              {beer.beer.name}
-                            </TableCell>
-                            <TableCell style={{ textAlign: "center" }}>
-                              {beer.quantity}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-
-                  <Card
-                    sx={{
-                      backgroundColor: "#01FF72",
-                      margin: "10px auto",
-                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
-                      marginTop: "10px",
-                      marginBottom: "-5px",
-                    }}
-                  >
-                    <Typography
-                      variant="h6"
-                      style={{
-                        fontFamily: "Quicksand, sans-serif",
-                        fontWeight: "bold",
-                        marginTop: "10px",
-                        marginBottom: "10px",
-                      }}
-                    >
-                      Total de compra: ${purchase.totalPurchase}
-                    </Typography>
-                  </Card>
-                </CardContent>
-              </Card>
-            </Grid>
+              <div className="bg-[#01FF72] rounded-lg mt-4 p-4 text-center">
+                <p
+                  className="text-lg font-semibold text-[#242424]"
+                  style={{
+                    fontFamily: "Quicksand, sans-serif",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Total de compra: ${purchase.totalPurchase}
+                </p>
+              </div>
+            </div>
           ))}
-        </Grid>
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

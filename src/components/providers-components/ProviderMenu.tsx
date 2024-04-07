@@ -346,11 +346,18 @@ const ProviderMenu = () => {
                       {selectedCocktails.map(
                         (cocktail: Cocktail, index: number) => (
                           <TableRow key={index}>
-                            <TableCell sx={{ textAlign: "center" }}>
+                            <TableCell
+                              sx={{ display: "flex", justifyContent: "center" }}
+                            >
                               <img
                                 src={cocktail.image}
                                 alt={cocktail.image}
-                                height="50"
+                                style={{
+                                  height: "50px",
+                                  width: "50px",
+                                  objectFit: "contain",
+                                  objectPosition: "center",
+                                }}
                               />
                             </TableCell>
                             <TableCell
@@ -621,11 +628,18 @@ const ProviderMenu = () => {
                     <TableBody>
                       {selectedBeers.map((beer: Beer, index: number) => (
                         <TableRow key={index}>
-                          <TableCell sx={{ textAlign: "center" }}>
+                          <TableCell
+                            sx={{ display: "flex", justifyContent: "center" }}
+                          >
                             <img
                               src={beer.image}
                               alt={beer.image}
-                              height="50"
+                              style={{
+                                height: "50px",
+                                width: "50px",
+                                objectFit: "contain",
+                                objectPosition: "center",
+                              }}
                             />
                           </TableCell>
 
