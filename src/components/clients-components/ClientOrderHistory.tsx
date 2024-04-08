@@ -45,7 +45,7 @@ const ClientOrderHistory: React.FC = () => {
             <div
               key={index}
               className="bg-white rounded-2xl shadow-md border border-gray-300 border-2 p-4 mx-auto mb-8 transition-transform transform hover:scale-105"
-              style={{ height: "fit-content" }}
+              style={{ height: "fit-content", minWidth: "400px" }}
             >
               <div className="flex items-center space-x-4 mb-6">
                 {purchase.provider && purchase.provider.company.logo && (
