@@ -45,9 +45,9 @@ const ClientOrderHistory: React.FC = () => {
             <div
               key={index}
               className="bg-white rounded-2xl shadow-md border border-gray-300 border-2 p-4 mx-auto mb-8 transition-transform transform hover:scale-105"
-              style={{ height: "fit-content", minWidth: "400px" }}
+              style={{ height: "fit-content", minWidth: "380px" }}
             >
-              <div className="flex items-center space-x-4 mb-6">
+              <div className="flex items-center justify-center space-x-4 mb-6">
                 {purchase.provider && purchase.provider.company.logo && (
                   <div className="relative w-16 h-16">
                     <img
@@ -61,7 +61,7 @@ const ClientOrderHistory: React.FC = () => {
                   </div>
                 )}
                 <div>
-                  <h2 className="text-xl font-semibold">
+                  <h2 className="text-xl font-semibold text-center">
                     Pedido realizado a {purchase.provider?.company.name}
                   </h2>
                   <p className="text-sm font-semibold text-center">
